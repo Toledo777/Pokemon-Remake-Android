@@ -12,8 +12,8 @@ class Pokemon(
     val types: ArrayList<String>,
     val hp: Int,
 ) {
-    fun getBattleStats() {
-
+    fun getBattleStats(): BattleStats? {
+        return null
     }
 }
 
