@@ -12,4 +12,8 @@
     <string name="grass_starter_pokemon">Grass starter pokemon</string>
     <string name="water_starter_pokemon">Water starter pokemon</string>
     <string name="fire_starter_pokemon">fire_starter_pokemon</string>
+    <string name="contributors">Contributors:</string>
+    <string name="paul">Paul Patrick Rabanal</string>
+    <string name="matthew">Matthew Toledo</string>
+    <string name="jeremy">Jeremy Tang</string>
 </resources>
