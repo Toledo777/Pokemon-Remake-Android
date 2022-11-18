@@ -13,8 +13,11 @@ class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
     }
 
     // send pokemon from team to box
-    fun sendToBox() {
-
+    fun sendToBox(oldPokemon: Pokemon) {
+        // send pokemon from team to box
+        this.team.remove(oldPokemon)
+        // add team pokemon to box
+        pokemonCollection.add(oldPokemon)
     }
 
     // boolean to get wild pokemon catch sucess or fail
