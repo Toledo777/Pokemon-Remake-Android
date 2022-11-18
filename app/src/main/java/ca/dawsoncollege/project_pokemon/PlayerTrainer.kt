@@ -1,9 +1,6 @@
 package ca.dawsoncollege.project_pokemon
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-
-class PlayerTrainer: Trainer() {
+class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList();
     // pokemon center
@@ -26,7 +23,8 @@ class PlayerTrainer: Trainer() {
     // switch pokemon on team with one in collection
     fun changeTeam(oldPokemon: Pokemon, newPokemonIndex: Int) {
         // send pokemon from team to box
+        this.team.remove(oldPokemon);
         pokemonCollection.add(oldPokemon);
-        this.team
+
     }
 }
