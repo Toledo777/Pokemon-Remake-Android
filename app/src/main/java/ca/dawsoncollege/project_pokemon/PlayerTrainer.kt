@@ -2,7 +2,7 @@ package ca.dawsoncollege.project_pokemon
 
 import kotlin.random.Random
 
-class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
+class PlayerTrainer(playerName: String): Trainer(null, playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     // pokemon center
@@ -11,8 +11,8 @@ class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
     fun pokemonCenterHeal() {
         this.team.forEach {
             it.hp = it.getBattleStats().maxHP
-            // TO-Do cure status effects once they have been implemented in pokemon class
-            // TO-DO repleanish pp once move classes is completed
+            // TO-DO cure status effects once they have been implemented in pokemon class
+            // TO-DO replenish pp once move classes is completed
         }
     }
 
@@ -59,5 +59,27 @@ class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
         val newPokemon = pokemonCollection.removeAt(newPokemonIndex)
         // add to team
         this.team.add(newPokemon)
+    }
+
+    // get highest level on players team
+    fun calculateMaxTeamLevel(): Int {
+        var maxLevel = this.team[0].level;
+
+        for (i in 1..team.size) {
+            if (this.team[i].level > maxLevel)
+                maxLevel = this.team[i].level
+        }
+        return maxLevel;
+    }
+
+    // return lowest level on player team
+    fun calculateMinTeamLevel(): Int {
+        var minLevel = this.team[0].level;
+
+        for (i in 1..team.size) {
+            if (this.team[i].level < minLevel)
+                minLevel = this.team[i].level
+        }
+        return minLevel;
     }
 }
