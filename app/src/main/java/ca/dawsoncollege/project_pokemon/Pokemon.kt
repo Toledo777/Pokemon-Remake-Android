@@ -19,6 +19,18 @@ class Pokemon(var level: Int, var species: String, var name: String? = null) {
     }
 }
 
+data class PokemonData(
+    val baseExperienceReward: Double,
+    val baseStateAttack: Double,
+    val baseStatDefense: Double,
+    val baseStateMaxHp: Double,
+    val baseStatSpecialAttack: Double,
+    val baseStatSpecialDefense: Double,
+    val baseStatSpeed: Double,
+    val species: String,
+    val types: List<String>
+)
+
 data class BattleStats(
     val maxHP: Int,
     var attack: Double,
