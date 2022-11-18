@@ -3,12 +3,12 @@ package ca.dawsoncollege.project_pokemon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-abstract class Battle(playerTrainer: PlayerTrainer) {
+abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
     lateinit var playerPokemon: Pokemon
     lateinit var enemyPokemon: Pokemon
 
-    // player choses which pokemon to battle with
+    // player chooses which pokemon to battle with
     fun chosePokemon(chosenPokemon: Pokemon) {
         if (chosenPokemon.hp > 0) {
             playerPokemon = chosenPokemon

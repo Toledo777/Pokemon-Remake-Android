@@ -1,11 +1,15 @@
 package ca.dawsoncollege.project_pokemon
 
-class WildBattle(): Battle() {
+class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
 
-    // generates random wild pokemon depeding on trainer level
-    fun generateWildPokemon(level:Int ) {
+    // generates random wild pokemon depending on trainer level
+    fun generateWildPokemon(level:Int) {
 
     }
 
-
+    fun throwPokeball(): Boolean {
+        val sucess = playerTrainer.catchPokemon(playerPokemon, enemyPokemon)
+        // boolean indicating catch success or fail
+        return sucess;
+    }
 }

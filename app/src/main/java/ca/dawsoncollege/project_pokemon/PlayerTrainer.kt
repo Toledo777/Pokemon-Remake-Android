@@ -2,7 +2,7 @@ package ca.dawsoncollege.project_pokemon
 
 import kotlin.random.Random
 
-class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
+class PlayerTrainer(playerName: String): Trainer(null, playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     // pokemon center
