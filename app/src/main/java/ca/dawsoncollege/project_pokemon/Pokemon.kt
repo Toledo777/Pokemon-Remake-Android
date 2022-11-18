@@ -9,10 +9,10 @@ import kotlin.math.pow
 // Status
 class Pokemon(var context: Context, var level: Int, var species: String, var name: String? = null) {
     var data: PokemonData
-    lateinit var battleStat: BattleStats
+    var battleStat: BattleStats
     var experience: Double = 0.0
     var hp: Double = 0.0
-    lateinit var types: List<String>
+    var types: List<String>
 
     init {
         this.species = this.species.lowercase()
