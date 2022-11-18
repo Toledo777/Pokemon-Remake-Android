@@ -16,4 +16,9 @@
     <string name="paul">Paul Patrick Rabanal</string>
     <string name="matthew">Matthew Toledo</string>
     <string name="jeremy">Jeremy Tang</string>
+    <string name="pokecenter">Pokecenter</string>
+    <string name="change_team">Change Team</string>
+    <string name="trainer_battle">Trainer Battle</string>
+    <string name="wild_pokemon_battle">Wild Battle</string>
+    <string name="save">Save</string>
 </resources>
