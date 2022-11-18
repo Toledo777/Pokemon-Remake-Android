@@ -3,8 +3,8 @@ package ca.dawsoncollege.project_pokemon
 class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
 
     // generates random wild pokemon depending on trainer level
-    fun generateWildPokemon(level:Int) {
-
+    fun generateWildPokemon() {
+        val level = playerTrainer
     }
 
     fun throwPokeball(): Boolean {

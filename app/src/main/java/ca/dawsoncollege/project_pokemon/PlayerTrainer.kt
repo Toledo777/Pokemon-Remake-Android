@@ -60,4 +60,26 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
         // add to team
         this.team.add(newPokemon)
     }
+
+    // get highest level on players team
+    fun getMaxTeamLevel(): Int {
+        var maxLevel = this.team[0].level;
+
+        for (i in 1..team.size) {
+            if (this.team[i].level > maxLevel)
+                maxLevel = this.team[i].level
+        }
+        return maxLevel;
+    }
+
+    // return lowest level on player team
+    fun getMinTeamLevel(): Int {
+        var minLevel = this.team[0].level;
+
+        for (i in 1..team.size) {
+            if (this.team[i].level < minLevel)
+                minLevel = this.team[i].level
+        }
+        return minLevel;
+    }
 }
