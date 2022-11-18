@@ -1,5 +1,8 @@
 package ca.dawsoncollege.project_pokemon
 
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
 // TO ADD:
 // Moves ArrayList
 // Status
