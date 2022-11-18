@@ -5,7 +5,7 @@ import android.os.Bundle
 
 class PlayerTrainer: Trainer() {
 
-    val pokemonCollection: ArrayList<Pokemon>;
+    private val pokemonCollection: ArrayList<Pokemon> = ArrayList();
     // pokemon center
 
     // heal all pokemon
@@ -19,8 +19,14 @@ class PlayerTrainer: Trainer() {
     }
 
     // catch wild pokemon
-    fun catchPokemon()
+    fun catchPokemon() {
+
+    }
 
     // switch pokemon on team with one in collection
-    fun changeTeam()
+    fun changeTeam(oldPokemon: Pokemon, newPokemonIndex: Int) {
+        // send pokemon from team to box
+        pokemonCollection.add(oldPokemon);
+        this.team
+    }
 }
