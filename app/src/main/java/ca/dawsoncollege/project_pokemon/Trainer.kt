@@ -1,5 +1,8 @@
 package ca.dawsoncollege.project_pokemon
 
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
 // optional trainer level, only used for enemy trainers
 open class Trainer(val trainerLevel: Int? = null, val name: String) {
     //
