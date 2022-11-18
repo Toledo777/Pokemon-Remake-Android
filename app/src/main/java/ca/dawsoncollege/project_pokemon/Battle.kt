@@ -3,17 +3,20 @@ package ca.dawsoncollege.project_pokemon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-abstract class Battle(playerTrainer: PlayerTrainer, enemyTrainer: Trainer) {
+abstract class Battle(playerTrainer: PlayerTrainer) {
     // current pokemons in battle
-    var playerPokemon: Pokemon
-    var ennemyPokemon: Pokemon
-    // takes move as input and attacks ennemy
-    fun playerAttack(move: Input) {
+    lateinit var playerPokemon: Pokemon
+    lateinit var enemyPokemon: Pokemon
 
+    // player choses which pokemon to battle with
+    fun chosePokemon(chosenPokemon: Pokemon) {
+        playerPokemon = chosenPokemon
     }
+    // takes move as input and attacks enemy
+    abstract fun playerAttack(move: Input)
 
     // chose random to target player with
-    fun ennemyAttack() {
+    abstract fun enemyAttack() {
 
     }
 
