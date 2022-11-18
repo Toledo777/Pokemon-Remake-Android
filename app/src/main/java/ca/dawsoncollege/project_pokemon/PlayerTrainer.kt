@@ -11,8 +11,8 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     fun pokemonCenterHeal() {
         this.team.forEach {
             it.hp = it.getBattleStats().maxHP
-            // TO-Do cure status effects once they have been implemented in pokemon class
-            // TO-DO repleanish pp once move classes is completed
+            // TO-DO cure status effects once they have been implemented in pokemon class
+            // TO-DO replenish pp once move classes is completed
         }
     }
 
@@ -62,7 +62,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     }
 
     // get highest level on players team
-    fun getMaxTeamLevel(): Int {
+    fun calculateMaxTeamLevel(): Int {
         var maxLevel = this.team[0].level;
 
         for (i in 1..team.size) {
@@ -73,7 +73,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     }
 
     // return lowest level on player team
-    fun getMinTeamLevel(): Int {
+    fun calculateMinTeamLevel(): Int {
         var minLevel = this.team[0].level;
 
         for (i in 1..team.size) {
