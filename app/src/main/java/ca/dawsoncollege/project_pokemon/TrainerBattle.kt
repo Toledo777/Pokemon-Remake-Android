@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlin.random.Random
 
-class TrainerBattle(playerTrainer: PlayerTrainer, enemyTrainer: Trainer): Battle(playerTrainer) {
+class TrainerBattle(playerTrainer: PlayerTrainer, val enemyTrainer: Trainer): Battle(playerTrainer) {
 
     // switch out enemy's pokemon when it has reached 0 hp
     fun switchOutEnemyPkm() {
-
+        // remove fainted pokemon from team
+        enemyTrainer.team.remove(enemyPokemon)
+        // set next pokemon as enemy
+        enemyPokemon = enemyTrainer.team[0];
     }
 
     override fun enemyAttack() {
