@@ -35,12 +35,16 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
     fun getBattleStats(): BattleStats {
         return BattleStats(
             floor((((this.data.baseStateMaxHp + 10) * this.level) / 50)) + this.level + 10,
-            floor((((this.data.baseStateAttack + 10) * this.level) / 50)) + 5,
-            floor((((this.data.baseStatDefense + 10) * this.level) / 50)) + 5,
-            floor((((this.data.baseStatSpecialAttack + 10) * this.level) / 50)) + 5,
-            floor((((this.data.baseStatSpecialDefense + 10) * this.level) / 50)) + 5,
-            floor((((this.data.baseStatSpeed + 10) * this.level) / 50)) + 5,
+            calcBattleStat(this.data.baseStateAttack),
+            calcBattleStat(this.data.baseStatDefense),
+            calcBattleStat(this.data.baseStatSpecialAttack),
+            calcBattleStat(this.data.baseStatSpecialDefense),
+            calcBattleStat(this.data.baseStatSpeed),
         )
+    }
+
+    private fun calcBattleStat(stat: Double): Double {
+        return floor((((stat + 10) * this.level) / 50)) + 5
     }
 }
 
