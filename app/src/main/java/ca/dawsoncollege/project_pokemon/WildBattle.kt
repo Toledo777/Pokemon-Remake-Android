@@ -6,4 +6,6 @@ class WildBattle(): Battle() {
     fun generateWildPokemon(level:Int ) {
 
     }
+
+
 }

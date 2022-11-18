@@ -10,15 +10,28 @@ abstract class Battle(playerTrainer: PlayerTrainer) {
 
     // player choses which pokemon to battle with
     fun chosePokemon(chosenPokemon: Pokemon) {
-        playerPokemon = chosenPokemon
+        if (chosenPokemon.hp > 0) {
+            playerPokemon = chosenPokemon
+        }
+        else {
+            throw IllegalArgumentException("Error, you cannot play a pokemon with 0 HP")
+        }
     }
+
+    fun switchOutPlayerPkm(nextPokemon: Pokemon) {
+        if (nextPokemon.hp > 0) {
+            playerPokemon = nextPokemon
+        }
+        else {
+            throw IllegalArgumentException("Error, Cannot switch to a pokemon with 0 HP")
+        }
+    }
+
     // takes move as input and attacks enemy
     abstract fun playerAttack(move: Input)
 
     // chose random to target player with
-    abstract fun enemyAttack() {
-
-    }
+    abstract fun enemyAttack()
 
     // leave battle
     fun playerRun() {

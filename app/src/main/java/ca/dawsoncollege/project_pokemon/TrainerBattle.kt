@@ -13,11 +13,11 @@ class TrainerBattle(playerTrainer: PlayerTrainer, enemyTrainer: Trainer): Battle
 
     override fun enemyAttack() {
         val move = Random.nextInt(0, 3);
-
+        TODO("Waiting for move class")
     }
 
     override fun playerAttack(move: Move) {
-
+        TODO("Waiting for move class")
     }
 
 }
