@@ -15,13 +15,14 @@ class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
         enemyPokemon = Pokemon()
     }
 
+    // throw pokeball to attempt catch
     fun throwPokeball(): Boolean {
         val sucess = playerTrainer.catchPokemon(playerPokemon, enemyPokemon)
         // boolean indicating catch success or fail
         return sucess;
     }
 
-    fun playerAttack(move: Move) {
-
+    override fun playerAttack(move: Move) {
+        TODO("waiting for move class")
     }
 }

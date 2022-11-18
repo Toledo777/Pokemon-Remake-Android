@@ -35,7 +35,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
     // leave battle
     fun playerRun() {
-
+        TODO("No sure if necessary")
     }
 
 }
