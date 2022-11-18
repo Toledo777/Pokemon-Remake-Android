@@ -1,5 +1,7 @@
 package ca.dawsoncollege.project_pokemon
 
+import kotlin.random.Random
+
 class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
@@ -15,9 +17,25 @@ class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
 
     }
 
-    // catch wild pokemon
-    fun catchPokemon() {
+    // boolean to get wild pokemon catch sucess or fail
+    fun catchPokemon(playerPokemon: Pokemon, wildPokemon: Pokemon): Boolean {
+        // calculate probability (in percentage?)
+        val captureProb = 1 - (wildPokemon.hp / playerPokemon.getBattleStats()?.maxHP!!)
+        val rand = Random.nextDouble(1.0);
 
+        // capture is successful if rand num was less then capture prob
+        if (captureProb >= rand) {
+            // check if space on team
+            if (this.team.size < MAX_TEAM_CAPACITY) {
+                this.team.add(wildPokemon);
+            }
+            // add to collection
+            else {
+                this.pokemonCollection.add(wildPokemon);
+            }
+            return true;
+        }
+        return false;
     }
 
     // switch pokemon on team with one in collection
