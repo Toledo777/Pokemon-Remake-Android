@@ -9,9 +9,14 @@ class PlayerTrainer(private val playerName: String): Trainer(null, playerName) {
 
     // heal all pokemon
     fun pokemonCenterHeal() {
-
+        this.team.forEach {
+            it.hp = it.getBattleStats().maxHP
+            // TO-Do cure status effects once they have been implemented in pokemon class
+            // TO-DO repleanish pp once move classes is completed
+        }
     }
 
+    // TO-DO check if pokemon in box should be healed
     // send pokemon from team to box
     fun sendToBox(oldPokemon: Pokemon) {
         // send pokemon from team to box

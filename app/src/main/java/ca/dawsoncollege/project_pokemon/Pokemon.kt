@@ -10,7 +10,7 @@ class Pokemon(
     var experience: Double,
     var baseExp: Double,
     val types: ArrayList<String>,
-    val hp: Int,
+    var hp: Int,
 ) {
     fun getBattleStats(): BattleStats? {
         return null
