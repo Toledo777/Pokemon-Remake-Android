@@ -1,11 +1,11 @@
 package ca.dawsoncollege.project_pokemon
 
 class Move (
-    val accuracy: Double,
+    var accuracy: Double,
     var PP: Int,
     val maxPP: Int,
-    val power: Double,
-    val heal: Double,
+    var power: Double,
+    var heal: Double,
 //    var damage: Damage, TODO: damage class
     val type: Type,
     var target: Pokemon,
