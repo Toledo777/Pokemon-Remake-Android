@@ -14,6 +14,7 @@ class TrainerBattle(playerTrainer: PlayerTrainer, val enemyTrainer: Trainer): Ba
         enemyPokemon = enemyTrainer.team[0];
     }
 
+
     override fun enemyAttack() {
         val move = Random.nextInt(0, 3);
         TODO("Waiting for move class")
