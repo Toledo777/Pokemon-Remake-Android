@@ -47,7 +47,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         val moveIndex = Random.nextInt(0, 3);
 
         // hostile move
-        if (moveList[moveIndex].target == Target.HOSTILE) {
+        if (moveList[moveIndex].target == "HOSTILE") {
             return if (moveSuccessCheck(moveList[moveIndex].accuracy)) {
                 val damage = calculateDamage(moveList[moveIndex], enemyPokemon, playerPokemon)
                 // subtract hp
@@ -85,7 +85,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
         damage *= move.power
 
-        damage = if (move.damageClass == DamageClass.PHYSICAL)
+        damage = if (move.damageClass == "PHYSICAL")
             // physical
             damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
         else
