@@ -29,19 +29,27 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // takes move as input and attacks enemy
-    abstract fun playerAttack(move: Input)
+    abstract fun playerAttack(move: Move)
 
     // chose random move to play for enemy, returns success status
-    fun enemyAttack() {
+    fun enemyAttack(): Boolean{
         val moveList = this.enemyPokemon.moveList
-        val move = Random.nextInt(0, 3);
+        val moveIndex = Random.nextInt(0, 3);
 
-        if (moveList[i].target == Target.HOSTILE) {
-            if (moveSuccessCheck(moveList[i].accuracy)) {
-                val
-
+        // hostile move
+        if (moveList[moveIndex].target == Target.HOSTILE) {
+            return if (moveSuccessCheck(moveList[moveIndex].accuracy)) {
+                val damage = calculateDamage(moveList[moveIndex], enemyPokemon, playerPokemon)
+                // subtract hp
+                playerPokemon.hp -= damage
+                true
+            }
+            // move missed
+            else {
+                false
             }
         }
+        TODO("Implement friendly moves")
     }
 
     // leave battle
@@ -67,11 +75,12 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
         damage *= move.power
 
-        if (move.damageClass == DamageClass.PHYSICAL)
-            damage = damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
-
+        damage = if (move.damageClass == DamageClass.PHYSICAL)
+            // physical
+            damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
         else
-            damage = damage * (attacker.getBattleStats().specialAttack / defender.getBattleStats().specialAttack) + 2
+            // special
+            damage * (attacker.getBattleStats().specialAttack / defender.getBattleStats().specialAttack) + 2
 
         // return damage as an int
         return damage.toInt()
