@@ -6,7 +6,7 @@ class Move (
     val maxPP: Int,
     var power: Double,
     var heal: Double,
-    var damage: DamageClass,
+    var damageClass: DamageClass,
     val type: Type,
     // may be changed later
     var target: Target,

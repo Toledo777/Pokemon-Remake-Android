@@ -63,24 +63,18 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
     // TODO add type multiplier in milestone 2
     // helper method to calculate physical damage of an attack
-    private fun calculatePhysicalDmg(move: Move, attacker: Pokemon, defender: Pokemon): Int{
+    private fun calculateDamage(move: Move, attacker: Pokemon, defender: Pokemon): Int{
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
         damage *= move.power
 
-        if (move.)
+        if (move.damageClass == DamageClass.PHYSICAL)
+            damage = damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
 
-        damage = damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
+        else
+            damage = damage * (attacker.getBattleStats().specialAttack / defender.getBattleStats().specialAttack) + 2
+
         // return damage as an int
         return damage.toInt()
     }
 
-
-    // helper method to calculate special damage of an attack
-    private fun calculateSpecialDmg(movePower: Double, attacker: Pokemon, defender: Pokemon): Int{
-        var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
-        damage *= movePower
-        damage = damage * (attacker.getBattleStats().specialAttack / defender.getBattleStats().specialAttack) + 2
-        // return damage as an int
-        return damage.toInt()
-    }
 }
