@@ -6,18 +6,19 @@ import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
-    lateinit var playerPokemon: Pokemon
+    var playerPokemon = playerTrainer.team[0]
     lateinit var enemyPokemon: Pokemon
 
+    //
     // player chooses which pokemon to battle with
-    fun chosePokemon(chosenPokemon: Pokemon) {
-        if (chosenPokemon.hp > 0) {
-            playerPokemon = chosenPokemon
-        }
-        else {
-            throw IllegalArgumentException("Error, you cannot play a pokemon with 0 HP")
-        }
-    }
+//    fun chosePokemon(chosenPokemon: Pokemon) {
+//        if (chosenPokemon.hp > 0) {
+//            playerPokemon = chosenPokemon
+//        }
+//        else {
+//            throw IllegalArgumentException("Error, you cannot play a pokemon with 0 HP")
+//        }
+//    }
 
     fun switchOutPlayerPkm(nextPokemon: Pokemon) {
         if (nextPokemon.hp > 0) {
@@ -28,8 +29,17 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         }
     }
 
-    // takes move as input and attacks enemy
-    abstract fun playerAttack(move: Move)
+    // TODO Potentially create method for friendly player moves
+    // takes move as input and attempts attacks on enemy
+    fun playerAttack(move: Move): Boolean {
+        if (moveSuccessCheck(move.accuracy)) {
+            val damage = calculateDamage(move, playerPokemon, enemyPokemon)
+            enemyPokemon.hp -= damage
+            return true
+        }
+        // moves missed
+        return false
+    }
 
     // chose random move to play for enemy, returns success status
     fun enemyAttack(): Boolean{
@@ -85,5 +95,4 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         // return damage as an int
         return damage.toInt()
     }
-
 }
