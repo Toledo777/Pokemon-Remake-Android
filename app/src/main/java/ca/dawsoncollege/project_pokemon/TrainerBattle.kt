@@ -14,13 +14,6 @@ class TrainerBattle(playerTrainer: PlayerTrainer, val enemyTrainer: Trainer): Ba
         enemyPokemon = enemyTrainer.team[0];
     }
 
-
-    override fun enemyAttack() {
-
-
-        TODO("Waiting for move class")
-    }
-
     override fun playerAttack(move: Move) {
         TODO("Waiting for move class")
     }

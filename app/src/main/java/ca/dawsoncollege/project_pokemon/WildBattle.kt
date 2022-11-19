@@ -26,8 +26,4 @@ class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
         TODO("waiting for move class")
     }
 
-    override fun enemyAttack() {
-
-    }
-
 }
