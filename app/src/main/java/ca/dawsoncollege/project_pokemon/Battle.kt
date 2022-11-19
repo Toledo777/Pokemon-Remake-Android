@@ -38,16 +38,15 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
         if (moveList[i].target == Target.HOSTILE) {
             if (moveSuccessCheck(moveList[i].accuracy)) {
-
+                val
 
             }
-
         }
     }
 
     // leave battle
     fun playerRun() {
-        TODO("No sure if necessary")
+        TODO("Not sure if necessary")
     }
 
     // check if move succeeds
@@ -64,15 +63,18 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
     // TODO add type multiplier in milestone 2
     // helper method to calculate physical damage of an attack
-    private fun calculatePhysicalDmg(movePower: Double, attacker: Pokemon, defender: Pokemon): Int{
+    private fun calculatePhysicalDmg(move: Move, attacker: Pokemon, defender: Pokemon): Int{
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
-        damage *= movePower
+        damage *= move.power
+
+        if (move.)
+
         damage = damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
         // return damage as an int
         return damage.toInt()
     }
 
-    // TODO add type multiplier in milestone 2
+
     // helper method to calculate special damage of an attack
     private fun calculateSpecialDmg(movePower: Double, attacker: Pokemon, defender: Pokemon): Int{
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0

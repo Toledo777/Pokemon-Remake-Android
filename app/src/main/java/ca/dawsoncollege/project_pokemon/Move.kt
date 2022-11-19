@@ -6,7 +6,7 @@ class Move (
     val maxPP: Int,
     var power: Double,
     var heal: Double,
-//    var damage: Damage, TODO: damage class
+    var damage: DamageClass,
     val type: Type,
     // may be changed later
     var target: Target,
@@ -15,4 +15,8 @@ class Move (
     )
 enum class Target{
     FRIENDLY, HOSTILE
+}
+
+enum class DamageClass {
+    PHYSICAL, SPECIAL
 }
