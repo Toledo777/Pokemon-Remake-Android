@@ -1,6 +1,7 @@
 package ca.dawsoncollege.project_pokemon
 
 class Move (
+    val name: String,
     var accuracy: Double,
     var PP: Int,
     val maxPP: Int,
