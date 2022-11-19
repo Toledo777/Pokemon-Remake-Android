@@ -1,10 +1,11 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlin.random.Random
 
-abstract class Battle(val playerTrainer: PlayerTrainer) {
+abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
     // current pokemons in battle
     var playerPokemon = playerTrainer.team[0]
     lateinit var enemyPokemon: Pokemon

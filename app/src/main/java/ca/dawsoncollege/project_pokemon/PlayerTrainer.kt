@@ -2,7 +2,7 @@ package ca.dawsoncollege.project_pokemon
 
 import kotlin.random.Random
 
-class PlayerTrainer(playerName: String): Trainer(null, playerName) {
+class PlayerTrainer(playerName: String): Trainer(playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     // pokemon center
@@ -66,7 +66,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     }
 
     // get highest level on players team
-    fun calculateMaxTeamLevel(): Int {
+    private fun calculateMaxTeamLevel(): Int {
         var maxLevel = this.team[0].level;
 
         for (i in 1..team.size) {
@@ -77,7 +77,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     }
 
     // return lowest level on player team
-    fun calculateMinTeamLevel(): Int {
+    private fun calculateMinTeamLevel(): Int {
         var minLevel = this.team[0].level;
 
         for (i in 1..team.size) {
@@ -85,5 +85,12 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
                 minLevel = this.team[i].level
         }
         return minLevel;
+    }
+
+    fun getRandomEnemyLevel(): Int {
+        val minLevel = this.calculateMinTeamLevel()
+        val maxLevel = this.calculateMaxTeamLevel()
+        // get random level for enemy pokemon
+        val enemyLevel = Random.nextInt(minLevel, maxLevel)
     }
 }
