@@ -12,7 +12,9 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
         this.team.forEach {
             it.hp = it.getBattleStats().maxHP
             // TO-DO cure status effects once they have been implemented in pokemon class
-            // TO-DO replenish pp once move classes is completed
+            this.team.forEach {
+
+            }
         }
     }
 
