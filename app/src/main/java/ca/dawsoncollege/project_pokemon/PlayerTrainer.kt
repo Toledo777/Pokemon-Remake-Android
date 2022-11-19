@@ -8,12 +8,14 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     // pokemon center
 
     // heal all pokemon
+    // TO-DO cure status effects
     fun pokemonCenterHeal() {
         this.team.forEach {
             it.hp = it.getBattleStats().maxHP
-            // TO-DO cure status effects once they have been implemented in pokemon class
-            this.team.forEach {
 
+            // restore all moves to max PP
+            it.moveList.forEach { move ->
+                move.PP = move.maxPP
             }
         }
     }

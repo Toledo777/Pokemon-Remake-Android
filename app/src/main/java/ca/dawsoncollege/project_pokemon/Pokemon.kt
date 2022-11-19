@@ -5,8 +5,8 @@ import kotlin.math.floor
 import kotlin.math.pow
 
 // TO ADD:
-// Moves ArrayList
 // Status
+// Fill moves array
 class Pokemon(var context: Context, var level: Int, var species: String, var name: String? = null) {
     var data: PokemonData
     var battleStat: BattleStats
