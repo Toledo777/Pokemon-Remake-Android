@@ -55,8 +55,10 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         val randNum = Random.nextDouble(0.0, 100.0)
         // check move success using probabilities
         if (accuracy >= randNum) {
+            // move succeeds
             return true;
         }
+        // move fails
         return false;
     }
 }
