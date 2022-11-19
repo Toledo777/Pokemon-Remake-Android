@@ -6,9 +6,17 @@ class Move (
     val maxPP: Int,
     var power: Double,
     var heal: Double,
-//    var damage: Damage, TODO: damage class
+    var damageClass: DamageClass,
     val type: Type,
-    var target: Pokemon,
+    // may be changed later
+    var target: Target,
 //    val ailment: String, TODO: more details in milestone 2
 //    val ailmentChance: Double,
     )
+enum class Target{
+    FRIENDLY, HOSTILE
+}
+
+enum class DamageClass {
+    PHYSICAL, SPECIAL
+}

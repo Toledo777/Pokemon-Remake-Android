@@ -5,14 +5,16 @@ import kotlin.math.floor
 import kotlin.math.pow
 
 // TO ADD:
-// Moves ArrayList
 // Status
+// Fill moves array
 class Pokemon(var context: Context, var level: Int, var species: String, var name: String? = null) {
     var data: PokemonData
     var battleStat: BattleStats
     var experience: Double = 0.0
     var hp: Double = 0.0
     var types: List<String>
+    val NUMBER_OF_MOVES = 4;
+    var moveList: ArrayList<Move> = ArrayList(NUMBER_OF_MOVES)
 
     init {
         this.species = this.species.lowercase()
