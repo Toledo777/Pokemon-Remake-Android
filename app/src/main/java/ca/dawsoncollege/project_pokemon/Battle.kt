@@ -61,4 +61,14 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         // move fails
         return false;
     }
+
+    // helper method to calculate physical damage of an attack
+    private fun calculatePhysicalDmg(movePower: Double, attacker: Pokemon, defender: Pokemon): Int{
+        var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
+        damage *= movePower
+        damage = damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
+        // return damage as an int
+        return damage.toInt()
+    }
+
 }
