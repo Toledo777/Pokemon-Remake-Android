@@ -2,6 +2,7 @@ package ca.dawsoncollege.project_pokemon
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
@@ -30,12 +31,32 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     // takes move as input and attacks enemy
     abstract fun playerAttack(move: Input)
 
-    // chose random to target player with
-    abstract fun enemyAttack()
+    // chose random move to play for enemy, returns success status
+    fun enemyAttack() {
+        val moveList = this.enemyPokemon.moveList
+        val move = Random.nextInt(0, 3);
+
+        if (moveList[i].target == Target.HOSTILE) {
+            if (moveSuccessCheck(moveList[i].accuracy)) {
+
+
+            }
+
+        }
+    }
 
     // leave battle
     fun playerRun() {
         TODO("No sure if necessary")
     }
 
+    // check if move succeeds
+    private fun moveSuccessCheck(accuracy: Double): Boolean {
+        val randNum = Random.nextDouble(0.0, 100.0)
+        // check move success using probabilities
+        if (accuracy >= randNum) {
+            return true;
+        }
+        return false;
+    }
 }

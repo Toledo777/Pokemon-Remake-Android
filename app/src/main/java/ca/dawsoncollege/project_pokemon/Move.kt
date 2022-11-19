@@ -8,6 +8,7 @@ class Move (
     var heal: Double,
 //    var damage: Damage, TODO: damage class
     val type: Type,
+    // may be changed later
     var target: Target,
 //    val ailment: String, TODO: more details in milestone 2
 //    val ailmentChance: Double,
