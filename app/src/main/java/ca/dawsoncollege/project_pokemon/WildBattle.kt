@@ -12,17 +12,22 @@ class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
         val wildLevel = Random.nextInt(minLevel, maxLevel)
 
         TODO("Complete once pokemon class is complete")
-        enemyPokemon = Pokemon()
+       // enemyPokemon = Pokemon()
     }
 
     // throw pokeball to attempt catch
     fun throwPokeball(): Boolean {
-        val sucess = playerTrainer.catchPokemon(playerPokemon, enemyPokemon)
+        val success = playerTrainer.catchPokemon(playerPokemon, enemyPokemon)
         // boolean indicating catch success or fail
-        return sucess;
+        return success;
     }
 
     override fun playerAttack(move: Move) {
         TODO("waiting for move class")
     }
+
+    override fun enemyAttack() {
+
+    }
+
 }
