@@ -11,10 +11,8 @@ class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerT
     }
     // generates random wild pokemon depending on trainer level
     private fun generateWildPokemon() {
-        val minLevel = playerTrainer.calculateMinTeamLevel()
-        val maxLevel = playerTrainer.calculateMaxTeamLevel()
         // get random level for wild pokemon
-        val wildLevel = Random.nextInt(minLevel, maxLevel)
+        val wildLevel = playerTrainer.getRandomEnemyLevel()
 
         // TODO un hardcode pokemons
         enemyPokemon =  Pokemon(context, wildLevel, "caterpie")

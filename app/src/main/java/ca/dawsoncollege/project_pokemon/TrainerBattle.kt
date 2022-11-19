@@ -9,7 +9,7 @@ class TrainerBattle(playerTrainer: PlayerTrainer, private val enemyTrainer: Trai
     init{
         // set enemy trainer's current pokemon
         for (i in 0 .. Random.nextInt(1, 6)) {
-            enemyTrainer.team.add(Pokemon(context, enemyTrainer.trainerLevel, "caterpie"))
+            enemyTrainer.team.add(Pokemon(context, playerTrainer.getRandomEnemyLevel(), "caterpie"))
         }
         this.enemyPokemon = enemyTrainer.team[0]
     }

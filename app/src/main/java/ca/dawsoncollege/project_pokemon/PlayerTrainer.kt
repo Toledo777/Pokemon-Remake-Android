@@ -5,8 +5,12 @@ import kotlin.random.Random
 class PlayerTrainer(playerName: String): Trainer(playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
-    // pokemon center
+    private val STARTER_LEVEL = 5
 
+    fun setStarter(species: String, name: String? = null) {
+        val starter = Pokemon(context, STARTER_LEVEL, species, name)
+        this.team[0] = starter
+    }
     // heal all pokemon
     // TO-DO cure status effects
     fun pokemonCenterHeal() {
@@ -90,7 +94,8 @@ class PlayerTrainer(playerName: String): Trainer(playerName) {
     fun getRandomEnemyLevel(): Int {
         val minLevel = this.calculateMinTeamLevel()
         val maxLevel = this.calculateMaxTeamLevel()
-        // get random level for enemy pokemon
-        val enemyLevel = Random.nextInt(minLevel, maxLevel)
+
+        // return random level for enemy pokemon
+        return Random.nextInt(minLevel, maxLevel)
     }
 }
