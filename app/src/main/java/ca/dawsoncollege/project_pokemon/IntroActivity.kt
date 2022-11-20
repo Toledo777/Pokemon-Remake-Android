@@ -1,5 +1,6 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -28,9 +29,16 @@ class IntroActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
             // TODO: validate starter pokemon nickname
-            Toast.makeText(applicationContext, binding.trainerNameInput.text, Toast.LENGTH_SHORT).show()
             playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
-            // TODO: save playerTrainer in shared prefs
+            val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPreference.edit()
+            editor.putString("playerTrainer", convertToJSON(playerTrainer))
+            editor.apply()
+//            val json = sharedPreference.getString("playerTrainer", "")
+//            if (json != ""){
+//                playerTrainer = convertToPlayerTrainer(json!!)
+//                Toast.makeText(applicationContext, "Hi " + playerTrainer.name, Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }
