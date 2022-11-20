@@ -21,13 +21,16 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
-    // verifies and validates inputs
+    // verifies and validates inputs to create player
     // TODO: add data validation (no whitespace/special characters in name)
     private fun verifyInputs(){
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
+            // TODO: validate starter pokemon nickname
             Toast.makeText(applicationContext, binding.trainerNameInput.text, Toast.LENGTH_SHORT).show()
+            playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
+            // TODO: save playerTrainer in shared prefs
         }
     }
 }
