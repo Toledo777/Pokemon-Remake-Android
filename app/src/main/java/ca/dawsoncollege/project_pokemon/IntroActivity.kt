@@ -34,3 +34,9 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 }
+
+// extension functions
+// converts PlayerTrainer object into a JSON string
+fun convertToJSON(playerTrainer: PlayerTrainer): String = Gson().toJson(playerTrainer)
+// converts JSON string back into a PlayerTrainer object
+fun convertToPlayerTrainer(json: String) = Gson().fromJson(json, object: TypeToken<PlayerTrainer>(){}.type) as PlayerTrainer
