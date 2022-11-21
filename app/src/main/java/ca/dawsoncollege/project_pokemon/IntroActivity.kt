@@ -22,6 +22,24 @@ class IntroActivity : AppCompatActivity() {
         binding.startBtn.setOnClickListener {
             verifyInputs()
         }
+
+        // TODO: add styling when selected e.g. border
+        binding.starterRadioGroup.setOnCheckedChangeListener { radioGroup, optionId ->
+            run {
+                when (optionId) {
+                    R.id.grass_starter_img -> {
+                        // do something when radio button 1 is selected
+                    }
+                    R.id.fire_starter_img -> {
+                        // do something when radio button 2 is selected
+                    }
+                    R.id.water_starter_img -> {
+                        // do something when radio button 3 is selected
+                    }
+                    // add more cases here to handle other buttons in the your RadioGroup
+                }
+            }
+        }
     }
 
     // verifies and validates inputs to create player
