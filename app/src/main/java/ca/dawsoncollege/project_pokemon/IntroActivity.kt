@@ -21,7 +21,7 @@ class IntroActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.startBtn.setOnClickListener {
-            verifyInputs()
+            createPlayerTrainer()
         }
 
         // TODO: add styling when selected e.g. border
@@ -45,7 +45,7 @@ class IntroActivity : AppCompatActivity() {
 
     // verifies and validates inputs to create player
     // TODO: divide into smaller methods if possible
-    private fun verifyInputs(){
+    private fun createPlayerTrainer(){
         // if no player name is given
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
