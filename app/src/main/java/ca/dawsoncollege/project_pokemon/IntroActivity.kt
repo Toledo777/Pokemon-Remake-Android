@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken
 class IntroActivity : AppCompatActivity() {
     private lateinit var binding: IntroSequenceBinding
     private lateinit var playerTrainer: PlayerTrainer
+    private var starterPokemon = ""
     private val starters: Map<String, String> = mapOf("grassStarter" to "Bulbasaur",
         "fireStarter" to "Charmander", "waterStarter" to "Squirtle")
 
@@ -28,33 +29,6 @@ class IntroActivity : AppCompatActivity() {
             run {
                 when (optionId) {
                     R.id.grass_starter_img -> {
-                        // do something when radio button 1 is selected
-                    }
-                    R.id.fire_starter_img -> {
-                        // do something when radio button 2 is selected
-                    }
-                    R.id.water_starter_img -> {
-                        // do something when radio button 3 is selected
-                    }
-                    // add more cases here to handle other buttons in the your RadioGroup
-                }
-            }
-        }
-    }
-
-    // verifies and validates inputs to create player
-    // TODO: divide into smaller methods if possible
-    private fun verifyInputs(){
-        var starterPokemon = ""
-        if (binding.trainerNameInput.text.toString().isBlank()){
-            Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
-        } else {
-            playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
-            if (binding.starterRadioGroup.checkedRadioButtonId == -1){
-                Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT).show()
-            } else {
-                when (binding.starterRadioGroup.checkedRadioButtonId) {
-                    R.id.grass_starter_img -> {
                         starterPokemon = starters["grassStarter"].toString()
                     }
                     R.id.fire_starter_img -> {
@@ -64,8 +38,22 @@ class IntroActivity : AppCompatActivity() {
                         starterPokemon = starters["waterStarter"].toString()
                     }
                 }
-                Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, starterPokemon, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
+    // verifies and validates inputs to create player
+    // TODO: divide into smaller methods if possible
+    private fun verifyInputs(){
+        if (binding.trainerNameInput.text.toString().isBlank()){
+            Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
+        } else {
+            playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
+            if (binding.starterRadioGroup.checkedRadioButtonId == -1){
+                Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
                 if(binding.askNickname.text.toString().isBlank()){
                     Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
 //                    playerTrainer.createStarter(starterPokemon, null)
