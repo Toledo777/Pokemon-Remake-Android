@@ -30,6 +30,16 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         }
     }
 
+    fun playerUsePotion() {
+        // check to prevent overhealing
+        if (playerPokemon.hp + 20 > playerPokemon.battleStat.maxHP) {
+            playerPokemon.hp = playerPokemon.battleStat.maxHP
+        }
+        else {
+            playerPokemon.hp += 20;
+        }
+    }
+
     // TODO Potentially create method for friendly player moves
     // takes move as input and attempts attacks on enemy
     fun playerAttack(move: Move): Boolean {
@@ -88,10 +98,10 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
 
         damage = if (move.damageClass == "PHYSICAL")
             // physical
-            damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
+            damage * (attacker.getBattleStats().attack / defender.battleStat.defense) + 2
         else
             // special
-            damage * (attacker.getBattleStats().specialAttack / defender.getBattleStats().specialAttack) + 2
+            damage * (attacker.getBattleStats().specialAttack / defender.battleStat.specialAttack) + 2
 
         // return damage as an int
         return damage.toInt()
