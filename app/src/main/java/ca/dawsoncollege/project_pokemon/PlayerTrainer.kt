@@ -11,7 +11,7 @@ class PlayerTrainer(playerName: String): Trainer(playerName) {
     // TO-DO cure status effects
     fun pokemonCenterHeal() {
         this.team.forEach {
-            it.hp = it.getBattleStats().maxHP
+            it.hp = it.battleStat.maxHP
 
             // restore all moves to max PP
             it.moveList.forEach { move ->
@@ -32,7 +32,7 @@ class PlayerTrainer(playerName: String): Trainer(playerName) {
     // boolean to get wild pokemon catch sucess or fail
     fun catchPokemon(playerPokemon: Pokemon, wildPokemon: Pokemon): Boolean {
         // calculate probability (in percentage?)
-        val captureProb = 1 - (wildPokemon.hp / playerPokemon.getBattleStats()?.maxHP!!)
+        val captureProb = 1 - (wildPokemon.hp / playerPokemon.battleStat.maxHP)
         val rand = Random.nextDouble(1.0);
 
         // capture is successful if rand num was less then capture prob
