@@ -46,14 +46,17 @@ class IntroActivity : AppCompatActivity() {
     // verifies and validates inputs to create player
     // TODO: divide into smaller methods if possible
     private fun verifyInputs(){
+        // if no player name is given
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
             playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
+            // if no starter pokemon is selected
             if (binding.starterRadioGroup.checkedRadioButtonId == -1){
                 Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
+                // if no nickname is given
                 if(binding.askNickname.text.toString().isBlank()){
                     Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
 //                    playerTrainer.createStarter(starterPokemon, null)
@@ -61,6 +64,7 @@ class IntroActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
 //                    playerTrainer.createStarter(starterPokemon, binding.askNickname.text.toString())
                 }
+                // add playerTrainer to SharedPreferences
                 val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreference.edit()
                 editor.putString("playerTrainer", convertToJSON(playerTrainer))
