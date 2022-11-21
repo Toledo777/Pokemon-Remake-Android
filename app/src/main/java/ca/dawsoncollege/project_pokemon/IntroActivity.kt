@@ -43,38 +43,45 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
-    // verifies and validates inputs to create player
-    // TODO: divide into smaller methods if possible
+    // checks if name is given and if so, creates playerTrainer
     private fun createPlayerTrainer(){
         // if no player name is given
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
             playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
-            // if no starter pokemon is selected
-            if (binding.starterRadioGroup.checkedRadioButtonId == -1){
-                Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
-                // if no nickname is given
-                if(binding.askNickname.text.toString().isBlank()){
-                    Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
-//                    playerTrainer.createStarter(starterPokemon, null)
-                } else {
-                    Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
-//                    playerTrainer.createStarter(starterPokemon, binding.askNickname.text.toString())
-                }
+            if(pickStarter()){
                 // add playerTrainer to SharedPreferences
                 val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreference.edit()
                 editor.putString("playerTrainer", convertToJSON(playerTrainer))
                 editor.apply()
-//                val json = sharedPreference.getString("playerTrainer", "")
-//                if (json != ""){
-//                    playerTrainer = convertToPlayerTrainer(json!!)
-//                    Toast.makeText(applicationContext, "Hi " + playerTrainer.name, Toast.LENGTH_SHORT).show()
-//                }
             }
+//            val json = sharedPreference.getString("playerTrainer", "")
+//            if (json != ""){
+//                playerTrainer = convertToPlayerTrainer(json!!)
+//                Toast.makeText(applicationContext, "Hi " + playerTrainer.name, Toast.LENGTH_SHORT).show()
+//            }
+        }
+    }
+
+    // checks if starter pokemon is picked and if so, assigns it to playerTrainer
+    private fun pickStarter(): Boolean{
+        // if no starter pokemon is selected
+        return if (binding.starterRadioGroup.checkedRadioButtonId == -1){
+            Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT).show()
+            false
+        } else {
+            Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
+            // if no nickname is given
+            if(binding.askNickname.text.toString().isBlank()){
+                Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
+//                playerTrainer.createStarter(starterPokemon, null)
+            } else {
+                Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
+//                playerTrainer.createStarter(starterPokemon, binding.askNickname.text.toString())
+            }
+            true
         }
     }
 }
