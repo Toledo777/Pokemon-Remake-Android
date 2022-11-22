@@ -13,7 +13,7 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
     var experience: Double = 0.0
     var hp: Double = 0.0
     var types: List<String>
-    val NUMBER_OF_MOVES = 4;
+    val NUMBER_OF_MOVES = 4
     var moveList: ArrayList<Move> = ArrayList(NUMBER_OF_MOVES)
 
     init {
@@ -24,8 +24,34 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         this.types = this.data.types
         this.hp = this.data.baseStateMaxHp
         this.battleStat = getBattleStats()
+        addMoves()
     }
 
+    // Add initial moves
+    private fun addMoves() {
+        val moves = (JSON.getJsonData(
+            context,
+            "move_lists/${this.species}.json",
+            Array<MoveLevel>::class.java
+        ) as Array<*>).toList()
+        moves
+            .sortedByDescending { (it as MoveLevel).level }
+            .forEach {
+                it as MoveLevel
+                if (moveList.count() < NUMBER_OF_MOVES && it.level <= this.level) {
+                    moveList.add(getMoveInfo(it))
+                } else if (moveList.count() == NUMBER_OF_MOVES) {
+                    return
+                }
+            }
+    }
+
+    // Get move data from JSON
+    private fun getMoveInfo(move: MoveLevel): Move {
+        return JSON.getJsonData(this.context, "moves/${move.move}.json", Move::class.java) as Move
+    }
+
+    // Get pokemon data from JSON
     private fun getPokemonData(): PokemonData {
         return JSON.getJsonData(
             this.context,
@@ -36,7 +62,7 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
 
     fun getBattleStats(): BattleStats {
         return BattleStats(
-            floor((((this.data.baseStateMaxHp + 10) * this.level) / 50)) + this.level + 10,
+            calcBattleStat(this.data.baseStateMaxHp, true),
             calcBattleStat(this.data.baseStateAttack),
             calcBattleStat(this.data.baseStatDefense),
             calcBattleStat(this.data.baseStatSpecialAttack),
@@ -45,10 +71,13 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         )
     }
 
-    private fun calcBattleStat(stat: Double): Double {
-        return floor((((stat + 10) * this.level) / 50)) + 5
+    private fun calcBattleStat(stat: Double, isMaxHp: Boolean = false): Double {
+        val addedVal = if (isMaxHp) (this.level + 10) else 5
+        return floor((((stat + 10) * this.level) / 50)) + addedVal
     }
 }
+
+data class MoveLevel(val move: String, val level: Int)
 
 data class PokemonData(
     val baseExperienceReward: Double,
