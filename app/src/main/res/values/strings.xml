@@ -9,6 +9,8 @@
     <string name="ask_name">What is your name?</string>
     <string name="ask_nickname">Give a nickname?</string>
     <string name="trainer_name">Trainer name</string>
+    <string name="missing_trainer_name">Please enter your trainer name</string>
+    <string name="missing_starter_pokemon">Please select a starter Pokemon</string>
     <string name="grass_starter_pokemon">Grass starter pokemon</string>
     <string name="water_starter_pokemon">Water starter pokemon</string>
     <string name="fire_starter_pokemon">fire_starter_pokemon</string>

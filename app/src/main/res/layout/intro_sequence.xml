@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".IntroActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <RadioGroup
+        android:id="@+id/starterRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -15,30 +16,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <RadioButton
             android:id="@+id/grass_starter_img"
+            android:button="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/grass_starter_pokemon"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:background="@mipmap/ic_launcher" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/fire_starter_img"
+            android:button="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/water_starter_pokemon"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:background="@mipmap/ic_launcher" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/water_starter_img"
+            android:button="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/fire_starter_pokemon"
-            tools:srcCompat="@tools:sample/avatars" />
-    </LinearLayout>
+            android:background="@mipmap/ic_launcher" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/choose_pokemon"
@@ -46,7 +50,7 @@
         android:layout_height="wrap_content"
         android:text="@string/choose_a_pokemon"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/starterRadioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trainer_name_input" />
@@ -61,7 +65,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/starterRadioGroup" />
 
     <EditText
         android:id="@+id/trainer_name_input"
@@ -71,7 +75,7 @@
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:hint="@string/trainer_name"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/starterRadioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
