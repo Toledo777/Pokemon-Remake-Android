@@ -97,6 +97,15 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         val calculatedStat = floor(((((stat + 10) * this.level) / 50).toDouble())) + addedVal
         return calculatedStat.toInt()
     }
+
+    // method to add exp to pokemon, updates level accordingly
+    fun addExp(exp: Int) {
+        // add exp
+        this.experience += exp
+        // update level
+        this.level = floor(this.experience.pow(1/3)).toInt()
+
+    }
 }
 
 data class MoveLevel(val move: String, val level: Int)

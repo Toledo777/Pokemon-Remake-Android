@@ -1,17 +1,22 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.Context
 import kotlin.random.Random
 
-class PlayerTrainer(playerName: String): Trainer(null, playerName) {
+class PlayerTrainer(playerName: String, val context: Context): Trainer(playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
-    // pokemon center
+    private val STARTER_LEVEL = 5
 
+    fun setStarter(species: String, name: String? = null) {
+        val starter = Pokemon(this.context, STARTER_LEVEL, species, name)
+        this.team[0] = starter
+    }
     // heal all pokemon
     // TO-DO cure status effects
     fun pokemonCenterHeal() {
         this.team.forEach {
-            it.hp = it.getBattleStats().maxHP
+            it.hp = it.battleStat.maxHP
 
             // restore all moves to max PP
             it.moveList.forEach { move ->
@@ -32,7 +37,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     // boolean to get wild pokemon catch sucess or fail
     fun catchPokemon(playerPokemon: Pokemon, wildPokemon: Pokemon): Boolean {
         // calculate probability (in percentage?)
-        val captureProb = 1 - (wildPokemon.hp / playerPokemon.getBattleStats()?.maxHP!!)
+        val captureProb = 1 - (wildPokemon.hp / playerPokemon.battleStat.maxHP)
         val rand = Random.nextDouble(1.0);
 
         // capture is successful if rand num was less then capture prob
@@ -66,7 +71,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     }
 
     // get highest level on players team
-    fun calculateMaxTeamLevel(): Int {
+    private fun calculateMaxTeamLevel(): Int {
         var maxLevel = this.team[0].level;
 
         for (i in 1..team.size) {
@@ -77,7 +82,7 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
     }
 
     // return lowest level on player team
-    fun calculateMinTeamLevel(): Int {
+    private fun calculateMinTeamLevel(): Int {
         var minLevel = this.team[0].level;
 
         for (i in 1..team.size) {
@@ -85,5 +90,13 @@ class PlayerTrainer(playerName: String): Trainer(null, playerName) {
                 minLevel = this.team[i].level
         }
         return minLevel;
+    }
+
+    fun getRandomEnemyLevel(): Int {
+        val minLevel = this.calculateMinTeamLevel()
+        val maxLevel = this.calculateMaxTeamLevel()
+
+        // return random level for enemy pokemon
+        return Random.nextInt(minLevel, maxLevel)
     }
 }

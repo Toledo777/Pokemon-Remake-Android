@@ -1,8 +1,9 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.Context
 import kotlin.random.Random
 
-class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
+class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerTrainer, context) {
 
     init {
         // generates wild pokemon and sets it as enemy pokemon
@@ -10,13 +11,23 @@ class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
     }
     // generates random wild pokemon depending on trainer level
     private fun generateWildPokemon() {
-        val minLevel = playerTrainer.calculateMinTeamLevel()
-        val maxLevel = playerTrainer.calculateMaxTeamLevel()
         // get random level for wild pokemon
-        val wildLevel = Random.nextInt(minLevel, maxLevel)
+        val wildLevel = playerTrainer.getRandomEnemyLevel()
 
-        TODO("Complete once pokemon class is complete")
+        // TODO un hardcode pokemons
+        enemyPokemon =  Pokemon(context, wildLevel, "caterpie")
        // enemyPokemon = Pokemon()
+    }
+
+    // check if pokemon fainted, awards xp if so
+    // should be called after every move
+    override fun checkPokemonFainted(): Boolean {
+        if (enemyPokemon.hp == 0) {
+            // give player's pokemon exp
+            gainExperience()
+               return true
+        }
+        return false
     }
 
     // throw pokeball to attempt catch

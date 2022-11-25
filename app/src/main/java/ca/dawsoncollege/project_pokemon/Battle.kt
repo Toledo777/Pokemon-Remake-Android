@@ -1,12 +1,14 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlin.random.Random
 
-abstract class Battle(val playerTrainer: PlayerTrainer) {
+abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
     // current pokemons in battle
     var playerPokemon = playerTrainer.team[0]
+
     lateinit var enemyPokemon: Pokemon
 
     //
@@ -26,6 +28,16 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         }
         else {
             throw IllegalArgumentException("Error, Cannot switch to a pokemon with 0 HP")
+        }
+    }
+
+    fun playerUsePotion() {
+        // check to prevent overhealing
+        if (playerPokemon.hp + 20 > playerPokemon.battleStat.maxHP) {
+            playerPokemon.hp = playerPokemon.battleStat.maxHP
+        }
+        else {
+            playerPokemon.hp += 20;
         }
     }
 
@@ -52,6 +64,9 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
                 val damage = calculateDamage(moveList[moveIndex], enemyPokemon, playerPokemon)
                 // subtract hp
                 playerPokemon.hp -= damage
+                // set hp to 0 if negative
+                if playerPokemon.hp < 0
+                    playerPokemon.hp = 0
                 true
             }
             // move missed
@@ -87,12 +102,21 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
         damage = if (move.damageClass == "PHYSICAL")
             // physical
-            damage * (attacker.getBattleStats().attack / defender.getBattleStats().defense) + 2
+            damage * (attacker.getBattleStats().attack / defender.battleStat.defense) + 2
         else
             // special
-            damage * (attacker.getBattleStats().specialAttack / defender.getBattleStats().specialAttack) + 2
+            damage * (attacker.getBattleStats().specialAttack / defender.battleStat.specialAttack) + 2
 
         // return damage as an int
         return damage.toInt()
+    }
+
+    abstract fun checkPokemonFainted(): Boolean
+
+
+    fun gainExperience() {
+        val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
+        // adds exp and levels up if possible
+        this.playerPokemon.addExp(expGained)
     }
 }
