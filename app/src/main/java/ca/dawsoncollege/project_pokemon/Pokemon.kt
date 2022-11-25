@@ -56,7 +56,7 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         return JSON.getJsonData(this.context, "moves/${move.move}.json", Move::class.java) as Move
     }
 
-    // Get pokemon data from JSON
+    // Get pokemon data from PokeAPI
     private suspend fun getPokemonData(): PokemonData {
         val pokemonData = getApiData(this.species)
         val stats = pokemonData!!.stats
