@@ -19,6 +19,16 @@ class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerT
        // enemyPokemon = Pokemon()
     }
 
+    // TODO prevent hp from dropping below 0
+    override fun checkPokemonFainted(): Boolean {
+        if (enemyPokemon.hp == 0) {
+            // give player's pokemon exp
+            gainExperience()
+               return true
+        }
+        return false
+    }
+
     // throw pokeball to attempt catch
     fun throwPokeball(): Boolean {
         val success = playerTrainer.catchPokemon(playerPokemon, enemyPokemon)

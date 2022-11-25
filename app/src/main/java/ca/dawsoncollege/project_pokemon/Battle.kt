@@ -108,8 +108,12 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         return damage.toInt()
     }
 
-    private fun gainExperience() {
-        val expGained = 0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level;
-        this.playerPokemon.experience +=
+    abstract fun checkPokemonFainted(): Boolean
+
+
+    fun gainExperience() {
+        val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
+        // adds exp and levels up if possible
+        this.playerPokemon.addExp(expGained)
     }
 }

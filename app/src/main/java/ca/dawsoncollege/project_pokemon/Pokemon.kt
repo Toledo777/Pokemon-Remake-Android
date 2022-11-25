@@ -82,6 +82,7 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         this.experience += exp
         // update level
         this.level = floor(this.experience.pow(1/3)).toInt()
+
     }
 }
 
