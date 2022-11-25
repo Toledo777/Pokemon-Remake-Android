@@ -19,7 +19,8 @@ class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerT
        // enemyPokemon = Pokemon()
     }
 
-    // TODO prevent hp from dropping below 0
+    // check if pokemon fainted, awards xp if so
+    // should be called after every move
     override fun checkPokemonFainted(): Boolean {
         if (enemyPokemon.hp == 0) {
             // give player's pokemon exp
