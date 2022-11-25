@@ -68,8 +68,8 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // check if move succeeds
-    private fun moveSuccessCheck(accuracy: Double): Boolean {
-        val randNum = Random.nextDouble(0.0, 100.0)
+    private fun moveSuccessCheck(accuracy: Int): Boolean {
+        val randNum = Random.nextInt(0, 100)
         // check move success using probabilities
         if (accuracy >= randNum) {
             // move succeeds

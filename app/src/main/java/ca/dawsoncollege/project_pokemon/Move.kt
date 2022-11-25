@@ -2,11 +2,11 @@ package ca.dawsoncollege.project_pokemon
 
 class Move (
     val name: String,
-    var accuracy: Double,
-    val ailmentChance: Double,
+    var accuracy: Int,
+    val ailmentChance: Int,
     val maxPP: Int,
-    var power: Double,
-    var heal: Double,
+    var power: Int,
+    var heal: Int,
     var damageClass: String,
     val type: String,
     var target: String,
