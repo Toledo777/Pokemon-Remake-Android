@@ -14,6 +14,9 @@ class IntroActivity : AppCompatActivity() {
     private var starterPokemon = ""
     private val starters: Map<String, String> = mapOf("grassStarter" to "Bulbasaur",
         "fireStarter" to "Charmander", "waterStarter" to "Squirtle")
+    companion object {
+        private const val LOG_TAG = "INTRO_ACTIVITY_DEV_LOG"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
