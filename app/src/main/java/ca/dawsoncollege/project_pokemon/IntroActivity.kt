@@ -52,7 +52,7 @@ class IntroActivity : AppCompatActivity() {
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
-            playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
+            playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString(), applicationContext)
             if(pickStarter()){
                 // add playerTrainer to SharedPreferences
                 val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
