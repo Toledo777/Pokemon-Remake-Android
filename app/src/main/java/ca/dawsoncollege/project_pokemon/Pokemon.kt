@@ -75,6 +75,11 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         val addedVal = if (isMaxHp) (this.level + 10) else 5
         return floor((((stat + 10) * this.level) / 50)) + addedVal
     }
+
+    fun addExp(exp: Int) {
+        this.experience += exp
+        this.level
+    }
 }
 
 data class MoveLevel(val move: String, val level: Int)

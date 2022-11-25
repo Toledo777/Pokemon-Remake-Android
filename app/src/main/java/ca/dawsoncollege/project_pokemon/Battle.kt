@@ -8,6 +8,7 @@ import kotlin.random.Random
 abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
     // current pokemons in battle
     var playerPokemon = playerTrainer.team[0]
+
     lateinit var enemyPokemon: Pokemon
 
     //
@@ -105,5 +106,10 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
 
         // return damage as an int
         return damage.toInt()
+    }
+
+    private fun gainExperience() {
+        val expGained = 0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level;
+        this.playerPokemon.experience +=
     }
 }
