@@ -78,11 +78,11 @@ class IntroActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
             // if no nickname is given
             if(binding.askNickname.text.toString().isBlank()){
-                Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
-//                playerTrainer.createStarter(starterPokemon, null)
+//                Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
+                playerTrainer.setStarter(starterPokemon, null)
             } else {
-                Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
-//                playerTrainer.createStarter(starterPokemon, binding.askNickname.text.toString())
+//                Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
+                playerTrainer.setStarter(starterPokemon, binding.askNickname.text.toString())
             }
             true
         }
