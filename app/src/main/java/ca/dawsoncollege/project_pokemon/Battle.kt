@@ -64,6 +64,9 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
                 val damage = calculateDamage(moveList[moveIndex], enemyPokemon, playerPokemon)
                 // subtract hp
                 playerPokemon.hp -= damage
+                // set hp to 0 if negative
+                if playerPokemon.hp < 0
+                    playerPokemon.hp = 0
                 true
             }
             // move missed
