@@ -1,6 +1,8 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.content.Context
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import kotlin.math.floor
 import kotlin.math.pow
 
@@ -10,8 +12,8 @@ import kotlin.math.pow
 class Pokemon(var context: Context, var level: Int, var species: String, var name: String? = null) {
     var data: PokemonData
     var battleStat: BattleStats
-    var experience: Double = 0.0
-    var hp: Double = 0.0
+    var experience: Int = 0
+    var hp: Int = 0
     var types: List<String>
     val NUMBER_OF_MOVES = 4
     var moveList: ArrayList<Move> = ArrayList(NUMBER_OF_MOVES)
@@ -19,8 +21,11 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
     init {
         this.species = this.species.lowercase()
         this.name = if (this.name == null) this.species else this.name!!.lowercase()
-        this.experience = this.level.toDouble().pow(3.0)
-        this.data = getPokemonData()
+        this.experience = this.level.toDouble().pow(3.0).toInt()
+        runBlocking {
+            val pokemonData = async { getPokemonData() }
+            this@Pokemon.data = pokemonData.await()
+        }
         this.types = this.data.types
         this.hp = this.data.baseStateMaxHp
         this.battleStat = getBattleStats()
@@ -52,12 +57,28 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
     }
 
     // Get pokemon data from JSON
-    private fun getPokemonData(): PokemonData {
-        return JSON.getJsonData(
-            this.context,
-            "pokemon/${this.species}.json",
-            PokemonData::class.java
-        ) as PokemonData
+    private suspend fun getPokemonData(): PokemonData {
+        val pokemonData = getApiData(this.species)
+        val stats = pokemonData!!.stats
+        return PokemonData(
+            pokemonData.base_experience,
+            stats.find { it.stat.name == "attack" }!!.base_stat,
+            stats.find { it.stat.name == "defense" }!!.base_stat,
+            stats.find { it.stat.name == "hp" }!!.base_stat,
+            stats.find { it.stat.name == "special-attack" }!!.base_stat,
+            stats.find { it.stat.name == "special-defense" }!!.base_stat,
+            stats.find { it.stat.name == "speed" }!!.base_stat,
+            pokemonData.types.map { it.type.name }
+        )
+    }
+
+    private suspend fun getApiData(species: String): ApiPokemonData? {
+        val response = RetrofitInstance.api.getPokemon(species)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            throw Error("Error! There was a problem.")
+        }
     }
 
     fun getBattleStats(): BattleStats {
@@ -71,9 +92,10 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         )
     }
 
-    private fun calcBattleStat(stat: Double, isMaxHp: Boolean = false): Double {
+    private fun calcBattleStat(stat: Int, isMaxHp: Boolean = false): Int {
         val addedVal = if (isMaxHp) (this.level + 10) else 5
-        return floor((((stat + 10) * this.level) / 50)) + addedVal
+        val calculatedStat = floor(((((stat + 10) * this.level) / 50).toDouble())) + addedVal
+        return calculatedStat.toInt()
     }
 
     // method to add exp to pokemon, updates level accordingly
@@ -89,22 +111,21 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
 data class MoveLevel(val move: String, val level: Int)
 
 data class PokemonData(
-    val baseExperienceReward: Double,
-    val baseStateAttack: Double,
-    val baseStatDefense: Double,
-    val baseStateMaxHp: Double,
-    val baseStatSpecialAttack: Double,
-    val baseStatSpecialDefense: Double,
-    val baseStatSpeed: Double,
-    val species: String,
+    val baseExperienceReward: Int,
+    val baseStateAttack: Int,
+    val baseStatDefense: Int,
+    val baseStateMaxHp: Int,
+    val baseStatSpecialAttack: Int,
+    val baseStatSpecialDefense: Int,
+    val baseStatSpeed: Int,
     val types: List<String>
 )
 
 data class BattleStats(
-    val maxHP: Double,
-    var attack: Double,
-    var defense: Double,
-    var specialAttack: Double,
-    var specialDefence: Double,
-    var speed: Double
+    var maxHP: Int,
+    var attack: Int,
+    var defense: Int,
+    var specialAttack: Int,
+    var specialDefence: Int,
+    var speed: Int
 )
