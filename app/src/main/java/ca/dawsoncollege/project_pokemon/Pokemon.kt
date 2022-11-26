@@ -9,7 +9,7 @@ import kotlin.math.pow
 
 // TO ADD:
 // Status
-class Pokemon(var context: Context, var level: Int, var species: String, var name: String? = null) {
+class Pokemon(var level: Int, var species: String, var name: String? = null) {
     var data: PokemonData
     var battleStat: BattleStats
     var experience: Int = 0

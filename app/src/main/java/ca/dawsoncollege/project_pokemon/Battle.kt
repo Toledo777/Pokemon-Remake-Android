@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlin.random.Random
 
-abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
+abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
     var playerPokemon = playerTrainer.team[0]
 

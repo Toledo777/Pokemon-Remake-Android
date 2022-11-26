@@ -3,13 +3,13 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import kotlin.random.Random
 
-class PlayerTrainer(playerName: String, val context: Context): Trainer(playerName) {
+class PlayerTrainer(playerName: String): Trainer(playerName) {
 
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     private val STARTER_LEVEL = 5
 
     fun setStarter(species: String, name: String? = null) {
-        val starter = Pokemon(this.context, STARTER_LEVEL, species, name)
+        val starter = Pokemon(STARTER_LEVEL, species, name)
         this.team[0] = starter
     }
     // heal all pokemon

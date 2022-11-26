@@ -3,7 +3,7 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import kotlin.random.Random
 
-class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerTrainer, context) {
+class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerTrainer) {
 
     init {
         // generates wild pokemon and sets it as enemy pokemon
@@ -15,7 +15,7 @@ class WildBattle(playerTrainer: PlayerTrainer, context: Context): Battle(playerT
         val wildLevel = playerTrainer.getRandomEnemyLevel()
 
         // TODO un hardcode pokemons
-        enemyPokemon =  Pokemon(context, wildLevel, "caterpie")
+        enemyPokemon =  Pokemon(wildLevel, "caterpie")
        // enemyPokemon = Pokemon()
     }
 
