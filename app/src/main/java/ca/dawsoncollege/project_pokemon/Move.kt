@@ -1,6 +1,6 @@
 package ca.dawsoncollege.project_pokemon
 
-class Move (
+class Move(
     val name: String,
     var accuracy: Int,
     val ailmentChance: Int,
@@ -10,10 +10,12 @@ class Move (
     var damageClass: String,
     val type: String,
     var target: String,
-//    val ailment: String, TODO: more details in milestone 2
-    ) {
+    val ailment: String,
+) {
     var PP: Int = 0;
+
     init {
         this.PP = this.maxPP
     }
+
 }
