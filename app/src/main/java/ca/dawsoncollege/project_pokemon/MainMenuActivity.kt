@@ -29,5 +29,11 @@ class MainMenuActivity : AppCompatActivity() {
         binding.changeTeamBtn.setOnClickListener {
             Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
         }
+        binding.trainerBattleBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
+        }
+        binding.wildBattleBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+        }
     }
 }
