@@ -136,13 +136,16 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
         return calculatedStat.toInt()
     }
 
-    // method to add exp to pokemon, updates level accordingly
+    // method to add exp to pokemon, updates level and stats accordingly
     fun addExp(exp: Int) {
         // add exp
         this.experience += exp
         // update level
+        val previousLevel = this.level
         this.level = floor(this.experience.toDouble().pow(1/3)).toInt()
-
+        // recalculate stats if level changed
+        if (this.level > previousLevel)
+            this.battleStat = getBattleStats()
     }
 }
 
