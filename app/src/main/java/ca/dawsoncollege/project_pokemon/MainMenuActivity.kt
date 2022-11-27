@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import ca.dawsoncollege.project_pokemon.databinding.MainMenuBinding
 
 class MainMenuActivity : AppCompatActivity() {
