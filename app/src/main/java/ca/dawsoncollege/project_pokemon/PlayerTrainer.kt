@@ -12,7 +12,7 @@ class PlayerTrainer(val playerName: String, val context: Context) {
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
         val starter = Pokemon(this.context, STARTER_LEVEL, species, name)
-        this.team[0] = starter
+        this.team.add(starter)
     }
     // heal all pokemon
     // TO-DO cure status effects
