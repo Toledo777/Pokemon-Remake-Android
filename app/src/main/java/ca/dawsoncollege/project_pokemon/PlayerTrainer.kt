@@ -3,8 +3,9 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import kotlin.random.Random
 
-class PlayerTrainer(playerName: String, val context: Context): Trainer(playerName) {
-
+class PlayerTrainer(val playerName: String, val context: Context) {
+    val MAX_TEAM_CAPACITY = 6
+    val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     private val STARTER_LEVEL = 5
 
