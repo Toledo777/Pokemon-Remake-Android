@@ -19,6 +19,17 @@ class MainMenuActivity : AppCompatActivity() {
         binding = MainMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: replace commented code when fragments are ready
+        /*
+        // initialize needed fragment(s)
+        val frag = MainMenuActivity() // should be fragment here instead
+
+        // fragment to appear by default
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayout3, frag)
+            commit()
+        }
+        */
         setButtonListeners()
     }
 
