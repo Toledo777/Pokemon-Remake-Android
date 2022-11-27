@@ -11,16 +11,6 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
 
     lateinit var enemyPokemon: Pokemon
 
-    //
-    // player chooses which pokemon to battle with
-//    fun chosePokemon(chosenPokemon: Pokemon) {
-//        if (chosenPokemon.hp > 0) {
-//            playerPokemon = chosenPokemon
-//        }
-//        else {
-//            throw IllegalArgumentException("Error, you cannot play a pokemon with 0 HP")
-//        }
-//    }
 
     fun switchOutPlayerPkm(nextPokemon: Pokemon) {
         if (nextPokemon.hp > 0) {
@@ -53,6 +43,19 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         return false
     }
 
+    // take move and pokemon, use on self
+    private fun friendlyMove(move: Move, pokemon: Pokemon): Boolean {
+        if (moveSuccessCheck(move.accuracy)) {
+            // check to prevent overheal
+            if (pokemon.hp + move.heal > pokemon.battleStat.maxHP)
+                pokemon.hp = pokemon.battleStat.maxHP
+            else
+                pokemon.hp += move.heal
+            return true
+        }
+        return false
+    }
+
     // chose random move to play for enemy, returns success status
     fun enemyAttack(): Boolean{
         val moveList = this.enemyPokemon.moveList
@@ -74,7 +77,11 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
                 false
             }
         }
-        TODO("Implement friendly moves")
+        // friendly move
+        else {
+            // enemy pokemon tries heals itself
+            return friendlyMove(moveList[moveIndex], enemyPokemon)
+        }
     }
 
     // leave battle
