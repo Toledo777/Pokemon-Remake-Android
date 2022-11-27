@@ -6,10 +6,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlin.math.floor
 import kotlin.math.pow
+import kotlin.random.Random
 
 // TO ADD:
 // Status
-class Pokemon(var context: Context, var level: Int, var species: String, var name: String? = null) {
+class Pokemon(
+    var context: Context,
+    var level: Int,
+    var species: String? = null,
+    var name: String? = null
+) {
     var data: PokemonData
     var battleStat: BattleStats
     var experience: Int = 0
@@ -19,15 +25,24 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
     var moveList: ArrayList<Move> = ArrayList(NUMBER_OF_MOVES)
 
     init {
-        this.species = this.species.lowercase()
-        this.name = if (this.name == null) this.species else this.name!!.lowercase()
-        this.experience = this.level.toDouble().pow(3.0).toInt()
         runBlocking {
-            val pokemonData = async { getPokemonData() }
-            this@Pokemon.data = pokemonData.await()
+            if (this@Pokemon.species == null) {
+                // If no pokemon species is provided, generate the id of a random GEN 1 pokemon
+                val id = Random.nextInt(1, 152).toString()
+                val pokemonData = async { getPokemonData(id) }
+                this@Pokemon.data = pokemonData.await()
+                this@Pokemon.species = this@Pokemon.data.species
+            } else {
+                // Get pokemon data from API based on the given species
+                this@Pokemon.species = this@Pokemon.species!!.lowercase()
+                val pokemonData = async { getPokemonData(this@Pokemon.species!!) }
+                this@Pokemon.data = pokemonData.await()
+            }
         }
+        this.name = if (this.name == null) this.species else this.name!!.lowercase()
         this.types = this.data.types
         this.hp = this.data.baseStateMaxHp
+        this.experience = this.level.toDouble().pow(3.0).toInt()
         this.battleStat = getBattleStats()
     }
 
@@ -80,14 +95,15 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
     }
 
     // Get pokemon data from PokeAPI
-    private suspend fun getPokemonData(): PokemonData {
-        val pokemonData = getApiPokemon(this.species)
+    private suspend fun getPokemonData(speciesOrId: String): PokemonData {
+        val pokemonData = getApiPokemon(speciesOrId)
 
         // Add initial moves
         addMoves(pokemonData!!)
 
         val stats = pokemonData.stats
         return PokemonData(
+            pokemonData.species.name,
             pokemonData.base_experience,
             stats.find { it.stat.name == "attack" }!!.base_stat,
             stats.find { it.stat.name == "defense" }!!.base_stat,
@@ -152,6 +168,7 @@ class Pokemon(var context: Context, var level: Int, var species: String, var nam
 data class MoveLevel(val move: String, val level: Int)
 
 data class PokemonData(
+    val species: String,
     val baseExperienceReward: Int,
     val baseStateAttack: Int,
     val baseStatDefense: Int,

@@ -1,6 +1,7 @@
 package ca.dawsoncollege.project_pokemon
 
 data class ApiPokemonData(
+    val species: Species,
     val base_experience: Int,
     val stats: List<BaseStat>,
     val moves: List<ApiMove>,
@@ -30,6 +31,8 @@ data class MoveType(val name: String, val url: String)
 
 data class Target(val name: String, val url: String)
 
+// Species
+data class Species(val name: String)
 
 // BaseStats
 data class BaseStat(val base_stat: Int, val stat: Stat)
