@@ -21,12 +21,16 @@ class MainMenuActivity : AppCompatActivity() {
 
         // TODO: replace commented code when fragments are ready
         /*
-        // initialize needed fragment(s)
-        val frag = MainMenuActivity() // should be fragment here instead
+        // initialize needed fragments
+        val defaultFragment = MainMenuActivity() // should be a fragment here instead
+        val pokecenterFragment = PokecenterFragment()
+        val changeTeamFragment = ChangeTeamFragment()
+        val tBattleFragment = TrainerBattleFragment()
+        val wBattleFragment = WildBattleFragment()
 
         // fragment to appear by default
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayout3, frag)
+            replace(R.id.frameLayout3, defaultFragment)
             commit()
         }
         */
