@@ -39,8 +39,10 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun setButtonListeners(){
         binding.pokecenterBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
+            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, pokecenterFragment)
+                // allows back button to go to previous fragment
+//                addToBackStack(null)
 //                commit()
 //            }
             Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
@@ -48,6 +50,7 @@ class MainMenuActivity : AppCompatActivity() {
         binding.changeTeamBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, changeTeamFragment)
+//                addToBackStack(null)
 //                commit()
 //            }
             Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
@@ -55,6 +58,7 @@ class MainMenuActivity : AppCompatActivity() {
         binding.trainerBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, tBattleFragment)
+//                addToBackStack(null)
 //                commit()
 //            }
             Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
@@ -62,6 +66,7 @@ class MainMenuActivity : AppCompatActivity() {
         binding.wildBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, wBattleFragment)
+//                addToBackStack(null)
 //                commit()
 //            }
             Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
