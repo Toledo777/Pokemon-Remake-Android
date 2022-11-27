@@ -19,6 +19,10 @@ class MainMenuActivity : AppCompatActivity() {
         binding = MainMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setButtonListeners()
+    }
+
+    private fun setButtonListeners(){
         binding.pokecenterBtn.setOnClickListener {
             Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
         }
