@@ -8,6 +8,7 @@ class PlayerTrainer(playerName: String, val context: Context): Trainer(playerNam
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     private val STARTER_LEVEL = 5
 
+    // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
         val starter = Pokemon(this.context, STARTER_LEVEL, species, name)
         this.team[0] = starter
@@ -92,6 +93,7 @@ class PlayerTrainer(playerName: String, val context: Context): Trainer(playerNam
         return minLevel;
     }
 
+    // generates a random level for enemy pokemon that is in the correct range (depends on the trainers level)
     fun getRandomEnemyLevel(): Int {
         val minLevel = this.calculateMinTeamLevel()
         val maxLevel = this.calculateMaxTeamLevel()
