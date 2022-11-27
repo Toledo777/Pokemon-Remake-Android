@@ -6,5 +6,4 @@ class EnemyTrainer(val name: String = "Ash Ketchum") {
     val MAX_TEAM_CAPACITY = 6
     // set team capacity to 6
     val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
-
 }

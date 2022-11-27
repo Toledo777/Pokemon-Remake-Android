@@ -36,7 +36,7 @@ class PlayerTrainer(val playerName: String, val context: Context) {
         pokemonCollection.add(oldPokemon)
     }
 
-    // boolean to get wild pokemon catch sucess or fail
+    // boolean to get wild pokemon catch success or fail
     fun catchPokemon(playerPokemon: Pokemon, wildPokemon: Pokemon): Boolean {
         // calculate probability (in percentage?)
         val captureProb = 1 - (wildPokemon.hp / playerPokemon.battleStat.maxHP)
