@@ -28,7 +28,7 @@ class Pokemon(
         runBlocking {
             if (this@Pokemon.species == null) {
                 // If no pokemon species is provided, generate the id of a random GEN 1 pokemon
-                val id = Random.nextInt(0, 152).toString()
+                val id = Random.nextInt(1, 152).toString()
                 val pokemonData = async { getPokemonData(id) }
                 this@Pokemon.data = pokemonData.await()
                 this@Pokemon.species = this@Pokemon.data.species
