@@ -39,15 +39,31 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun setButtonListeners(){
         binding.pokecenterBtn.setOnClickListener {
+//            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.frameLayout3, pokecenterFragment)
+//                commit()
+//            }
             Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
         }
         binding.changeTeamBtn.setOnClickListener {
+//            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.frameLayout3, changeTeamFragment)
+//                commit()
+//            }
             Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
         }
         binding.trainerBattleBtn.setOnClickListener {
+//            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.frameLayout3, tBattleFragment)
+//                commit()
+//            }
             Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
         }
         binding.wildBattleBtn.setOnClickListener {
+//            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.frameLayout3, wBattleFragment)
+//                commit()
+//            }
             Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
         }
     }
