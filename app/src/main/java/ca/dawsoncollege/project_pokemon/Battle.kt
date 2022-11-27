@@ -11,7 +11,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
 
     lateinit var enemyPokemon: Pokemon
 
-
+    // switch out players current pokemon
     fun switchOutPlayerPkm(nextPokemon: Pokemon) {
         if (nextPokemon.hp > 0) {
             playerPokemon = nextPokemon
@@ -21,6 +21,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         }
     }
 
+    // adds 20HP to active pokemon or restores to full health
     fun playerUsePotion() {
         // check to prevent overhealing
         if (playerPokemon.hp + 20 > playerPokemon.battleStat.maxHP) {
@@ -31,8 +32,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         }
     }
 
-    // TODO Potentially create method for friendly player moves
-    // takes move as input and attempts attacks on enemy
+    // takes move as input and attempts attacks
     fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
             val damage = calculateDamage(move, attacker, target)
@@ -68,6 +68,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
 
         // hostile move
         if (moveList[moveIndex].target == "HOSTILE") {
+            // attempt attack, returns success status
             return attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
         }
         // friendly move
@@ -111,9 +112,10 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         return damage.toInt()
     }
 
+    // check if enemy has fainted, implementations in derived class
     abstract fun checkPokemonFainted(): Boolean
 
-
+    // calls addExp with exp gained after defeating enemy pokemon
     fun gainExperience() {
         val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
         // adds exp and levels up if possible
