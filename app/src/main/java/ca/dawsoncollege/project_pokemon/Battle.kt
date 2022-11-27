@@ -33,18 +33,23 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
 
     // TODO Potentially create method for friendly player moves
     // takes move as input and attempts attacks on enemy
-    fun playerAttack(move: Move): Boolean {
+    fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
-            val damage = calculateDamage(move, playerPokemon, enemyPokemon)
-            enemyPokemon.hp -= damage
+            val damage = calculateDamage(move, attacker, target)
+            // prevent over damage (negative hp)
+            if (target.hp  - damage <  0)
+                target.hp = 0
+            else
+                target.hp -= damage
             return true
         }
         // moves missed
         return false
     }
 
-    // take move and pokemon, use on self
-    private fun friendlyMove(move: Move, pokemon: Pokemon): Boolean {
+    // take friendly move and pokemon, use on self
+    // returns success status
+    fun friendlyMove(move: Move, pokemon: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
             // check to prevent overheal
             if (pokemon.hp + move.heal > pokemon.battleStat.maxHP)
@@ -57,30 +62,18 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
     }
 
     // chose random move to play for enemy, returns success status
-    fun enemyAttack(): Boolean{
+    fun playEnemyMove(): Boolean{
         val moveList = this.enemyPokemon.moveList
         val moveIndex = Random.nextInt(0, 3);
 
         // hostile move
         if (moveList[moveIndex].target == "HOSTILE") {
-            return if (moveSuccessCheck(moveList[moveIndex].accuracy)) {
-                val damage = calculateDamage(moveList[moveIndex], enemyPokemon, playerPokemon)
-                // subtract hp
-                playerPokemon.hp -= damage
-                // set hp to 0 if negative
-                if (playerPokemon.hp < 0)
-                    playerPokemon.hp = 0
-                true
-            }
-            // move missed
-            else {
-                false
-            }
+            return attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
         }
         // friendly move
         else {
             // enemy pokemon tries heals itself
-            return friendlyMove(moveList[moveIndex], enemyPokemon)
+            friendlyMove(moveList[moveIndex], enemyPokemon)
         }
     }
 
