@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken
 
 class IntroActivity : AppCompatActivity() {
     private lateinit var binding: IntroSequenceBinding
-    private lateinit var trainer: PlayerTrainer
+    private lateinit var playerTrainer: PlayerTrainer
     private var starterPokemon = ""
     private val starters: Map<String, String> = mapOf("grassStarter" to "Bulbasaur",
         "fireStarter" to "Charmander", "waterStarter" to "Squirtle")
@@ -56,12 +56,12 @@ class IntroActivity : AppCompatActivity() {
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
-            this.trainer = PlayerTrainer(binding.trainerNameInput.text.toString())
+            this.playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
             if(pickStarter()){
                 // add playerTrainer to SharedPreferences
                 val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreference.edit()
-                editor.putString("playerTrainer", convertToJSON(this.trainer))
+                editor.putString("playerTrainer", convertToJSON(this.playerTrainer))
                 editor.apply()
                 Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()
 
@@ -86,10 +86,10 @@ class IntroActivity : AppCompatActivity() {
             // if no nickname is given
             if(binding.askNickname.text.toString().isBlank()){
 //                Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
-                this.trainer.setStarter(starterPokemon, null)
+                this.playerTrainer.setStarter(starterPokemon, null)
             } else {
 //                Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
-                this.trainer.setStarter(starterPokemon, binding.askNickname.text.toString())
+                this.playerTrainer.setStarter(starterPokemon, binding.askNickname.text.toString())
             }
             true
         }
@@ -107,6 +107,6 @@ class IntroActivity : AppCompatActivity() {
 
 // extension functions
 // converts PlayerTrainer object into a JSON string
-fun convertToJSON(thePlayerTrainer: PlayerTrainer): String = Gson().toJson(thePlayerTrainer)
+fun convertToJSON(playerTrainer: PlayerTrainer): String = Gson().toJson(playerTrainer)
 // converts JSON string back into a PlayerTrainer object
 fun convertToPlayerTrainer(json: String) = Gson().fromJson(json, object: TypeToken<PlayerTrainer>(){}.type) as PlayerTrainer
