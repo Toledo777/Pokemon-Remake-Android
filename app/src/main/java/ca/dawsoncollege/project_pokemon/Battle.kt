@@ -74,7 +74,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer, val context: Context) {
         // friendly move
         else {
             // enemy pokemon tries heals itself
-            friendlyMove(moveList[moveIndex], enemyPokemon)
+            return friendlyMove(moveList[moveIndex], enemyPokemon)
         }
     }
 

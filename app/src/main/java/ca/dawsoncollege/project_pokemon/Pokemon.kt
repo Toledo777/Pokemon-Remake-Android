@@ -11,7 +11,6 @@ import kotlin.random.Random
 // TO ADD:
 // Status
 class Pokemon(
-    var context: Context,
     var level: Int,
     var species: String? = null,
     var name: String? = null

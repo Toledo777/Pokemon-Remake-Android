@@ -3,7 +3,7 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import kotlin.random.Random
 
-class PlayerTrainer(val playerName: String, val context: Context) {
+class PlayerTrainer(val playerName: String) {
     val MAX_TEAM_CAPACITY = 6
     val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
@@ -11,8 +11,8 @@ class PlayerTrainer(val playerName: String, val context: Context) {
 
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
-        val starter = Pokemon(this.context, STARTER_LEVEL, species, name)
-        this.team[0] = starter
+        val starter = Pokemon(STARTER_LEVEL, species, name)
+        this.team.add(starter)
     }
     // heal all pokemon
     // TO-DO cure status effects
