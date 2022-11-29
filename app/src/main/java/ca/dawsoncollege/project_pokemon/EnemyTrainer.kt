@@ -16,6 +16,4 @@ class EnemyTrainer(val name: String = "Ash Ketchum") {
             this.team.add(Pokemon(playerTrainer.getRandomEnemyLevel()))
         }
     }
-
-
 }

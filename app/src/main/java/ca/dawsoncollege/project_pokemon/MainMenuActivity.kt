@@ -37,7 +37,7 @@ class MainMenuActivity : AppCompatActivity() {
         setButtonListeners()
     }
 
-    private fun setButtonListeners(){
+    private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
             supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, pokecenterFragment)
@@ -45,31 +45,32 @@ class MainMenuActivity : AppCompatActivity() {
 //                addToBackStack(null)
 //                commit()
 //            }
-            Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
-        }
-        binding.changeTeamBtn.setOnClickListener {
+                Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
+            }
+            binding.changeTeamBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, changeTeamFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
-            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
-        }
-        binding.trainerBattleBtn.setOnClickListener {
+                Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+            }
+            binding.trainerBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, tBattleFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
-            Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
-        }
-        binding.wildBattleBtn.setOnClickListener {
+                Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
+            }
+            binding.wildBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, wBattleFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
-            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
