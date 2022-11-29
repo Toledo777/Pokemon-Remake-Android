@@ -3,14 +3,18 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import kotlin.random.Random
 
-class PlayerTrainer(playerName: String): Trainer(playerName) {
 
+class PlayerTrainer(val playerName: String) {
+    val MAX_TEAM_CAPACITY = 6
+    val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
     private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
     private val STARTER_LEVEL = 5
 
+    // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
         val starter = Pokemon(STARTER_LEVEL, species, name)
-        this.team[0] = starter
+
+        this.team.add(starter)
     }
     // heal all pokemon
     // TO-DO cure status effects
@@ -34,7 +38,7 @@ class PlayerTrainer(playerName: String): Trainer(playerName) {
         pokemonCollection.add(oldPokemon)
     }
 
-    // boolean to get wild pokemon catch sucess or fail
+    // boolean to get wild pokemon catch success or fail
     fun catchPokemon(playerPokemon: Pokemon, wildPokemon: Pokemon): Boolean {
         // calculate probability (in percentage?)
         val captureProb = 1 - (wildPokemon.hp / playerPokemon.battleStat.maxHP)
@@ -92,6 +96,7 @@ class PlayerTrainer(playerName: String): Trainer(playerName) {
         return minLevel;
     }
 
+    // generates a random level for enemy pokemon that is in the correct range (depends on the trainers level)
     fun getRandomEnemyLevel(): Int {
         val minLevel = this.calculateMinTeamLevel()
         val maxLevel = this.calculateMaxTeamLevel()

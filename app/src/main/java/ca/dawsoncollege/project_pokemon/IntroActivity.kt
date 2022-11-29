@@ -1,8 +1,11 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import ca.dawsoncollege.project_pokemon.databinding.IntroSequenceBinding
 import com.google.gson.Gson
@@ -24,6 +27,7 @@ class IntroActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.startBtn.setOnClickListener {
+
             createPlayerTrainer()
         }
 
@@ -52,13 +56,16 @@ class IntroActivity : AppCompatActivity() {
         if (binding.trainerNameInput.text.toString().isBlank()){
             Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
         } else {
-            playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
+            this.playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
             if(pickStarter()){
                 // add playerTrainer to SharedPreferences
                 val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreference.edit()
-                editor.putString("playerTrainer", convertToJSON(playerTrainer))
+                editor.putString("playerTrainer", convertToJSON(this.playerTrainer))
                 editor.apply()
+                Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()
+
+                startMainMenuActivity()
             }
 //            val json = sharedPreference.getString("playerTrainer", "")
 //            if (json != ""){
@@ -79,12 +86,21 @@ class IntroActivity : AppCompatActivity() {
             // if no nickname is given
             if(binding.askNickname.text.toString().isBlank()){
 //                Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
-                playerTrainer.setStarter(starterPokemon, null)
+                this.playerTrainer.setStarter(starterPokemon, null)
             } else {
 //                Toast.makeText(applicationContext, binding.askNickname.text.toString(), Toast.LENGTH_SHORT).show()
-                playerTrainer.setStarter(starterPokemon, binding.askNickname.text.toString())
+                this.playerTrainer.setStarter(starterPokemon, binding.askNickname.text.toString())
             }
             true
+        }
+    }
+
+    private fun startMainMenuActivity(){
+        try {
+            val intent = Intent(this, MainMenuActivity::class.java)
+            startActivity(intent)
+        } catch (exc: ActivityNotFoundException){
+            Log.e(LOG_TAG, "Could not open MainMenuActivity", exc)
         }
     }
 }

@@ -4,7 +4,8 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import kotlin.random.Random
 
-class TrainerBattle(playerTrainer: PlayerTrainer, private val enemyTrainer: Trainer): Battle(playerTrainer) {
+
+class TrainerBattle(playerTrainer: PlayerTrainer, private val enemyTrainer: EnemyTrainer): Battle(playerTrainer) {
 
     init{
         // set enemy trainer's current pokemon
