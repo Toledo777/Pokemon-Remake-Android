@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">project-pokemon</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pokemon">Pokemon</string>
     <string name="start">Start!</string>
     <string name="new_game">New Game</string>
@@ -23,4 +21,6 @@
     <string name="trainer_battle">Trainer Battle</string>
     <string name="wild_pokemon_battle">Wild Battle</string>
     <string name="save">Save</string>
+    <string name="pokemon_health_placeholder">1/1</string>
+    <string name="pokemon_level_placeholder">0</string>
 </resources>
