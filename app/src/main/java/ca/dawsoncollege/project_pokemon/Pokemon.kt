@@ -10,6 +10,7 @@ import kotlin.random.Random
 
 // TO ADD:
 // Status
+
 class Pokemon(
     var level: Int,
     var species: String? = null,
