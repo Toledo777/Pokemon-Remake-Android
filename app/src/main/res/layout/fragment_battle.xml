@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BattleFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="3"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/enemy_pokemon"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pokemon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemon"
+                app:layout_constraintBottom_toTopOf="@id/pokemon_health" />
+
+            <TextView
+                android:id="@+id/pokemon_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemon_level_placeholder"
+                app:layout_constraintBottom_toTopOf="@id/pokemon_health" />
+
+            <TextView
+                android:id="@+id/pokemon_health"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemon_health_placeholder"
+                app:layout_constraintTop_toBottomOf="@id/pokemon_name" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/pokemon_sprite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher_foreground" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp" >
+
+        <ImageView
+            android:id="@+id/pokemon_sprite2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pokemon_name2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemon"
+                app:layout_constraintBottom_toTopOf="@id/pokemon_health2" />
+
+            <TextView
+                android:id="@+id/pokemon_level2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemon_level_placeholder"
+                app:layout_constraintBottom_toTopOf="@id/pokemon_health2" />
+
+            <TextView
+                android:id="@+id/pokemon_health2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pokemon_health_placeholder"
+                app:layout_constraintTop_toBottomOf="@id/pokemon_name2" />
+        </LinearLayout>
+    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/frameLayout3"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_weight="10"
+            tools:layout_editor_absoluteX="0dp"
+            android:layout_weight="1.5"
+            android:background="@color/white">
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>
