@@ -24,6 +24,15 @@ class BattleActivity : AppCompatActivity() {
         val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
         if (playerTrainerJson != "empty") {
             this.playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
+            setPlayerPokemon()
+        }
+    }
+
+    private fun setPlayerPokemon(){
+        if (this.playerTrainer.team[0].name.isNullOrEmpty()){
+            binding.playerPokemonName.text = this.playerTrainer.team[0].species.toString()
+        } else {
+            binding.playerPokemonName.text = this.playerTrainer.team[0].name.toString()
         }
     }
 }
