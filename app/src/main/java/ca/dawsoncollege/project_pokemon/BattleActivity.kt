@@ -6,8 +6,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class BattleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBattleBinding
@@ -27,11 +31,13 @@ class BattleActivity : AppCompatActivity() {
         val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
         if (playerTrainerJson != "empty") {
             playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
-            runBlocking{
+            lifecycleScope.launch(Dispatchers.IO){
                 this@BattleActivity.battle = WildBattle(playerTrainer)
+                withContext(Dispatchers.Main){
+                    setPlayerPokemonUI()
+                    setEnemyPokemonUI()
+                }
             }
-            setPlayerPokemonUI()
-            setEnemyPokemonUI()
         }
     }
 
