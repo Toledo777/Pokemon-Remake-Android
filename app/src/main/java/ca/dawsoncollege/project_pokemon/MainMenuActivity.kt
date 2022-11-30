@@ -69,6 +69,7 @@ class MainMenuActivity : AppCompatActivity() {
                 addToBackStack(null)
                 commit()
             }*/
+            // TODO: send code or data representing wild battle and not trainer
             try {
                 val intent = Intent(this, BattleActivity::class.java)
                 startActivity(intent)

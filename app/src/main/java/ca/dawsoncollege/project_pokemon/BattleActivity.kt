@@ -12,7 +12,7 @@ class BattleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var playerTrainer: PlayerTrainer
     companion object {
-        private const val LOG_TAG = "MAIN_ACTIVITY_DEV_LOG"
+        private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +29,15 @@ class BattleActivity : AppCompatActivity() {
     }
 
     private fun setPlayerPokemon(){
+        // TODO: set imageview to sprite of pokemon using bitmap
         if (this.playerTrainer.team[0].name.isNullOrEmpty()){
             binding.playerPokemonName.text = this.playerTrainer.team[0].species.toString()
         } else {
             binding.playerPokemonName.text = this.playerTrainer.team[0].name.toString()
         }
+        binding.playerPokemonLevel.text = this.playerTrainer.team[0].level.toString()
+        // TODO: find a way to store max hp value
+        val hp = this.playerTrainer.team[0].hp.toString() + "/" + this.playerTrainer.team[0].hp.toString()
+        binding.playerPokemonHealth.text = hp
     }
 }
