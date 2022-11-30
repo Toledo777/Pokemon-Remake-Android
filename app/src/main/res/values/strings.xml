@@ -23,4 +23,6 @@
     <string name="save">Save</string>
     <string name="pokemon_health_placeholder">1/1</string>
     <string name="pokemon_level_placeholder">0</string>
+    <string name="player_pokemon">Your Pokemon</string>
+    <string name="enemy_pokemon">Opposing Pokemon</string>
 </resources>

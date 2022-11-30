@@ -31,32 +31,33 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/pokemon_name"
+                android:id="@+id/enemy_pokemon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pokemon"
-                app:layout_constraintBottom_toTopOf="@id/pokemon_health" />
+                />
 
             <TextView
-                android:id="@+id/pokemon_level"
+                android:id="@+id/enemy_pokemon_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pokemon_level_placeholder"
-                app:layout_constraintBottom_toTopOf="@id/pokemon_health" />
+                />
 
             <TextView
-                android:id="@+id/pokemon_health"
+                android:id="@+id/enemy_pokemon_health"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pokemon_health_placeholder"
-                app:layout_constraintTop_toBottomOf="@id/pokemon_name" />
+                />
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/pokemon_sprite"
+            android:id="@+id/enemy_pokemon_sprite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:src="@drawable/ic_launcher_foreground"
+            android:contentDescription="@string/enemy_pokemon" />
 
     </LinearLayout>
 
@@ -68,10 +69,11 @@
         android:layout_weight="0.7">
 
         <ImageView
-            android:id="@+id/pokemon_sprite2"
+            android:id="@+id/player_pokemon_sprite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:src="@drawable/ic_launcher_foreground"
+            android:contentDescription="@string/player_pokemon" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -79,25 +81,25 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/pokemon_name2"
+                android:id="@+id/player_pokemon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pokemon"
-                app:layout_constraintBottom_toTopOf="@id/pokemon_health2" />
+                />
 
             <TextView
-                android:id="@+id/pokemon_level2"
+                android:id="@+id/player_pokemon_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pokemon_level_placeholder"
-                app:layout_constraintBottom_toTopOf="@id/pokemon_health2" />
+                />
 
             <TextView
-                android:id="@+id/pokemon_health2"
+                android:id="@+id/player_pokemon_health"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pokemon_health_placeholder"
-                app:layout_constraintTop_toBottomOf="@id/pokemon_name2" />
+                />
         </LinearLayout>
     </LinearLayout>
         <FrameLayout
