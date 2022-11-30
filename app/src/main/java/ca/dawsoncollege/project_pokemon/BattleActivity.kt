@@ -1,6 +1,7 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
 
 class BattleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBattleBinding
+    private lateinit var playerTrainer: PlayerTrainer
     companion object {
         private const val LOG_TAG = "MAIN_ACTIVITY_DEV_LOG"
     }
@@ -18,5 +20,10 @@ class BattleActivity : AppCompatActivity() {
         binding = ActivityBattleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
+        if (playerTrainerJson != "empty") {
+            this.playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
+        }
     }
 }
