@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
+import kotlinx.coroutines.runBlocking
 
 class BattleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBattleBinding
@@ -26,8 +27,9 @@ class BattleActivity : AppCompatActivity() {
         val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
         if (playerTrainerJson != "empty") {
             playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
-            //TODO: add threading here
-            this.battle = WildBattle(playerTrainer)
+            runBlocking{
+                this@BattleActivity.battle = WildBattle(playerTrainer)
+            }
             setPlayerPokemonUI()
             setEnemyPokemonUI()
         }
