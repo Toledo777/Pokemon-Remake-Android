@@ -10,6 +10,7 @@ import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
 
 class BattleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBattleBinding
+    private lateinit var battle: Battle
     private lateinit var playerTrainer: PlayerTrainer
     companion object {
         private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
@@ -20,24 +21,41 @@ class BattleActivity : AppCompatActivity() {
         binding = ActivityBattleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: if trainer battle, init enemy trainer (doesn't need to be top level)
         val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
         if (playerTrainerJson != "empty") {
-            this.playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
-            setPlayerPokemon()
+            playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
+            //TODO: add threading here
+            this.battle = WildBattle(playerTrainer)
+            setPlayerPokemonUI()
+            setEnemyPokemonUI()
         }
     }
 
-    private fun setPlayerPokemon(){
+    private fun setPlayerPokemonUI(){
         // TODO: set imageview to sprite of pokemon using bitmap
-        if (this.playerTrainer.team[0].name.isNullOrEmpty()){
-            binding.playerPokemonName.text = this.playerTrainer.team[0].species.toString()
+        if (this.battle.playerPokemon.name.isNullOrEmpty()){
+            binding.playerPokemonName.text = this.battle.playerPokemon.species.toString()
         } else {
-            binding.playerPokemonName.text = this.playerTrainer.team[0].name.toString()
+            binding.playerPokemonName.text = this.battle.playerPokemon.name.toString()
         }
-        binding.playerPokemonLevel.text = this.playerTrainer.team[0].level.toString()
-        // TODO: find a way to store max hp value
-        val hp = this.playerTrainer.team[0].hp.toString() + "/" + this.playerTrainer.team[0].hp.toString()
-        binding.playerPokemonHealth.text = hp
+        binding.playerPokemonLevel.text = this.battle.playerPokemon.level.toString()
+        updateHP(this.battle.playerPokemon, true)
+    }
+
+    private fun setEnemyPokemonUI(){
+        binding.enemyPokemonName.text = this.battle.enemyPokemon.name.toString()
+        binding.enemyPokemonLevel.text = this.battle.enemyPokemon.level.toString()
+        updateHP(this.battle.enemyPokemon, false)
+    }
+
+    private fun updateHP(pokemon: Pokemon, isPlayer: Boolean){
+        val hp = pokemon.hp.toString() + "/" + pokemon.battleStat.maxHP.toString()
+        if (isPlayer){
+            binding.playerPokemonHealth.text = hp
+        } else {
+            binding.enemyPokemonHealth.text = hp
+        }
     }
 }
