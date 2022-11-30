@@ -61,7 +61,6 @@ class MainMenuActivity : AppCompatActivity() {
 //                addToBackStack(null)
 //                commit()
 //            }
-<<<<<<< HEAD
             Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
         }
         binding.wildBattleBtn.setOnClickListener {
