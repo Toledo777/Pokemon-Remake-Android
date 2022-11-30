@@ -18,4 +18,8 @@ class Move(
         this.PP = this.maxPP
     }
 
+    override fun toString(): String {
+        return "Name: $name | Type: $type | Power: $power | Class: $damageClass | Target: $target"
+    }
+
 }
