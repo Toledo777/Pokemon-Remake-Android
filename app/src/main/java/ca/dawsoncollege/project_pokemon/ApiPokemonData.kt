@@ -20,6 +20,13 @@ data class ApiMoveDetails (
     val target: Target,
 )
 // Type Damage Relations
+data class SimplifiedDamageRelations(
+    val name: String,
+    val superEffective: List<String>,
+    val notVeryEffective: List<String>,
+    val noEffect: List<String>
+)
+
 data class ApiDamageRelations(
     val name: String,
     val damage_relations: DamageRelations
