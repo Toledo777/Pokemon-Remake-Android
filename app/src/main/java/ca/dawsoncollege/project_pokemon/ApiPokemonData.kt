@@ -19,6 +19,18 @@ data class ApiMoveDetails (
     val type: MoveType,
     val target: Target,
 )
+// Type Damage Relations
+data class ApiDamageRelations(
+    val name: String,
+    val damage_relations: DamageRelations
+)
+
+data class DamageRelations(
+    val double_damage_to: List<MoveType>,
+    val half_damage_to: List<MoveType>,
+    val no_damage_to: List<MoveType>
+)
+
 
 // Move details
 data class Meta(val ailment: Ailment, val ailment_chance: Int, val healing: Int)
