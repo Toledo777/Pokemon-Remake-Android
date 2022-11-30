@@ -1,14 +1,17 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import ca.dawsoncollege.project_pokemon.databinding.MainMenuBinding
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
     companion object {
-        private const val LOG_TAG = "MAIN_MENU_ACTIVITY_DEV_LOG"
+        private const val LOG_TAG = "MAIN_MENU_ACT_DEV_LOG"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +26,7 @@ class MainMenuActivity : AppCompatActivity() {
         //val pokecenterFragment = PokecenterFragment()
 //        val changeTeamFragment = ChangeTeamFragment()
 //        val tBattleFragment = TrainerBattleFragment()
-        val wBattleFragment = BattleFragment()
+//        val wBattleFragment = BattleActivity()
 
         // fragment to appear by default
 //        supportFragmentManager.beginTransaction().apply {
@@ -31,10 +34,10 @@ class MainMenuActivity : AppCompatActivity() {
 //            commit()
 //        }
 
-        setButtonListeners(wBattleFragment)
+        setButtonListeners()
     }
 
-    private fun setButtonListeners(wBattleFragment: BattleFragment) {
+    private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, pokecenterFragment)
@@ -61,10 +64,16 @@ class MainMenuActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
         }
         binding.wildBattleBtn.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
+            /*supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayout3, wBattleFragment)
                 addToBackStack(null)
                 commit()
+            }*/
+            try {
+                val intent = Intent(this, BattleActivity::class.java)
+                startActivity(intent)
+            } catch (exc: ActivityNotFoundException){
+                Log.e(LOG_TAG, "Could not open BattleActivity", exc)
             }
             Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
         }
