@@ -32,8 +32,19 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         }
     }
 
-    // takes move as input and attempts attacks
-    fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
+    fun playerMove(move: Move):Boolean {
+        if (move.target == "HOSTILE") {
+            // call attackMove and return success status
+            return (attackMove(move, this.playerPokemon, this.enemyPokemon))
+        }
+        else {
+            // call friendlyMove and return success status
+            return (friendlyMove(move, this.playerPokemon))
+        }
+    }
+
+    // helper method, takes move, attacker, target as input and attempts attacks
+    private fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
             val damage = calculateDamage(move, attacker, target)
             // prevent over damage (negative hp)
@@ -47,9 +58,9 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         return false
     }
 
-    // take friendly move and pokemon, use on self
+    // helper method, take friendly move and pokemon, use on self
     // returns success status
-    fun friendlyMove(move: Move, pokemon: Pokemon): Boolean {
+    private fun friendlyMove(move: Move, pokemon: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
             // check to prevent overheal
             if (pokemon.hp + move.heal > pokemon.battleStat.maxHP)

@@ -14,8 +14,7 @@ class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
         // get random level for wild pokemon
         val wildLevel = playerTrainer.getRandomEnemyLevel()
 
-        // TODO un hardcode pokemons
-        enemyPokemon =  Pokemon(wildLevel, "caterpie")
+        enemyPokemon =  Pokemon(wildLevel)
        // enemyPokemon = Pokemon()
     }
 
