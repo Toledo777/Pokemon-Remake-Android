@@ -41,9 +41,9 @@ class Pokemon(
         }
         this.name = if (this.name == null) this.species else this.name!!.lowercase()
         this.types = this.data.types
-        this.hp = this.data.baseStateMaxHp
         this.experience = this.level.toDouble().pow(3.0).toInt()
         this.battleStat = getBattleStats()
+        this.hp = this.battleStat.maxHP
     }
 
     // Add initial moves
