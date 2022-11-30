@@ -1,17 +1,9 @@
 package ca.dawsoncollege.project_pokemon
 
-
-import android.content.Context
-import kotlin.random.Random
-
-
-class TrainerBattle(playerTrainer: PlayerTrainer, private val enemyTrainer: EnemyTrainer): Battle(playerTrainer) {
+class TrainerBattle(playerTrainer: PlayerTrainer, val enemyTrainer: EnemyTrainer): Battle(playerTrainer) {
 
     init{
-        // set enemy trainer's current pokemon
-        for (i in 0 .. Random.nextInt(1, 6)) {
-            enemyTrainer.team.add(Pokemon(playerTrainer.getRandomEnemyLevel(), "caterpie"))
-        }
+        enemyTrainer.generateTeam(playerTrainer)
         this.enemyPokemon = enemyTrainer.team[0]
     }
 
