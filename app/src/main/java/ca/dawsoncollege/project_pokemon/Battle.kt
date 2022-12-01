@@ -3,6 +3,7 @@ package ca.dawsoncollege.project_pokemon
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
@@ -120,5 +121,27 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
         // adds exp and levels up if possible
         this.playerPokemon.addExp(expGained)
+    }
+
+    suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
+        val response = RetrofitInstance.api.getDamageRelations(type)
+        if (response.isSuccessful) {
+            val ground = response.body()
+            val simplifiedRelations = SimplifiedDamageRelations(
+                ground!!.name,
+                ground.damage_relations.double_damage_to.map {
+                    it.name
+                },
+                ground.damage_relations.half_damage_to.map {
+                    it.name
+                },
+                ground.damage_relations.no_damage_to.map {
+                    it.name
+                }
+            )
+            return simplifiedRelations
+        } else {
+            throw Error("Error! There was a problem.")
+        }
     }
 }
