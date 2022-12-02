@@ -11,4 +11,7 @@ interface PokeApi {
 
     @GET("/api/v2/move/{name}")
     suspend fun getMove(@Path("name") name: String): Response<ApiMoveDetails>
+
+    @GET("/api/v2/type/{name}")
+    suspend fun getDamageRelations(@Path("name") name: String): Response<ApiDamageRelations>
 }
