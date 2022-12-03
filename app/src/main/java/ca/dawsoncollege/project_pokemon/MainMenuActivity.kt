@@ -30,7 +30,7 @@ class MainMenuActivity : AppCompatActivity() {
 
         // fragment to appear by default
 //        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.frameLayout3, defaultFragment)
+//            replace(R.id.main_menu_fragment, defaultFragment)
 //            commit()
 //        }
 
@@ -40,7 +40,7 @@ class MainMenuActivity : AppCompatActivity() {
     private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, pokecenterFragment)
+//                replace(R.id.main_menu_fragment, pokecenterFragment)
                 // allows back button to go to previous fragment
 //                addToBackStack(null)
 //                commit()
@@ -49,7 +49,7 @@ class MainMenuActivity : AppCompatActivity() {
             }
             binding.changeTeamBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, changeTeamFragment)
+//                replace(R.id.main_menu_fragment, changeTeamFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
@@ -57,7 +57,7 @@ class MainMenuActivity : AppCompatActivity() {
             }
             binding.trainerBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, tBattleFragment)
+//                replace(R.id.main_menu_fragment, tBattleFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
@@ -65,7 +65,7 @@ class MainMenuActivity : AppCompatActivity() {
         }
         binding.wildBattleBtn.setOnClickListener {
             /*supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayout3, wBattleFragment)
+                replace(R.id.main_menu_fragment, wBattleFragment)
                 addToBackStack(null)
                 commit()
             }*/

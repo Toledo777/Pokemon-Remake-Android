@@ -36,6 +36,7 @@ class BattleActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main){
                     setPlayerPokemonUI()
                     setEnemyPokemonUI()
+                    setDefaultFragment()
                 }
             }
         }
@@ -64,6 +65,14 @@ class BattleActivity : AppCompatActivity() {
             binding.playerPokemonHealth.text = hp
         } else {
             binding.enemyPokemonHealth.text = hp
+        }
+    }
+
+    private fun setDefaultFragment(){
+        val movesFragment = MovesFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.battle_menu_fragment, movesFragment)
+            commit()
         }
     }
 }

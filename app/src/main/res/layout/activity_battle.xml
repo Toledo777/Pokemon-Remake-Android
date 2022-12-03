@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/fragment"
+        app:layout_constraintBottom_toTopOf="@+id/battle_menu_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -107,7 +107,7 @@
         </LinearLayout>
     </LinearLayout>
     <FrameLayout
-        android:id="@+id/fragment"
+        android:id="@+id/battle_menu_fragment"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
@@ -130,7 +130,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment"
+        app:layout_constraintTop_toBottomOf="@+id/battle_menu_fragment"
         >
         <Button
             android:id="@+id/moves_btn"
