@@ -71,4 +71,4 @@ data class ApiType(val slot: Int, val type: TypeData)
 data class TypeData(val name: String, val url: String)
 
 // Sprite
-data class Sprite(val back_default: String, val front_Default: String)
+data class Sprite(val back_default: String, val front_default: String)

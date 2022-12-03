@@ -112,7 +112,7 @@ class Pokemon(
             stats.find { it.stat.name == "special-defense" }!!.base_stat,
             stats.find { it.stat.name == "speed" }!!.base_stat,
             pokemonData.types.map { it.type.name },
-            pokemonData.sprites.front_Default,
+            pokemonData.sprites.front_default,
             pokemonData.sprites.back_default,
         )
     }
