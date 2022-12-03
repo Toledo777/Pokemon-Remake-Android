@@ -10,106 +10,127 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="50dp"
+        android:padding="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
+        app:layout_constraintBottom_toTopOf="@+id/fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/enemy_pokemon"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="horizontal"
-        android:minHeight="150dp"
-        >
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/enemy_pokemon"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:minHeight="150dp"
+            android:layout_marginTop="10dp"
+            >
 
-            <TextView
-                android:id="@+id/enemy_pokemon_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pokemon"
-                />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/enemy_pokemon_level"
+                <TextView
+                    android:id="@+id/enemy_pokemon_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pokemon"
+                    />
+
+                <TextView
+                    android:id="@+id/enemy_pokemon_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pokemon_level_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/enemy_pokemon_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pokemon_health_placeholder"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/enemy_pokemon_sprite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pokemon_level_placeholder"
-                />
+                android:src="@drawable/ic_launcher_foreground"
+                android:contentDescription="@string/enemy_pokemon" />
 
-            <TextView
-                android:id="@+id/enemy_pokemon_health"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pokemon_health_placeholder"
-                />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/enemy_pokemon_sprite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground"
-            android:contentDescription="@string/enemy_pokemon" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:minHeight="150dp"
-        >
-
-        <ImageView
-            android:id="@+id/player_pokemon_sprite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground"
-            android:contentDescription="@string/player_pokemon" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:minHeight="150dp"
+            >
 
-            <TextView
-                android:id="@+id/player_pokemon_name"
+            <ImageView
+                android:id="@+id/player_pokemon_sprite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pokemon"
-                />
+                android:src="@drawable/ic_launcher_foreground"
+                android:contentDescription="@string/player_pokemon" />
 
-            <TextView
-                android:id="@+id/player_pokemon_level"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pokemon_level_placeholder"
-                />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/player_pokemon_health"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pokemon_health_placeholder"
-                />
+                <TextView
+                    android:id="@+id/player_pokemon_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pokemon"
+                    />
+
+                <TextView
+                    android:id="@+id/player_pokemon_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pokemon_level_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/player_pokemon_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pokemon_health_placeholder"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main"
+        android:background="@color/white"
+        />
     <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="4"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment"
         >
         <Button
             android:id="@+id/moves_btn"
@@ -118,6 +139,7 @@
             android:layout_weight="1"
             android:text="@string/moves"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
             />
         <Button
             android:id="@+id/switch_btn"
@@ -125,14 +147,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/switch_pokemon"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            />
         <Button
             android:id="@+id/items_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/items"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            />
         <Button
             android:id="@+id/run_btn"
             android:layout_width="0dp"
@@ -140,16 +166,5 @@
             android:layout_weight="1"
             android:text="@string/run"
             android:layout_gravity="center_vertical" />
-        </LinearLayout>
     </LinearLayout>
-    <FrameLayout
-        android:id="@+id/frameLayout3"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main"
-        android:background="@color/white"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>
