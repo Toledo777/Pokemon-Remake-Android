@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="3"
-        android:paddingTop="60dp"
+        android:paddingTop="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="horizontal"
-        android:layout_weight="0.7">
+        app:layout_constraintWidth_percent="0.5"
+        android:layout_weight="0.5">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="0dp"
-        android:layout_weight="0.7">
+        android:layout_weight="0.5">
 
         <ImageView
             android:id="@+id/player_pokemon_sprite"
@@ -102,15 +103,48 @@
                 />
         </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        >
+        <Button
+            android:id="@+id/moves_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/moves"
+            android:layout_gravity="center_vertical"
+            />
+        <Button
+            android:id="@+id/switch_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/switch_pokemon"
+            android:layout_gravity="center_vertical" />
+        <Button
+            android:id="@+id/items_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/items"
+            android:layout_gravity="center_vertical" />
+        <Button
+            android:id="@+id/run_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/run"
+            android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
         <FrameLayout
             android:id="@+id/frameLayout3"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintVertical_weight="10"
-            tools:layout_editor_absoluteX="0dp"
-            android:layout_weight="1.6"
-            android:background="@color/white">
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

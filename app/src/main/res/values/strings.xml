@@ -25,4 +25,8 @@
     <string name="pokemon_level_placeholder">0</string>
     <string name="player_pokemon">Your Pokemon</string>
     <string name="enemy_pokemon">Opposing Pokemon</string>
+    <string name="moves">Moves</string>
+    <string name="switch_pokemon">Switch</string>
+    <string name="items">Items</string>
+    <string name="run">Run</string>
 </resources>
