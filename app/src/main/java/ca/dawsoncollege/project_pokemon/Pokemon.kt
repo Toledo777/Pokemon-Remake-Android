@@ -111,7 +111,9 @@ class Pokemon(
             stats.find { it.stat.name == "special-attack" }!!.base_stat,
             stats.find { it.stat.name == "special-defense" }!!.base_stat,
             stats.find { it.stat.name == "speed" }!!.base_stat,
-            pokemonData.types.map { it.type.name }
+            pokemonData.types.map { it.type.name },
+            pokemonData.sprites.front_Default,
+            pokemonData.sprites.back_default,
         )
     }
 
@@ -158,7 +160,7 @@ class Pokemon(
         this.experience += exp
         // update level
         val previousLevel = this.level
-        this.level = floor(this.experience.toDouble().pow(1/3)).toInt()
+        this.level = floor(this.experience.toDouble().pow(1 / 3)).toInt()
         // recalculate stats if level changed
         if (this.level > previousLevel)
             this.battleStat = getBattleStats()
@@ -176,7 +178,9 @@ data class PokemonData(
     val baseStatSpecialAttack: Int,
     val baseStatSpecialDefense: Int,
     val baseStatSpeed: Int,
-    val types: List<String>
+    val types: List<String>,
+    val frontSprite: String,
+    val backSprite: String,
 )
 
 data class BattleStats(
