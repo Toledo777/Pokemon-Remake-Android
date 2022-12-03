@@ -7,12 +7,12 @@
     tools:context=".BattleActivity">
 
     <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="3"
-        android:paddingTop="10dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="horizontal"
-        app:layout_constraintWidth_percent="0.5"
-        android:layout_weight="0.5">
+        android:minHeight="150dp"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,11 +63,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="0dp"
-        android:layout_weight="0.5">
+        android:layout_marginTop="10dp"
+        android:minHeight="150dp"
+        >
 
         <ImageView
             android:id="@+id/player_pokemon_sprite"
@@ -108,6 +109,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="4"
+        android:layout_marginTop="20dp"
         >
         <Button
             android:id="@+id/moves_btn"
@@ -139,12 +141,15 @@
             android:text="@string/run"
             android:layout_gravity="center_vertical" />
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/frameLayout3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            />
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/frameLayout3"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main"
+        android:background="@color/white"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
