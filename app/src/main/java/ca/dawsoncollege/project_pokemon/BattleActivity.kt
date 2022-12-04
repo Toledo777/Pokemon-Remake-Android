@@ -3,6 +3,7 @@ package ca.dawsoncollege.project_pokemon
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.net.URL
 
 class BattleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBattleBinding
@@ -49,12 +51,24 @@ class BattleActivity : AppCompatActivity() {
         } else {
             binding.playerPokemonName.text = this.battle.playerPokemon.name.toString()
         }
+        lifecycleScope.launch(Dispatchers.IO){
+            val backSprite = BitmapFactory.decodeStream(URL(this@BattleActivity.battle.playerPokemon.data.backSprite).openConnection().getInputStream())
+            withContext(Dispatchers.Main) {
+                binding.playerPokemonSprite.setImageBitmap(backSprite)
+            }
+        }
         binding.playerPokemonLevel.text = this.battle.playerPokemon.level.toString()
         updateHP(this.battle.playerPokemon, true)
     }
 
     private fun setEnemyPokemonUI(){
         binding.enemyPokemonName.text = this.battle.enemyPokemon.name.toString()
+        lifecycleScope.launch(Dispatchers.IO){
+            val frontSprite = BitmapFactory.decodeStream(URL(this@BattleActivity.battle.enemyPokemon.data.frontSprite).openConnection().getInputStream())
+            withContext(Dispatchers.Main) {
+                binding.enemyPokemonSprite.setImageBitmap(frontSprite)
+            }
+        }
         binding.enemyPokemonLevel.text = this.battle.enemyPokemon.level.toString()
         updateHP(this.battle.enemyPokemon, false)
     }
