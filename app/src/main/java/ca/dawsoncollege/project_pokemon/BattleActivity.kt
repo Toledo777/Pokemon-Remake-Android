@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -32,7 +34,7 @@ class BattleActivity : AppCompatActivity() {
         val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
         if (playerTrainerJson != "empty") {
-            playerTrainer = convertToPlayerTrainer(playerTrainerJson!!)
+            playerTrainer = convertJSONToPlayerTrainer(playerTrainerJson!!)
             lifecycleScope.launch(Dispatchers.IO){
                 this@BattleActivity.battle = WildBattle(playerTrainer)
                 withContext(Dispatchers.Main){
@@ -84,9 +86,16 @@ class BattleActivity : AppCompatActivity() {
 
     private fun setDefaultFragment(){
         val movesFragment = MovesFragment()
+        var bundle = Bundle()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, movesFragment)
             commit()
         }
     }
 }
+
+// extension functions
+// converts Battle object into a JSON string
+fun convertBattleToJSON(battle: Battle): String = Gson().toJson(battle)
+// converts JSON string back into a Battle object
+fun convertJSONToBattle(json: String) = Gson().fromJson(json, object: TypeToken<Battle>(){}.type) as Battle
