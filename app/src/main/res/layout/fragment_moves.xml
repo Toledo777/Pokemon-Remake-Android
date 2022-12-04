@@ -18,17 +18,19 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/move_1"
                 android:layout_width="160dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="16dp"
-                android:text="Move 1\n0/0" />
+                android:text="@string/move_placeholder" />
 
             <Button
+                android:id="@+id/move_2"
                 android:layout_width="160dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:text="Move 2\n0/0" />
+                android:text="@string/move_placeholder" />
 
         </LinearLayout>
 
@@ -39,17 +41,19 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/move_3"
             android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_weight="1"
             android:layout_marginEnd="16dp"
-            android:text="Move 3\n0/0" />
+            android:text="@string/move_placeholder" />
 
         <Button
+            android:id="@+id/move_4"
             android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="Move 4\n0/0" />
+            android:text="@string/move_placeholder" />
     </LinearLayout>
 
     </LinearLayout>
