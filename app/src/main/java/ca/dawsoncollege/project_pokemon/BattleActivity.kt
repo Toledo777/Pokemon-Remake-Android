@@ -86,7 +86,9 @@ class BattleActivity : AppCompatActivity() {
 
     private fun setDefaultFragment(){
         val movesFragment = MovesFragment()
-        var bundle = Bundle()
+        val bundle = Bundle()
+        bundle.putString("battle", convertBattleToJSON(this.battle))
+        movesFragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, movesFragment)
             commit()
@@ -98,4 +100,4 @@ class BattleActivity : AppCompatActivity() {
 // converts Battle object into a JSON string
 fun convertBattleToJSON(battle: Battle): String = Gson().toJson(battle)
 // converts JSON string back into a Battle object
-fun convertJSONToBattle(json: String) = Gson().fromJson(json, object: TypeToken<Battle>(){}.type) as Battle
+fun convertJSONToWildBattle(json: String) = Gson().fromJson(json, object: TypeToken<WildBattle>(){}.type) as WildBattle
