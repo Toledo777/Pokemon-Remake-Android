@@ -47,7 +47,6 @@ class BattleActivity : AppCompatActivity() {
     }
 
     private fun setPlayerPokemonUI(){
-        // TODO: set imageview to sprite of pokemon using bitmap
         if (this.battle.playerPokemon.name.isNullOrEmpty()){
             binding.playerPokemonName.text = this.battle.playerPokemon.species.toString()
         } else {
