@@ -99,5 +99,5 @@ class BattleActivity : AppCompatActivity() {
 // extension functions
 // converts Battle object into a JSON string
 fun convertBattleToJSON(battle: Battle): String = Gson().toJson(battle)
-// converts JSON string back into a Battle object
+// converts JSON string back into a Wild Battle object
 fun convertJSONToWildBattle(json: String) = Gson().fromJson(json, object: TypeToken<WildBattle>(){}.type) as WildBattle
