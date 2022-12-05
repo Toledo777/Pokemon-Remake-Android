@@ -47,7 +47,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // helper method, takes move, attacker, target as input and attempts attacks
-    private fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
+    private suspend fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
             val damage = calculateDamage(move, attacker, target)
             // prevent over damage (negative hp)
@@ -76,7 +76,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // chose random move to play for enemy, returns success status
-    fun playEnemyMove(): Boolean{
+    suspend fun playEnemyMove(): Boolean{
         val moveList = this.enemyPokemon.moveList
         val moveIndex = Random.nextInt(0, 3);
 
@@ -142,7 +142,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         this.playerPokemon.addExp(expGained)
     }
 
-    suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
+    private suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
         val response = RetrofitInstance.api.getDamageRelations(type)
         if (response.isSuccessful) {
             val ground = response.body()
