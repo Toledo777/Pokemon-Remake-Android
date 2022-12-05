@@ -169,14 +169,19 @@ class Pokemon(
     }
 
     // get list of new moves pokemon can learn
-    fun proposeMove(): ArrayList<Move> {
+    // moves should be shown to trainer
+    suspend fun proposeMove(): ArrayList<Move> {
         var newMoves:ArrayList<Move>
-
+        val pokeData = this.species?.let { getApiPokemon(it) }
     }
 
     // teach new move to pokemon, replace an old one if necessary
     fun learnMove(newMove: Move, oldMove: Move? = null) {
-
+        if (oldMove == null)
+            moveList.add(newMove)
+        else
+            moveList.remove(oldMove)
+            moveList.add(newMove)
     }
 
 }
