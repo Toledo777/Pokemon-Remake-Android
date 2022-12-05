@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
@@ -45,7 +47,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // helper method, takes move, attacker, target as input and attempts attacks
-    private fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
+    private suspend fun attackMove(move: Move, attacker: Pokemon, target: Pokemon): Boolean {
         if (moveSuccessCheck(move.accuracy)) {
             val damage = calculateDamage(move, attacker, target)
             // prevent over damage (negative hp)
@@ -74,7 +76,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // chose random move to play for enemy, returns success status
-    fun playEnemyMove(): Boolean{
+    suspend fun playEnemyMove(): Boolean{
         val moveList = this.enemyPokemon.moveList
         val moveIndex = Random.nextInt(0, 3);
 
@@ -109,7 +111,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
     // TODO add type multiplier in milestone 2
     // helper method to calculate physical damage of an attack
-    private fun calculateDamage(move: Move, attacker: Pokemon, defender: Pokemon): Int{
+    private suspend fun calculateDamage(move: Move, attacker: Pokemon, defender: Pokemon): Int{
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0
         damage *= move.power
 
@@ -120,6 +122,12 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
             // special
             damage * (attacker.getBattleStats().specialAttack / defender.battleStat.specialAttack) + 2
 
+        // multiply damage with type multiplier
+        damage *= getTypeMultiplier(move.type, defender.types[0])
+
+        // if defender has 2nd type, multiply multiplier as well
+        if (defender.types.size == 2)
+            damage *= getTypeMultiplier(move.type, defender.types[1])
         // return damage as an int
         return damage.toInt()
     }
@@ -134,7 +142,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         this.playerPokemon.addExp(expGained)
     }
 
-    suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
+    private suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
         val response = RetrofitInstance.api.getDamageRelations(type)
         if (response.isSuccessful) {
             val ground = response.body()
@@ -154,5 +162,21 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         } else {
             throw Error("Error! There was a problem.")
         }
+    }
+
+    // returns the type multiplier based on move type and target type
+    private suspend fun getTypeMultiplier(moveType:String, targetType:String):Double {
+        // fetch type relations
+        val damageRelations = withContext(Dispatchers.IO) { getTypeDamageRelations(moveType) }
+
+        return if (damageRelations.noEffect.contains(targetType))
+            0.0
+        else if (damageRelations.notVeryEffective.contains(targetType))
+            0.5
+        else if (damageRelations.superEffective.contains(targetType))
+            2.0
+        // return regular damage if type was no present
+        else
+            1.0
     }
 }
