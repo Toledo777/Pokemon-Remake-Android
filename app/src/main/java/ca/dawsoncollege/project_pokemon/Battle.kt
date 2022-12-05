@@ -169,14 +169,14 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         // fetch type relations
         val damageRelations = withContext(Dispatchers.IO) { getTypeDamageRelations(moveType) }
 
-        if (damageRelations.noEffect.contains(targetType))
-            return 0.0
+        return if (damageRelations.noEffect.contains(targetType))
+            0.0
         else if (damageRelations.notVeryEffective.contains(targetType))
-            return 0.5
+            0.5
         else if (damageRelations.superEffective.contains(targetType))
-            return 2.0
-
-        // throw error if type is not found
-        throw Exception("Type not found")
+            2.0
+        // return regular damage if type was no present
+        else
+            1.0
     }
 }
