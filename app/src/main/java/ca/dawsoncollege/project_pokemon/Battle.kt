@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
@@ -120,6 +122,8 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
             // special
             damage * (attacker.getBattleStats().specialAttack / defender.battleStat.specialAttack) + 2
 
+
+
         // return damage as an int
         return damage.toInt()
     }
@@ -154,5 +158,21 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         } else {
             throw Error("Error! There was a problem.")
         }
+    }
+
+    // returns the type multiplier based on move type and target type
+    private suspend fun getTypeMultiplier(moveType:String, targetType:String):Double {
+        // fetch type relations
+        val damageRelations = withContext(Dispatchers.IO) { getTypeDamageRelations(moveType) }
+
+        if (damageRelations.noEffect.contains(targetType))
+            return 0.0
+        else if (damageRelations.notVeryEffective.contains(targetType))
+            return 0.5
+        else if (damageRelations.superEffective.contains(targetType))
+            return 2.0
+
+        // throw error if type is not found
+        throw Exception("Type not found")
     }
 }
