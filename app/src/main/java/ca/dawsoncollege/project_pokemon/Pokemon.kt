@@ -72,11 +72,11 @@ class Pokemon(
     }
 
     // Get all potential moves for the Pokemon (Name and level)
-    private fun getAllPossibleMoves(data: ApiPokemonData): List<MoveLevel> {
+    private fun getAllPossibleMoves(data: ApiPokemonData): List<MoveOutline> {
         return data.moves.map {
             val name = it.move.name
             val level = it.version_group_details[0].level_learned_at
-            MoveLevel(name, level)
+            MoveOutline(name, level)
         }
     }
 
@@ -170,9 +170,22 @@ class Pokemon(
 
     // get list of new moves pokemon can learn
     // moves should be shown to trainer
-    suspend fun proposeMove(): ArrayList<Move> {
-        var newMoves:ArrayList<Move>
+    suspend fun proposeMove(): List<Move> {
         val pokeData = this.species?.let { getApiPokemon(it) }
+        val possibleMoves = pokeData?.let { getAllPossibleMoves(it) }
+
+        // filter to only contain newly accessible moves
+        possibleMoves?.filter { it.level <= this.level && it.level > this.oldLevel }
+        val proposedMoves = ArrayList<Move>()
+
+        // convert MoveOutline to Move and add to learnableMoves
+        possibleMoves?.forEach {
+            val apiMoveDetail = getApiMove(it.move)
+            val move = createMove(apiMoveDetail)
+            proposedMoves.add(move)
+        }
+
+        return proposedMoves
     }
 
     // teach new move to pokemon, replace an old one if necessary
@@ -186,7 +199,7 @@ class Pokemon(
 
 }
 
-data class MoveLevel(val move: String, val level: Int)
+data class MoveOutline(val move: String, val level: Int)
 
 data class PokemonData(
     val species: String,
