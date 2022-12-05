@@ -1,7 +1,5 @@
 package ca.dawsoncollege.project_pokemon
 
-import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlin.math.floor
@@ -16,6 +14,8 @@ class Pokemon(
     var species: String? = null,
     var name: String? = null
 ) {
+    // used to calculate what new moves can be learned
+    var oldLevel: Int = 0
     var data: PokemonData
     var battleStat: BattleStats
     var experience: Int = 0
@@ -51,15 +51,17 @@ class Pokemon(
         // Get all possible moves based on the Pokemon's current level
         val availableMoves = getAllPossibleMoves(data).filter { it.level <= this.level }
 
-        // Add to list directly ff there are only 4 moves available
+        // Add to list directly if there are only 4 or less moves available
         if (availableMoves.size <= NUMBER_OF_MOVES) {
             val moves = availableMoves.map {
                 val details = getApiMove(it.move)
                 createMove(details)
             }
             this.moveList.addAll(moves)
-        } else {
-            // Add four random moves from the available moves
+        }
+        // Add four random moves from the available moves
+        else {
+
             val moves = availableMoves.shuffled().take(NUMBER_OF_MOVES).map {
                 val details = getApiMove(it.move)
                 createMove(details)
@@ -158,13 +160,25 @@ class Pokemon(
     fun addExp(exp: Int) {
         // add exp
         this.experience += exp
-        // update level
-        val previousLevel = this.level
+        // set level before xp gain
+        this.oldLevel = this.level
         this.level = floor(this.experience.toDouble().pow(1 / 3)).toInt()
-        // recalculate stats if level changed
-        if (this.level > previousLevel)
+        // recalculate stats only if level changed
+        if (this.level > this.oldLevel)
             this.battleStat = getBattleStats()
     }
+
+    // get list of new moves pokemon can learn
+    fun proposeMove(): ArrayList<Move> {
+        var newMoves:ArrayList<Move>
+
+    }
+
+    // teach new move to pokemon, replace an old one if necessary
+    fun learnMove(newMove: Move, oldMove: Move? = null) {
+
+    }
+
 }
 
 data class MoveLevel(val move: String, val level: Int)
