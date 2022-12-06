@@ -23,4 +23,5 @@
     <string name="trainer_battle">Trainer Battle</string>
     <string name="wild_pokemon_battle">Wild Battle</string>
     <string name="save">Save</string>
+    <string name="pokemon_sprite">Pokemon sprite</string>
 </resources>
