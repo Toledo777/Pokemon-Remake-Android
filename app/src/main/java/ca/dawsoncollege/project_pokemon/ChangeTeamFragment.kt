@@ -5,11 +5,70 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import ca.dawsoncollege.project_pokemon.databinding.FragmentChangeTeamBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class ChangeTeamFragment : Fragment(R.layout.fragment_change_team) {
+class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var _binding: FragmentChangeTeamBinding? = null
+    private val binding get() = _binding!!
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentChangeTeamBinding.inflate(inflater, container, false)
+        runBlocking {
+            launch(Dispatchers.IO) {
+                _binding!!.recyclerView1.init(
+                    listOf(
+                        Pokemon(5, "charmander"),
+                        Pokemon(5, "pikachu"),
+                        Pokemon(5, "rapidash"),
+                        Pokemon(5, "zapdos")
+                    ),
+                    binding.emptyListTextView1,
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                )
+            }
+            launch(Dispatchers.IO) {
+                _binding!!.recyclerView2.init(
+                    listOf(
+                        Pokemon(5, "squirtle"),
+                        Pokemon(5, "dragonite")
+                    ), binding.emptyListTextView2, GridLayoutManager(context, 6)
+                )
+            }
         }
+        return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun RecyclerView.init(
+        list: List<Pokemon>,
+        emptyTextView: TextView,
+        layoutManager: RecyclerView.LayoutManager
+    ) {
+        this.layoutManager = layoutManager
+        val adapter = CustomAdapter(list, this@ChangeTeamFragment)
+        this.adapter = adapter
+        emptyTextView.setOnDragListener(adapter.dragInstance)
+        this.setOnDragListener(adapter.dragInstance)
+    }
+
+    override fun setEmptyList(visibility: Int, recyclerView: Int, emptyTextView: Int) {
+        binding.root.getViewById(recyclerView).visibility = View.VISIBLE
+        binding.root.getViewById(emptyTextView).visibility = visibility
+    }
+}
