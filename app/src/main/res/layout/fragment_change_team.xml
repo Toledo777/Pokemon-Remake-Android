@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
     <TextView
@@ -15,14 +16,14 @@
         android:text="Team is Empty!"
         android:textSize="17sp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/teamLabel"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/empty_list_text_view_1" />
+        app:layout_constraintTop_toBottomOf="@id/teamLabel" />
 
     <View
         android:id="@+id/divider"
@@ -35,7 +36,7 @@
         android:id="@+id/recycler_view_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/collectionLabel" />
 
     <TextView
         android:id="@+id/empty_list_text_view_2"
@@ -48,5 +49,26 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/recycler_view_2"
         tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/teamLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/empty_list_text_view_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/collectionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Collection"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@id/recycler_view_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
