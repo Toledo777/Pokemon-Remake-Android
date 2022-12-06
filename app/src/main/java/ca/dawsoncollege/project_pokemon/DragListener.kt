@@ -41,7 +41,7 @@ class DragListener internal constructor(private val listener: CustomListener) :
                             val positionSource = viewSource.tag as Int
                             val list: Pokemon? = adapterSource?.getList()?.get(positionSource)
                             val listSource = adapterSource?.getList()?.apply {
-                                if (target.id == recyclerView1 && adapterTarget!!.itemCount == 6) {
+                                if (source.id == recyclerView2 && target.id == recyclerView1 && adapterTarget!!.itemCount == 6) {
                                     Log.d(
                                         "ListCheck",
                                         "Cannot have more than 6 items in recyclerView1"
