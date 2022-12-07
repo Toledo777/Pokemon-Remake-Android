@@ -89,7 +89,8 @@ class Pokemon(
             details.meta.healing,
             details.damage_class.name.uppercase(),
             details.type.name,
-            if (details.target.name == "selected-pokemon") "OPPONENT" else "USER",
+            if (details.target.name == "selected-pokemon" || details.target.name.contains("opponent"))
+                "OPPONENT" else "USER",
             details.meta.ailment.name
         )
     }
