@@ -34,7 +34,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     fun playerMove(move: Move):Boolean {
-        if (move.target == "HOSTILE") {
+        if (move.target == "OPPONENT") {
             // call attackMove and return success status
             return (attackMove(move, this.playerPokemon, this.enemyPokemon))
         }
