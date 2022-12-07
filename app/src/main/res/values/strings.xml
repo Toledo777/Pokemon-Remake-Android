@@ -27,7 +27,7 @@
     <string name="enemy_pokemon">Opposing Pokemon</string>
     <string name="moves">Moves</string>
     <string name="move_placeholder">Move \n0/0</string>
-    <string name="switch_pokemon">Switch</string>
+    <string name="switch_pokemon">PKMN</string>
     <string name="items">Items</string>
     <string name="run">Run</string>
 </resources>

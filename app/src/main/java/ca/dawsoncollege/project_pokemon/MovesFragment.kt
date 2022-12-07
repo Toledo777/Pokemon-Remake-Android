@@ -67,6 +67,7 @@ class MovesFragment : Fragment() {
                     moveList[i].PP -= 1
                     updateMovePP(buttons[i], moveList[i])
                     this.battle.playEnemyMove()
+                    this.battle.checkPokemonFainted()
                     val listener = activity as mInterface
                     listener.updateUI(this.battle)
                 } else {
