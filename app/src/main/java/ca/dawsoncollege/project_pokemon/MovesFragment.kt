@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import ca.dawsoncollege.project_pokemon.databinding.FragmentMovesBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,8 +60,26 @@ class MovesFragment : Fragment() {
             val moveButtonText = "${moveList[i].name.replace('-', ' ')}\n" +
                     "${moveList[i].PP}/${moveList[i].maxPP}"
             buttons[i].text = moveButtonText
+
+            buttons[i].setOnClickListener {
+                if (moveList[i].PP > 0){
+                    this.battle.playerMove(moveList[i])
+                    Log.d("MOVES_FRAG", moveList[i].toString())
+                    moveList[i].PP -= 1
+                    updateMovePP(buttons[i], moveList[i])
+                    this.battle.playEnemyMove()
+                } else {
+                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
+    private fun updateMovePP(button: Button, move: Move) {
+            val moveButtonText = "${move.name.replace('-', ' ')}\n" +
+                    "${move.PP}/${move.maxPP}"
+            button.text = moveButtonText
+        }
 
 //    companion object {
 //        /**
