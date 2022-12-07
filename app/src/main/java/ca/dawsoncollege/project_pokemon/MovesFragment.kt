@@ -2,13 +2,12 @@ package ca.dawsoncollege.project_pokemon
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import ca.dawsoncollege.project_pokemon.databinding.FragmentMovesBinding
+import androidx.fragment.app.Fragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +67,8 @@ class MovesFragment : Fragment() {
                     moveList[i].PP -= 1
                     updateMovePP(buttons[i], moveList[i])
                     this.battle.playEnemyMove()
+                    val listener = activity as mInterface
+                    listener.updateUI(this.battle)
                 } else {
                     Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
                 }

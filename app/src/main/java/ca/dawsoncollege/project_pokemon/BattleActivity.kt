@@ -1,23 +1,20 @@
 package ca.dawsoncollege.project_pokemon
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.net.URL
 
-class BattleActivity : AppCompatActivity() {
+class BattleActivity : AppCompatActivity(), mInterface {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var battle: Battle
     private lateinit var playerTrainer: PlayerTrainer
@@ -93,6 +90,17 @@ class BattleActivity : AppCompatActivity() {
             commit()
         }
     }
+
+    @Override
+    override fun updateUI(battle: Battle) {
+        this.battle = battle
+        updateHP(this.battle.playerPokemon, true)
+        updateHP(this.battle.enemyPokemon, false)
+    }
+}
+
+interface mInterface {
+    fun updateUI(battle: Battle)
 }
 
 // extension functions
