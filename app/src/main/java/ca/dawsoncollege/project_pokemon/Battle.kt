@@ -79,7 +79,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         val moveIndex = Random.nextInt(0, 3);
 
         // hostile move
-        if (moveList[moveIndex].target == "HOSTILE") {
+        if (moveList[moveIndex].target == "OPPONENT") {
             // attempt attack, returns success status
             return attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
         }
