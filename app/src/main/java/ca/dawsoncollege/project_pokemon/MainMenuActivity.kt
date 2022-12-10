@@ -10,6 +10,7 @@ import ca.dawsoncollege.project_pokemon.databinding.MainMenuBinding
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
+
     companion object {
         private const val LOG_TAG = "MAIN_MENU_ACTIVITY_DEV_LOG"
     }
@@ -47,30 +48,30 @@ class MainMenuActivity : AppCompatActivity() {
 //            }
                 Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
             }
-            binding.changeTeamBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, changeTeamFragment)
-//                addToBackStack(null)
-//                commit()
-//            }
-                Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+        }
+        binding.changeTeamBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayout3, ChangeTeamFragment())
+                addToBackStack(null)
+                commit()
             }
-            binding.trainerBattleBtn.setOnClickListener {
+        }
+        binding.trainerBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, tBattleFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
-                Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
-            }
-            binding.wildBattleBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
+        }
+        binding.wildBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
 //                replace(R.id.frameLayout3, wBattleFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
-                Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
         }
     }
 }
