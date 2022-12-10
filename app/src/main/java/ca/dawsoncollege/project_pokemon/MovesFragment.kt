@@ -88,10 +88,14 @@ class MovesFragment : Fragment() {
         // check who attacks first
         val listener = activity as Callbacks
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
-            this.battle.playerMove(moveList[i])
-
-            // set text for move played
-            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.played_move) + " " + moveList[i].name) }
+            // move success
+            if(this.battle.playerMove(moveList[i])) {
+                this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.played) + " " + moveList[i].name) }
+            }
+            // missed move
+            else {
+                this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move))}
+            }
 
             Log.d("MOVES_FRAG", moveList[i].toString())
             moveList[i].PP -= 1
@@ -100,7 +104,16 @@ class MovesFragment : Fragment() {
             if (!this.battle.checkPokemonFainted())
                 this.battle.playEnemyMove()
         } else {
-            this.battle.playEnemyMove()
+            // move success
+            val moveName = this.battle.playEnemyMove()
+            // move succed
+            if (moveName != null) {
+                this.battle.enemyPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.played) + " " + moveName) }
+            }
+            // move missed
+            else {
+                this.battle.enemyPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move)) }
+            }
 
             // if player pokemon is not fainted
             if (this.battle.playerPokemon.hp != 0){
