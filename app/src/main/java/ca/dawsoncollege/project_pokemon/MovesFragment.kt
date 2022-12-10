@@ -89,7 +89,8 @@ class MovesFragment : Fragment() {
             Log.d("MOVES_FRAG", moveList[i].toString())
             moveList[i].PP -= 1
             updateMovePP(buttons[i], moveList[i])
-            this.battle.playEnemyMove()
+            if (!this.battle.checkPokemonFainted())
+                this.battle.playEnemyMove()
         } else {
             this.battle.playEnemyMove()
             if (this.battle.playerPokemon.hp != 0){
@@ -97,11 +98,11 @@ class MovesFragment : Fragment() {
                 Log.d("MOVES_FRAG", moveList[i].toString())
                 moveList[i].PP -= 1
                 updateMovePP(buttons[i], moveList[i])
+                this.battle.checkPokemonFainted()
             } else {
                 Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
             }
         }
-        this.battle.checkPokemonFainted()
         this.battle.updatePlayerPokemon()
     }
 

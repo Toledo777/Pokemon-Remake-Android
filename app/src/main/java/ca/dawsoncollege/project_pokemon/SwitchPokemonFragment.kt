@@ -49,7 +49,7 @@ class SwitchPokemonFragment : Fragment() {
                     "${this.battle.playerTrainer.team[i].hp}/${this.battle.playerTrainer.team[i].battleStat.maxHP}"
             buttons[i].text = pokemonButtonText
             buttons[i].setOnClickListener {
-                // switch first pokemon with ith pokemon
+                // switch current pokemon with ith pokemon
                 try{
                     this.battle.switchOutPlayerPkm(this.battle.playerTrainer.team[i], i)
                     val listener = activity as Callbacks
