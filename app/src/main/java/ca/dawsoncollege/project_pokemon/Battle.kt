@@ -9,17 +9,30 @@ import kotlin.random.Random
 abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
     var playerPokemon = playerTrainer.team[0]
+    private var playerPokemonIndex = 0;
 
     lateinit var enemyPokemon: Pokemon
 
+    class SamePokemonException(message: String) : Exception(message)
+
     // switch out players current pokemon
-    fun switchOutPlayerPkm(nextPokemon: Pokemon) {
+    fun switchOutPlayerPkm(nextPokemon: Pokemon, i: Int) {
         if (nextPokemon.hp > 0) {
-            playerPokemon = nextPokemon
+            if (playerPokemonIndex != i){
+                playerPokemon = nextPokemon
+                playerPokemonIndex = i
+            }
+            else {
+                throw SamePokemonException("Error, Pokemon is already in battle")
+            }
         }
         else {
             throw IllegalArgumentException("Error, Cannot switch to a pokemon with 0 HP")
         }
+    }
+
+    fun updatePlayerPokemon(){
+        playerTrainer.team[playerPokemonIndex] = playerPokemon
     }
 
     // adds 20HP to active pokemon or restores to full health
