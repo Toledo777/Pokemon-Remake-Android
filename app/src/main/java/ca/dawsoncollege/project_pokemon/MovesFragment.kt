@@ -56,12 +56,14 @@ class MovesFragment : Fragment() {
                     if (this.battle.playerPokemon.hp != 0) {
 
                         // specific dispatcher is specified in the functions involved
-                        lifecycleScope.launch{
+                        lifecycleScope.launch(Dispatchers.Main){
                             playTurn(moveList, buttons, i)
+                            Log.d("EXTENSION", "enemy: "+battle.enemyPokemon.hp.toString())
+                            Log.d("EXTENSION", "player: "+battle.playerPokemon.hp.toString())
+                            // callback to update HP UI in BattleActivity
+                            val listener = activity as Callbacks
+                            listener.updateHPUI(this@MovesFragment.battle)
                         }
-                        // callback to update HP UI in BattleActivity
-                        val listener = activity as Callbacks
-                        listener.updateHPUI(this.battle)
                     } else {
                         Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
                     }
@@ -79,7 +81,6 @@ class MovesFragment : Fragment() {
         button.text = moveButtonText
     }
 
-    // TODO: to optimize?
     // play a turn
     private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
         // check who attacks first
@@ -88,7 +89,7 @@ class MovesFragment : Fragment() {
             this.battle = performEnemyMove(this.battle)
         } else {
             this.battle = performEnemyMove(this.battle)
-
+            performPlayerMove(moveList, buttons, i)
         }
         // update player data
         this.battle.updatePlayerPokemon()
@@ -97,10 +98,12 @@ class MovesFragment : Fragment() {
     private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
         // if player pokemon is not fainted
         if (this.battle.playerPokemon.hp != 0){
-            this.battle.playerMove(moveList[i])
-            Log.d("MOVES_FRAG", moveList[i].toString())
-            moveList[i].PP -= 1
-            updateMovePP(buttons[i], moveList[i])
+            if (!this.battle.checkPokemonFainted()){
+                this.battle.playerMove(moveList[i])
+                Log.d("MOVES_FRAG", moveList[i].toString())
+                moveList[i].PP -= 1
+                updateMovePP(buttons[i], moveList[i])
+            }
             if (this.battle.checkPokemonFainted()) // TODO: end battle
                 Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
         } else {
