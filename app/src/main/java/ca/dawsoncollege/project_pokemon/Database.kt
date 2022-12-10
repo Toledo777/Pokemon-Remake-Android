@@ -29,6 +29,21 @@ interface UserDao {
     // clear database
     @Delete
     fun delete(playerTrainer: PlayerTrainer)
+
+    // Fetch methods for team and collection
+    @Query("SELECT team FROM PlayerTrainer")
+    fun fetchTeam(): ArrayList<Pokemon>
+
+    @Query("SELECT pokemon_collection FROM PlayerTrainer")
+    fun fetchCollection(): ArrayList<Pokemon>
+
+    // Update methods for team and collection
+    @Query("UPDATE PlayerTrainer SET team = :updatedTeam")
+    fun updateTeam(updatedTeam: ArrayList<Pokemon>)
+
+    @Query("UPDATE PlayerTrainer SET pokemon_collection = :updatedTeam")
+    fun updateCollection(updatedTeam: ArrayList<Pokemon>)
+
 }
 
 // type convert to convert pok  emon arraylist to json and vice versa
