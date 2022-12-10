@@ -59,7 +59,7 @@ class DragListener internal constructor(private val listener: CustomListener) :
                             }
                             listSource?.let { adapterSource.updateList(it) }
                             adapterSource?.notifyDataSetChanged()
-                            Log.d("ListCheck", "Source: " + listSource.toString())
+                            Log.d("ListCheck", "Source: " + listSource!!.map { it.name }.toString())
                             val customListTarget = adapterTarget?.getList()
                             if (positionTarget >= 0) {
                                 list?.let { customListTarget?.add(positionTarget, it) }
@@ -68,7 +68,7 @@ class DragListener internal constructor(private val listener: CustomListener) :
                             }
                             customListTarget?.let { adapterTarget.updateList(it) }
                             adapterTarget?.notifyDataSetChanged()
-                            Log.d("ListCheck", "Target: " + customListTarget.toString())
+                            Log.d("ListCheck", "Target: " + customListTarget!!.map { it.name }.toString())
                             if (source.id == recyclerView2 && adapterSource?.itemCount ?: 0 < 1) {
                                 listener.setEmptyList(View.VISIBLE, recyclerView2, emptyTextView2)
                             }
