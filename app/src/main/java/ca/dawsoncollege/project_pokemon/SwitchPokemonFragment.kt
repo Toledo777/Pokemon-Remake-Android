@@ -48,21 +48,18 @@ class SwitchPokemonFragment : Fragment() {
                     "LV ${this.battle.playerTrainer.team[i].level}\n"+
                     "${this.battle.playerTrainer.team[i].hp}/${this.battle.playerTrainer.team[i].battleStat.maxHP}"
             buttons[i].text = pokemonButtonText
-//            buttons[i].visibility = View.VISIBLE
-            if (i == 0)
-                buttons[i].setOnClickListener {
-                    Toast.makeText(context, "${this.battle.playerPokemon.name} is already in battle!", Toast.LENGTH_SHORT).show()
-                }
-            else{
-                buttons[i].setOnClickListener {
-                    // switch first pokemon with ith pokemon
-                    val switchTo = this.battle.playerTrainer.team[i]
-                    this.battle.playerTrainer.team[i] = this.battle.playerTrainer.team[0]
-                    this.battle.playerTrainer.team[0] = switchTo
-                    this.battle.playerPokemon = switchTo
+            buttons[i].setOnClickListener {
+                // switch first pokemon with ith pokemon
+                try{
+                    this.battle.switchOutPlayerPkm(this.battle.playerTrainer.team[i], i)
                     val listener = activity as Callbacks
                     listener.updatePokemonUI(this.battle)
                     replaceWithMovesFragment()
+                } catch (e: Battle.SamePokemonException){
+                    Toast.makeText(context, "${this.battle.playerTrainer.team[i].name} is already in battle!", Toast.LENGTH_SHORT).show()
+                }
+                catch (e: IllegalArgumentException){
+                    Toast.makeText(context, "${this.battle.playerTrainer.team[i].name} is fainted!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
