@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">project-pokemon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pokemon">Pokemon</string>
+    <string name="start">Start!</string>
+    <string name="new_game">New Game</string>
+    <string name="choose_a_pokemon">Choose a Pokemon</string>
+    <string name="ask_name">What is your name?</string>
+    <string name="ask_nickname">Give a nickname?</string>
+    <string name="trainer_name">Trainer name</string>
+    <string name="missing_trainer_name">Please enter your trainer name</string>
+    <string name="missing_starter_pokemon">Please select a starter Pokemon</string>
+    <string name="grass_starter_pokemon">Grass starter pokemon</string>
+    <string name="water_starter_pokemon">Water starter pokemon</string>
+    <string name="fire_starter_pokemon">fire_starter_pokemon</string>
+    <string name="contributors">Contributors:</string>
+    <string name="paul">Paul Patrick Rabanal</string>
+    <string name="matthew">Matthew Toledo</string>
+    <string name="jeremy">Jeremy Tang</string>
+    <string name="pokecenter">Pokecenter</string>
+    <string name="change_team">Change Team</string>
+    <string name="trainer_battle">Trainer Battle</string>
+    <string name="wild_pokemon_battle">Wild Battle</string>
+    <string name="save">Save</string>
+</resources>
