@@ -1,18 +1,24 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.content.Context
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlin.random.Random
 
+object TrainerConstants {
+    const val STARTER_LEVEL = 5;
+    const val MAX_TEAM_CAPACITY= 6;
+}
 
-class PlayerTrainer(val playerName: String) {
-    val MAX_TEAM_CAPACITY = 6
-    val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
-    private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
-    private val STARTER_LEVEL = 5
+@Entity
+data class PlayerTrainer(@PrimaryKey val playerName: String) {
+    @ColumnInfo(name = "team") var team: ArrayList<Pokemon> = ArrayList(TrainerConstants.MAX_TEAM_CAPACITY)
+    @ColumnInfo(name = "pokemon_collection") var pokemonCollection: ArrayList<Pokemon> = ArrayList()
 
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
-        val starter = Pokemon(STARTER_LEVEL, species, name)
+        val starter = Pokemon(TrainerConstants.STARTER_LEVEL, species, name)
 
         this.team.add(starter)
     }
@@ -47,7 +53,7 @@ class PlayerTrainer(val playerName: String) {
         // capture is successful if rand num was less then capture prob
         if (captureProb >= rand) {
             // check if space on team
-            if (this.team.size < MAX_TEAM_CAPACITY) {
+            if (this.team.size < TrainerConstants.MAX_TEAM_CAPACITY) {
                 this.team.add(wildPokemon);
             }
             // add to collection
