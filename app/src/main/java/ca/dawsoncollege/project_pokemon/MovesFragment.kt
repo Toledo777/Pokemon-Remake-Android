@@ -8,6 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MovesFragment : Fragment() {
     private lateinit var battle: Battle
@@ -32,7 +36,7 @@ class MovesFragment : Fragment() {
             view.findViewById(R.id.move_2),
             view.findViewById(R.id.move_3),
             view.findViewById(R.id.move_4))
-        setMoves(buttons)
+            setMoves(buttons)
         return view
     }
 
@@ -50,7 +54,11 @@ class MovesFragment : Fragment() {
                 if (moveList[i].PP > 0){
                     // if player pokemon is not fainted
                     if (this.battle.playerPokemon.hp != 0) {
-                        playTurn(moveList, buttons, i)
+
+                        // specific dispatcher is specified in the functions involved
+                        lifecycleScope.launch{
+                            playTurn(moveList, buttons, i)
+                        }
                         // callback to update HP UI in BattleActivity
                         val listener = activity as Callbacks
                         listener.updateHPUI(this.battle)
@@ -73,7 +81,7 @@ class MovesFragment : Fragment() {
 
     // TODO: to optimize?
     // play a turn
-    private fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
+    private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
         // check who attacks first
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
             this.battle.playerMove(moveList[i])
