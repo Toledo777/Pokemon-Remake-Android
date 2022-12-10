@@ -157,6 +157,13 @@ class BattleActivity : AppCompatActivity(), Callbacks {
             setEnemyPokemonUI()
         }
     }
+
+    // callback for fragments to update battle text view
+    @Override
+    override fun updateBattleText(message: String) {
+        binding.battleText.text = message;
+        TODO("Not yet implemented")
+    }
 }
 
 // interface containing callbacks
@@ -164,6 +171,7 @@ interface Callbacks {
     fun updateTeam(battle: Battle)
     fun updateHPUI(battle: Battle)
     fun updatePokemonUI(battle: Battle)
+    fun updateBattleText(message: String)
 }
 
 // extension functions
