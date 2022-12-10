@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 
 // db
 @Database(entities = [PlayerTrainer::class], version = 1)
+@TypeConverters(DataConverter::class)
 
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -18,6 +19,31 @@ interface UserDao {
     fun savePlayerTrainer(player: PlayerTrainer)
 
     // Check if a save is present in the database
-    @Query("SELECT EXISTS (SELECT 1 FROM PlayerTrainer)")
+    @Query("SELECT EXISTS (SELECT * FROM PlayerTrainer)")
     fun checkSaveInDatabase(): Boolean
+
+    // fetch trainer
+    @Query("SELECT 1 FROM PlayerTrainer")
+    fun fetchPlayerSave(): PlayerTrainer
+
+    // clear database
+    @Delete
+    fun delete(playerTrainer: PlayerTrainer)
+}
+
+// type convert to convert pokemon arraylist to json and vice versa
+class DataConverter {
+    @TypeConverter
+    fun pokeListToJson(pokeList: ArrayList<Pokemon>): String {
+        val gson = Gson();
+        val type = object : TypeToken<ArrayList<Pokemon>>() {}.type
+        return gson.toJson(pokeList, type)
+    }
+
+    @TypeConverter
+    fun jsonToPokeList(jsonString: String): List<String> {
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<Pokemon>>() {}.type
+        return gson.fromJson(jsonString, type)
+    }
 }
