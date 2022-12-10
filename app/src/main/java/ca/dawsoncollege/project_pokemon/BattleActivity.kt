@@ -50,18 +50,15 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
     }
 
     private fun setPlayerPokemonUI(){
-        if (this.battle.playerPokemon.name.isNullOrEmpty()){
-            binding.playerPokemonName.text = this.battle.playerPokemon.species.toString()
-        } else {
-            binding.playerPokemonName.text = this.battle.playerPokemon.name.toString()
-        }
+        binding.playerPokemonName.text = this.battle.playerPokemon.name.toString()
         lifecycleScope.launch(Dispatchers.IO){
             val backSprite = BitmapFactory.decodeStream(URL(this@BattleActivity.battle.playerPokemon.data.backSprite).openConnection().getInputStream())
             withContext(Dispatchers.Main) {
                 binding.playerPokemonSprite.setImageBitmap(backSprite)
             }
         }
-        binding.playerPokemonLevel.text = this.battle.playerPokemon.level.toString()
+        val pokemonLevelText = "LV "+this.battle.playerPokemon.level.toString()
+        binding.playerPokemonLevel.text = pokemonLevelText
         updateHP(this.battle.playerPokemon, true)
     }
 
@@ -73,7 +70,8 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
                 binding.enemyPokemonSprite.setImageBitmap(frontSprite)
             }
         }
-        binding.enemyPokemonLevel.text = this.battle.enemyPokemon.level.toString()
+        val pokemonLevelText = "LV "+this.battle.enemyPokemon.level.toString()
+        binding.enemyPokemonLevel.text = pokemonLevelText
         updateHP(this.battle.enemyPokemon, false)
     }
 
