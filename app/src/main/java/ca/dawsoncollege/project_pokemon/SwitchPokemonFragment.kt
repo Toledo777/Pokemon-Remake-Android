@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SwitchPokemonFragment : Fragment() {
     private lateinit var battle: Battle
@@ -49,9 +53,12 @@ class SwitchPokemonFragment : Fragment() {
                 // switch current pokemon with ith pokemon
                 try{
                     this.battle.switchOutPlayerPkm(this.battle.playerTrainer.team[i], i)
-                    val listener = activity as Callbacks
-                    listener.updatePokemonUI(this.battle)
-                    replaceWithMovesFragment()
+                    lifecycleScope.launch(Dispatchers.Main){
+                        this@SwitchPokemonFragment.battle = performEnemyMove(this@SwitchPokemonFragment.battle)
+                        val listener = activity as Callbacks
+                        listener.updatePokemonUI(this@SwitchPokemonFragment.battle)
+                        replaceWithMovesFragment()
+                    }
                 } catch (e: Battle.SamePokemonException){
                     Toast.makeText(context, "${this.battle.playerTrainer.team[i].name} is already in battle!", Toast.LENGTH_SHORT).show()
                 }
