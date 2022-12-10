@@ -23,7 +23,7 @@ interface UserDao {
     fun checkSaveInDatabase(): Boolean
 
     // fetch trainer
-    @Query("SELECT 1 FROM PlayerTrainer")
+    @Query("SELECT * FROM PlayerTrainer")
     fun fetchPlayerSave(): PlayerTrainer
 
     // clear database
@@ -41,7 +41,7 @@ class DataConverter {
     }
 
     @TypeConverter
-    fun jsonToPokeList(jsonString: String): List<String> {
+    fun jsonToPokeList(jsonString: String): ArrayList<Pokemon> {
         val gson = Gson()
         val type = object : TypeToken<ArrayList<Pokemon>>() {}.type
         return gson.fromJson(jsonString, type)

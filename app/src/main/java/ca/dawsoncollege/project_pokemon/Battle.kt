@@ -35,7 +35,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         }
     }
 
-    fun playerMove(move: Move):Boolean {
+    suspend fun playerMove(move: Move):Boolean {
         if (move.target == "HOSTILE") {
             // call attackMove and return success status
             return (attackMove(move, this.playerPokemon, this.enemyPokemon))
