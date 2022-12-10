@@ -47,6 +47,9 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
         binding.switchBtn.setOnClickListener {
             setSwitchPokemonFragment()
         }
+        binding.itemsBtn.setOnClickListener {
+            setItemsFragment()
+        }
     }
 
     private fun setPlayerPokemonUI(){
@@ -102,6 +105,17 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
         switchPokemonFragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, switchPokemonFragment)
+            commit()
+        }
+    }
+
+    private fun setItemsFragment(){
+        val itemsFragment = ItemsFragment()
+        val bundle = Bundle()
+        bundle.putString("battle", convertBattleToJSON(this.battle))
+        itemsFragment.arguments = bundle
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.battle_menu_fragment, itemsFragment)
             commit()
         }
     }
