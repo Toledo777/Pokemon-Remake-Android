@@ -125,6 +125,11 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     @Override
+    override fun updateTeam(battle: Battle) {
+        this.battle = battle
+    }
+
+    @Override
     override fun updateHPUI(battle: Battle) {
         this.battle = battle
         this.playerTrainer = battle.playerTrainer
@@ -146,6 +151,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
 }
 
 interface Callbacks {
+    fun updateTeam(battle: Battle)
     fun updateHPUI(battle: Battle)
     fun updatePokemonUI(battle: Battle)
 }
