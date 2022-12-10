@@ -28,6 +28,7 @@ class ItemsFragment : Fragment() {
         // set listener for potion button
         view.findViewById<Button>(R.id.potion_button).setOnClickListener {
             this.battle.playerUsePotion()
+            this.battle.updatePlayerPokemon()
             val listener = activity as Callbacks
             listener.updateBattleText(this.battle.playerTrainer.playerName +" "+getString(R.string.use_potion))
             listener.updateHPUI(this.battle)

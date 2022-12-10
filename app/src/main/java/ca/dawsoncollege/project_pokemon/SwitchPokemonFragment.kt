@@ -52,10 +52,10 @@ class SwitchPokemonFragment : Fragment() {
             buttons[i].setOnClickListener {
                 // switch current pokemon with ith pokemon
                 try{
+                    val listener = activity as Callbacks
                     this.battle.switchOutPlayerPkm(this.battle.playerTrainer.team[i], i)
                     lifecycleScope.launch(Dispatchers.Main){
-                        this@SwitchPokemonFragment.battle = performEnemyMove(this@SwitchPokemonFragment.battle)
-                        val listener = activity as Callbacks
+                        this@SwitchPokemonFragment.battle = performEnemyMove(this@SwitchPokemonFragment.battle, listener)
                         listener.updatePokemonUI(this@SwitchPokemonFragment.battle)
                         replaceWithMovesFragment()
                     }
