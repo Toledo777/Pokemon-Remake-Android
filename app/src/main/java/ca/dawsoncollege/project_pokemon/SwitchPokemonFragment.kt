@@ -46,13 +46,21 @@ class SwitchPokemonFragment : Fragment() {
         return view
     }
 
+    // set text and listener to button corresponding to pokemon in team
     private fun setPokemons(buttons: ArrayList<Button>){
         for (i in 0 until this.playerTrainer.team.size){
             val pokemonButtonText = "${this.playerTrainer.team[i].name}\n"+
                     "LV ${this.playerTrainer.team[i].level}\n"+
                     "${this.playerTrainer.team[i].hp}/${this.playerTrainer.team[i].battleStat.maxHP}"
             buttons[i].text = pokemonButtonText
-            buttons[i].visibility = View.VISIBLE
+//            buttons[i].visibility = View.VISIBLE
+            buttons[i].setOnClickListener {
+                // switch first pokemon with ith pokemon
+                val temp = this.playerTrainer.team[i]
+                this.playerTrainer.team[i] = this.playerTrainer.team[0]
+                this.playerTrainer.team[0] = temp
+                // trigger UI update using interface (?)
+            }
         }
     }
 
