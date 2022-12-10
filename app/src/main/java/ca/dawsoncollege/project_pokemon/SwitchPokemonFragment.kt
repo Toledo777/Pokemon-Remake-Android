@@ -8,11 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SwitchPokemonFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SwitchPokemonFragment : Fragment() {
     private lateinit var battle: Battle
 
@@ -47,7 +42,9 @@ class SwitchPokemonFragment : Fragment() {
             val pokemonButtonText = "${this.battle.playerTrainer.team[i].name}\n"+
                     "LV ${this.battle.playerTrainer.team[i].level}\n"+
                     "${this.battle.playerTrainer.team[i].hp}/${this.battle.playerTrainer.team[i].battleStat.maxHP}"
+            // set text
             buttons[i].text = pokemonButtonText
+            // set listener
             buttons[i].setOnClickListener {
                 // switch current pokemon with ith pokemon
                 try{
@@ -65,6 +62,7 @@ class SwitchPokemonFragment : Fragment() {
         }
     }
 
+    // start moves fragment and replace current fragment (switch pokemon fragment)
     private fun replaceWithMovesFragment(){
         val battleActivity = activity as BattleActivity
         val movesFragment = MovesFragment()
@@ -76,24 +74,4 @@ class SwitchPokemonFragment : Fragment() {
             commit()
         }
     }
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment SwitchPokemonFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            SwitchPokemonFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 }

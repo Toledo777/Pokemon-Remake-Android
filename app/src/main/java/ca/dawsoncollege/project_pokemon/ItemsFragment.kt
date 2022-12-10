@@ -8,16 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ItemsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ItemsFragment : Fragment() {
     private lateinit var battle: Battle
 
@@ -35,14 +25,17 @@ class ItemsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_items, container, false).rootView
+        // set listener for potion button
         view.findViewById<Button>(R.id.potion_button).setOnClickListener {
             this.battle.playerUsePotion()
             val listener = activity as Callbacks
             listener.updateHPUI(this.battle)
         }
+        // set listener for pokeball button
         view.findViewById<Button>(R.id.pokeball_button).setOnClickListener {
-            // TODO: check if battle = WildBattle and change this
+            // TODO: check if battle = WildBattle first
             val wild = this.battle as WildBattle
+            // if captured
             if (wild.throwPokeball()){
                 Toast.makeText(context, "${this.battle.enemyPokemon.name} has been captured!", Toast.LENGTH_SHORT).show()
                 val listener = activity as Callbacks
@@ -51,24 +44,4 @@ class ItemsFragment : Fragment() {
         }
         return view
     }
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment ItemsFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            ItemsFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 }

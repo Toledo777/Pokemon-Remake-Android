@@ -56,6 +56,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         }
     }
 
+    // set entire player pokemon UI
     private fun setPlayerPokemonUI(){
         binding.playerPokemonName.text = this.battle.playerPokemon.name.toString()
         lifecycleScope.launch(Dispatchers.IO){
@@ -69,6 +70,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         updateHP(this.battle.playerPokemon, true)
     }
 
+    // set entire enemy pokemon UI
     private fun setEnemyPokemonUI(){
         binding.enemyPokemonName.text = this.battle.enemyPokemon.name.toString()
         lifecycleScope.launch(Dispatchers.IO){
@@ -82,6 +84,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         updateHP(this.battle.enemyPokemon, false)
     }
 
+    // update HP UI of given pokemon
     private fun updateHP(pokemon: Pokemon, isPlayer: Boolean){
         val hp = pokemon.hp.toString() + "/" + pokemon.battleStat.maxHP.toString()
         if (isPlayer){
@@ -91,6 +94,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         }
     }
 
+    // start moves fragment
     private fun setMovesFragment(){
         val movesFragment = MovesFragment()
         val bundle = Bundle()
@@ -102,6 +106,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         }
     }
 
+    // start switch pokemon fragment
     private fun setSwitchPokemonFragment(){
         val switchPokemonFragment = SwitchPokemonFragment()
         val bundle = Bundle()
@@ -113,6 +118,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         }
     }
 
+    // start items fragment
     private fun setItemsFragment(){
         val itemsFragment = ItemsFragment()
         val bundle = Bundle()
@@ -124,11 +130,13 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         }
     }
 
+    // callback for fragments to update battle data in this activity
     @Override
     override fun updateTeam(battle: Battle) {
         this.battle = battle
     }
 
+    // callback for fragments to update battle data and HP UI in this activity
     @Override
     override fun updateHPUI(battle: Battle) {
         this.battle = battle
@@ -137,6 +145,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         updateHP(this.battle.enemyPokemon, false)
     }
 
+    // callback for fragments to update battle data and entire battle UI in this activity
     @Override
     override fun updatePokemonUI(battle: Battle) {
         val oldBattle = this.battle
@@ -150,6 +159,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 }
 
+// interface containing callbacks
 interface Callbacks {
     fun updateTeam(battle: Battle)
     fun updateHPUI(battle: Battle)
