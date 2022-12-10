@@ -29,17 +29,23 @@ class ItemsFragment : Fragment() {
         view.findViewById<Button>(R.id.potion_button).setOnClickListener {
             this.battle.playerUsePotion()
             val listener = activity as Callbacks
+            listener.updateBattleText(this.battle.playerTrainer.playerName +" "+getString(R.string.use_potion))
             listener.updateHPUI(this.battle)
         }
         // set listener for pokeball button
         view.findViewById<Button>(R.id.pokeball_button).setOnClickListener {
             // TODO: check if battle = WildBattle first
+            val listener = activity as Callbacks
+            listener.updateBattleText(getString(R.string.throw_pokeball))
             val wild = this.battle as WildBattle
             // if captured
             if (wild.throwPokeball()){
-                Toast.makeText(context, "${this.battle.enemyPokemon.name} has been captured!", Toast.LENGTH_SHORT).show()
-                val listener = activity as Callbacks
+//                Toast.makeText(context, "${this.battle.enemyPokemon.name} has been captured!", Toast.LENGTH_SHORT).show()
+                listener.updateBattleText(getString(R.string.capture_success))
                 listener.updateTeam(this.battle)
+            }
+            else {
+                listener.updateBattleText(getString(R.string.capture_fail))
             }
         }
         return view
