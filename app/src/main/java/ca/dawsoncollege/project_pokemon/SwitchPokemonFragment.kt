@@ -1,10 +1,12 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,16 +19,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SwitchPokemonFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var playerTrainer: PlayerTrainer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        val data = arguments
+        val playerJSON = data!!.getString("player").toString()
+        this.playerTrainer = convertJSONToPlayerTrainer(playerJSON)
     }
 
     override fun onCreateView(
@@ -34,26 +34,41 @@ class SwitchPokemonFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_switch_pokemon, container, false)
+        val view = inflater.inflate(R.layout.fragment_switch_pokemon, container, false).rootView
+        val buttons = arrayListOf<Button>(
+            view.findViewById(R.id.pokemon_1),
+            view.findViewById(R.id.pokemon_2),
+            view.findViewById(R.id.pokemon_3),
+            view.findViewById(R.id.pokemon_4),
+            view.findViewById(R.id.pokemon_5),
+            view.findViewById(R.id.pokemon_6))
+        setMoves(buttons)
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SwitchPokemonFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SwitchPokemonFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setMoves(buttons: ArrayList<Button>){
+        for (i in 0 until this.playerTrainer.team.size){
+            Log.d("SWITCH_PKMN_FRAG", this.playerTrainer.team[i].toString())
+        }
     }
+
+//    companion object {
+//        /**
+//         * Use this factory method to create a new instance of
+//         * this fragment using the provided parameters.
+//         *
+//         * @param param1 Parameter 1.
+//         * @param param2 Parameter 2.
+//         * @return A new instance of fragment SwitchPokemonFragment.
+//         */
+//        // TODO: Rename and change types and number of parameters
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            SwitchPokemonFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
+//    }
 }
