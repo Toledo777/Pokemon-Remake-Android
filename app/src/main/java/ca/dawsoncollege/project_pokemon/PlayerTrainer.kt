@@ -84,9 +84,11 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
     private fun calculateMaxTeamLevel(): Int {
         var maxLevel = this.team[0].level;
 
-        for (i in 1..team.size) {
-            if (this.team[i].level > maxLevel)
-                maxLevel = this.team[i].level
+        if (this.team.size > 1){
+            for (i in 1 until team.size) {
+                if (this.team[i].level > maxLevel)
+                    maxLevel = this.team[i].level
+            }
         }
         return maxLevel;
     }
@@ -95,9 +97,11 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
     private fun calculateMinTeamLevel(): Int {
         var minLevel = this.team[0].level;
 
-        for (i in 1..team.size) {
-            if (this.team[i].level < minLevel)
-                minLevel = this.team[i].level
+        if (this.team.size > 1){
+            for (i in 1 until team.size) {
+                if (this.team[i].level < minLevel)
+                    minLevel = this.team[i].level
+            }
         }
         return minLevel;
     }
@@ -107,7 +111,11 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
         val minLevel = this.calculateMinTeamLevel()
         val maxLevel = this.calculateMaxTeamLevel()
 
-        // return random level for enemy pokemon
-        return Random.nextInt(minLevel, maxLevel)
+        return if(minLevel != maxLevel){
+            // return random level for enemy pokemon
+            Random.nextInt(minLevel, maxLevel)
+        } else {
+            minLevel
+        }
     }
 }

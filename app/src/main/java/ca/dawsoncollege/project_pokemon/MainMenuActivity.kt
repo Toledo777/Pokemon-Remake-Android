@@ -12,7 +12,7 @@ class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
 
     companion object {
-        private const val LOG_TAG = "MAIN_MENU_ACTIVITY_DEV_LOG"
+        private const val LOG_TAG = "MAIN_MENU_ACT_DEV_LOG"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,20 +21,20 @@ class MainMenuActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // TODO: replace commented code when fragments are ready
-        /*
+
         // initialize needed fragments
-        val defaultFragment = MainMenuActivity() // should be a fragment here instead
-        val pokecenterFragment = PokecenterFragment()
-        val changeTeamFragment = ChangeTeamFragment()
-        val tBattleFragment = TrainerBattleFragment()
-        val wBattleFragment = WildBattleFragment()
+        //val defaultFragment = MainMenuActivity() // should be a fragment here instead
+        //val pokecenterFragment = PokecenterFragment()
+//        val changeTeamFragment = ChangeTeamFragment()
+//        val tBattleFragment = TrainerBattleFragment()
+//        val wBattleFragment = BattleActivity()
 
         // fragment to appear by default
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayout3, defaultFragment)
-            commit()
-        }
-        */
+//        supportFragmentManager.beginTransaction().apply {
+//            replace(R.id.main_menu_fragment, defaultFragment)
+//            commit()
+//        }
+
         setButtonListeners()
     }
 
@@ -52,26 +52,33 @@ class MainMenuActivity : AppCompatActivity() {
         binding.changeTeamBtn.setOnClickListener {
             Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayout3, ChangeTeamFragment())
+                replace(R.id.main_menu_fragment, ChangeTeamFragment())
                 addToBackStack(null)
                 commit()
             }
         }
         binding.trainerBattleBtn.setOnClickListener {
 //            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, tBattleFragment)
+//                replace(R.id.main_menu_fragment, tBattleFragment)
 //                addToBackStack(null)
 //                commit()
 //            }
-            Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
         }
         binding.wildBattleBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, wBattleFragment)
-//                addToBackStack(null)
-//                commit()
-//            }
-            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+            /*supportFragmentManager.beginTransaction().apply {
+                replace(R.id.main_menu_fragment, wBattleFragment)
+                addToBackStack(null)
+                commit()
+            }*/
+            // TODO: send code or data representing wild battle and not trainer
+            try {
+                val intent = Intent(this, BattleActivity::class.java)
+                startActivity(intent)
+            } catch (exc: ActivityNotFoundException){
+                Log.e(LOG_TAG, "Could not open BattleActivity", exc)
+            }
+            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
         }
     }
 }

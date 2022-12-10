@@ -61,7 +61,7 @@ class IntroActivity : AppCompatActivity() {
                 // add playerTrainer to SharedPreferences
                 val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreference.edit()
-                editor.putString("playerTrainer", convertToJSON(this.playerTrainer))
+                editor.putString("playerTrainer", convertPlayerTrainerToJSON(this.playerTrainer))
                 editor.apply()
                 Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()
 
@@ -69,7 +69,7 @@ class IntroActivity : AppCompatActivity() {
             }
 //            val json = sharedPreference.getString("playerTrainer", "")
 //            if (json != ""){
-//                playerTrainer = convertToPlayerTrainer(json!!)
+//                playerTrainer = convertJSONToPlayerTrainer(json!!)
 //                Toast.makeText(applicationContext, "Hi " + playerTrainer.name, Toast.LENGTH_SHORT).show()
 //            }
         }
@@ -107,6 +107,6 @@ class IntroActivity : AppCompatActivity() {
 
 // extension functions
 // converts PlayerTrainer object into a JSON string
-fun convertToJSON(playerTrainer: PlayerTrainer): String = Gson().toJson(playerTrainer)
+fun convertPlayerTrainerToJSON(playerTrainer: PlayerTrainer): String = Gson().toJson(playerTrainer)
 // converts JSON string back into a PlayerTrainer object
-fun convertToPlayerTrainer(json: String) = Gson().fromJson(json, object: TypeToken<PlayerTrainer>(){}.type) as PlayerTrainer
+fun convertJSONToPlayerTrainer(json: String) = Gson().fromJson(json, object: TypeToken<PlayerTrainer>(){}.type) as PlayerTrainer

@@ -41,9 +41,9 @@ class Pokemon(
         }
         this.name = if (this.name == null) this.species else this.name!!.lowercase()
         this.types = this.data.types
-        this.hp = this.data.baseStateMaxHp
         this.experience = this.level.toDouble().pow(3.0).toInt()
         this.battleStat = getBattleStats()
+        this.hp = this.battleStat.maxHP
     }
 
     // Add initial moves
@@ -91,7 +91,8 @@ class Pokemon(
             details.meta.healing,
             details.damage_class.name.uppercase(),
             details.type.name,
-            if (details.target.name == "selected-pokemon") "OPPONENT" else "USER",
+            if (details.target.name == "selected-pokemon" || details.target.name.contains("opponent"))
+                "OPPONENT" else "USER",
             details.meta.ailment.name
         )
     }

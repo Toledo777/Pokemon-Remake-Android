@@ -18,30 +18,30 @@
 
         <RadioButton
             android:id="@+id/grass_starter_img"
-            android:button="@null"
+            android:button="@drawable/ic_launcher_foreground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/grass_starter_pokemon"
-            android:background="@mipmap/ic_launcher" />
+            android:background="@null" />
 
         <RadioButton
             android:id="@+id/fire_starter_img"
-            android:button="@null"
+            android:button="@drawable/ic_launcher_foreground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/water_starter_pokemon"
-            android:background="@mipmap/ic_launcher" />
+            android:background="@null" />
 
         <RadioButton
             android:id="@+id/water_starter_img"
-            android:button="@null"
+            android:button="@drawable/ic_launcher_foreground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/fire_starter_pokemon"
-            android:background="@mipmap/ic_launcher" />
+            android:background="@null" />
     </RadioGroup>
 
     <TextView
