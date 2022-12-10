@@ -42,13 +42,17 @@ class SwitchPokemonFragment : Fragment() {
             view.findViewById(R.id.pokemon_4),
             view.findViewById(R.id.pokemon_5),
             view.findViewById(R.id.pokemon_6))
-        setMoves(buttons)
+        setPokemons(buttons)
         return view
     }
 
-    private fun setMoves(buttons: ArrayList<Button>){
+    private fun setPokemons(buttons: ArrayList<Button>){
         for (i in 0 until this.playerTrainer.team.size){
-            Log.d("SWITCH_PKMN_FRAG", this.playerTrainer.team[i].toString())
+            val pokemonButtonText = "${this.playerTrainer.team[i].name}\n"+
+                    "LV ${this.playerTrainer.team[i].level}\n"+
+                    "${this.playerTrainer.team[i].hp}/${this.playerTrainer.team[i].battleStat.maxHP}"
+            buttons[i].text = pokemonButtonText
+            buttons[i].visibility = View.VISIBLE
         }
     }
 
