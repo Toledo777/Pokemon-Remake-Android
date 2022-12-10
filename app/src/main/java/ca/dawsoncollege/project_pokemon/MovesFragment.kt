@@ -64,8 +64,8 @@ class MovesFragment : Fragment() {
                 if (moveList[i].PP > 0){
                     if (this.battle.playerPokemon.hp != 0) {
                         playTurn(moveList, buttons, i)
-                        val listener = activity as MovesCallbacks
-                        listener.updateUI(this.battle)
+                        val listener = activity as Callbacks
+                        listener.updateHPUI(this.battle)
                     } else {
                         Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
                     }
@@ -102,6 +102,7 @@ class MovesFragment : Fragment() {
             }
         }
         this.battle.checkPokemonFainted()
+        this.battle.playerTrainer.team[0] = this.battle.playerPokemon
     }
 
 //    companion object {
