@@ -38,7 +38,7 @@
     <string name="capture_success">has been caught!</string>
     <string name="use_potion">used potion</string>
     <string name="pp_out">Out of PP!</string>
-    <string name="fainted">is  fainted!</string>
-    <string name="played">played</string>
+    <string name="fainted">is fainted!</string>
+    <string name="used">used</string>
     <string name="miss_move">missed their move!</string>
 </resources>
