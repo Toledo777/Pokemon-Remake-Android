@@ -13,8 +13,8 @@ object TrainerConstants {
 
 @Entity
 data class PlayerTrainer(@PrimaryKey val playerName: String) {
-    @ColumnInfo(name = "team") val team: ArrayList<Pokemon> = ArrayList(TrainerConstants.MAX_TEAM_CAPACITY)
-    @ColumnInfo(name = "pokemon_collection") private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
+    @ColumnInfo(name = "team") var team: ArrayList<Pokemon> = ArrayList(TrainerConstants.MAX_TEAM_CAPACITY)
+    @ColumnInfo(name = "pokemon_collection") var pokemonCollection: ArrayList<Pokemon> = ArrayList()
 
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
