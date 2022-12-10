@@ -57,19 +57,18 @@ class MovesFragment : Fragment() {
         val moveList = this.battle.playerPokemon.moveList
         for (i in 0 until this.battle.playerPokemon.NUMBER_OF_MOVES){
             val moveButtonText = "${moveList[i].name.replace('-', ' ')}\n" +
-                    "${moveList[i].PP}/${moveList[i].maxPP}"
+                    "${moveList[i].PP}/${moveList[i].maxPP}\n${moveList[i].type}"
             buttons[i].text = moveButtonText
 
             buttons[i].setOnClickListener {
                 if (moveList[i].PP > 0){
-                    this.battle.playerMove(moveList[i])
-                    Log.d("MOVES_FRAG", moveList[i].toString())
-                    moveList[i].PP -= 1
-                    updateMovePP(buttons[i], moveList[i])
-                    this.battle.playEnemyMove()
-                    this.battle.checkPokemonFainted()
-                    val listener = activity as mInterface
-                    listener.updateUI(this.battle)
+                    if (this.battle.playerPokemon.hp != 0) {
+                        playTurn(moveList, buttons, i)
+                        val listener = activity as mInterface
+                        listener.updateUI(this.battle)
+                    } else {
+                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
                 }
@@ -78,10 +77,32 @@ class MovesFragment : Fragment() {
     }
 
     private fun updateMovePP(button: Button, move: Move) {
-            val moveButtonText = "${move.name.replace('-', ' ')}\n" +
-                    "${move.PP}/${move.maxPP}"
-            button.text = moveButtonText
+        val moveButtonText = "${move.name.replace('-', ' ')}\n" +
+                "${move.PP}/${move.maxPP}\n${move.type}"
+        button.text = moveButtonText
+    }
+
+    // TODO: to optimize?
+    private fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
+        if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
+            this.battle.playerMove(moveList[i])
+            Log.d("MOVES_FRAG", moveList[i].toString())
+            moveList[i].PP -= 1
+            updateMovePP(buttons[i], moveList[i])
+            this.battle.playEnemyMove()
+        } else {
+            this.battle.playEnemyMove()
+            if (this.battle.playerPokemon.hp != 0){
+                this.battle.playerMove(moveList[i])
+                Log.d("MOVES_FRAG", moveList[i].toString())
+                moveList[i].PP -= 1
+                updateMovePP(buttons[i], moveList[i])
+            } else {
+                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+            }
         }
+        this.battle.checkPokemonFainted()
+    }
 
 //    companion object {
 //        /**
