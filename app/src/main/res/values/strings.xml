@@ -29,5 +29,7 @@
     <string name="move_placeholder">Move \n0/0</string>
     <string name="switch_pokemon">PKMN</string>
     <string name="items">Items</string>
+    <string name="potion">Potion</string>
+    <string name="pokeball">Pokeball</string>
     <string name="run">Run</string>
 </resources>
