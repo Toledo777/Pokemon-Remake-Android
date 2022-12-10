@@ -1,14 +1,17 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.content.Context
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlin.random.Random
 
-
-class PlayerTrainer(val playerName: String) {
-    val MAX_TEAM_CAPACITY = 6
-    val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
-    private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
-    private val STARTER_LEVEL = 5
+@Entity
+data class PlayerTrainer(@PrimaryKey val playerName: String) {
+    @ColumnInfo(name = "max_team_capacity") val MAX_TEAM_CAPACITY = 6
+    @ColumnInfo(name = "team") val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
+    @ColumnInfo(name = "pokemon_collection") private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
+    @ColumnInfo(name = "starter_level") private val STARTER_LEVEL = 5
 
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {

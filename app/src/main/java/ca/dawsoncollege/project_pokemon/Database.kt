@@ -13,5 +13,11 @@ abstract class AppDatabase : RoomDatabase() {
 
 @Dao
 interface UserDao {
+    // save trainer to db
+    @Insert
+    fun savePlayerTrainer(player: PlayerTrainer)
 
+    // Check if a save is present in the database
+    @Query("SELECT EXISTS (SELECT 1 FROM PlayerTrainer)")
+    fun checkSaveInDatabase(): Boolean
 }
