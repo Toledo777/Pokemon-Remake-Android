@@ -50,6 +50,10 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
         binding.itemsBtn.setOnClickListener {
             setItemsFragment()
         }
+        binding.runBtn.setOnClickListener {
+            // TODO: save/send PlayerTrainer data back
+            finish()
+        }
     }
 
     private fun setPlayerPokemonUI(){
