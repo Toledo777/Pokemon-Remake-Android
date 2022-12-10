@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/activity_battle.xml" value="0.264" />
         <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/activity_main.xml" value="0.19655797101449277" />
+        <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/battle_main.xml" value="0.253125" />
+        <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/fragment_battle.xml" value="0.25416666666666665" />
+        <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/fragment_items.xml" value="0.14947916666666666" />
+        <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/fragment_moves.xml" value="0.264" />
+        <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/fragment_switch_pokemon.xml" value="0.25416666666666665" />
         <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/intro_sequence.xml" value="0.19655797101449277" />
         <entry key="..\:/temp/project-pokemon-dawson/app/src/main/res/layout/main_menu.xml" value="0.19655797101449277" />
       </map>
