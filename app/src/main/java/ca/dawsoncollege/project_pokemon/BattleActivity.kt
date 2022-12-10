@@ -162,7 +162,6 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     @Override
     override fun updateBattleText(message: String) {
         binding.battleText.text = message;
-        TODO("Not yet implemented")
     }
 }
 

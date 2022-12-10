@@ -46,6 +46,8 @@ class MovesFragment : Fragment() {
         for (i in 0 until this.battle.playerPokemon.NUMBER_OF_MOVES){
             val moveButtonText = "${moveList[i].name.replace('-', ' ')}\n" +
                     "${moveList[i].PP}/${moveList[i].maxPP}\n${moveList[i].type}"
+
+            val listener = activity as Callbacks
             // set text
             buttons[i].text = moveButtonText
             // set listener
@@ -60,13 +62,14 @@ class MovesFragment : Fragment() {
                             playTurn(moveList, buttons, i)
                         }
                         // callback to update HP UI in BattleActivity
-                        val listener = activity as Callbacks
                         listener.updateHPUI(this.battle)
                     } else {
-                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+                        this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
                     }
                 } else {
-                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
+                    listener.updateBattleText(getString(R.string.pp_out))
                 }
             }
         }
