@@ -84,27 +84,35 @@ class MovesFragment : Fragment() {
     private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
         // check who attacks first
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
-            this.battle.playerMove(moveList[i])
-            Log.d("MOVES_FRAG", moveList[i].toString())
-            moveList[i].PP -= 1
-            updateMovePP(buttons[i], moveList[i])
-            // if enemy pokemon is not fainted
-            if (!this.battle.checkPokemonFainted())
-                this.battle.playEnemyMove()
+            performPlayerMove(moveList, buttons, i)
+            this.battle = performEnemyMove(this.battle)
         } else {
-            this.battle.playEnemyMove()
-            // if player pokemon is not fainted
-            if (this.battle.playerPokemon.hp != 0){
-                this.battle.playerMove(moveList[i])
-                Log.d("MOVES_FRAG", moveList[i].toString())
-                moveList[i].PP -= 1
-                updateMovePP(buttons[i], moveList[i])
-                this.battle.checkPokemonFainted()
-            } else {
-                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
-            }
+            this.battle = performEnemyMove(this.battle)
+
         }
         // update player data
         this.battle.updatePlayerPokemon()
     }
+
+    private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
+        // if player pokemon is not fainted
+        if (this.battle.playerPokemon.hp != 0){
+            this.battle.playerMove(moveList[i])
+            Log.d("MOVES_FRAG", moveList[i].toString())
+            moveList[i].PP -= 1
+            updateMovePP(buttons[i], moveList[i])
+            if (this.battle.checkPokemonFainted()) // TODO: end battle
+                Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+// extension function
+suspend fun performEnemyMove(battle: Battle): Battle{
+    // if enemy pokemon is not fainted
+    if (!battle.checkPokemonFainted())
+        battle.playEnemyMove()
+    return battle
 }
