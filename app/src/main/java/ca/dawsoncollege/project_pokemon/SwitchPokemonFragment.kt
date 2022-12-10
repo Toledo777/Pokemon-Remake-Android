@@ -1,17 +1,12 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.Toast
 
 /**
  * A simple [Fragment] subclass.
@@ -19,14 +14,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SwitchPokemonFragment : Fragment() {
-    private lateinit var playerTrainer: PlayerTrainer
+    private lateinit var battle: Battle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val data = arguments
-        val playerJSON = data!!.getString("player").toString()
-        this.playerTrainer = convertJSONToPlayerTrainer(playerJSON)
+        val battleJSON = data!!.getString("battle").toString()
+        this.battle = convertJSONToWildBattle(battleJSON)
     }
 
     override fun onCreateView(
@@ -48,19 +43,40 @@ class SwitchPokemonFragment : Fragment() {
 
     // set text and listener to button corresponding to pokemon in team
     private fun setPokemons(buttons: ArrayList<Button>){
-        for (i in 0 until this.playerTrainer.team.size){
-            val pokemonButtonText = "${this.playerTrainer.team[i].name}\n"+
-                    "LV ${this.playerTrainer.team[i].level}\n"+
-                    "${this.playerTrainer.team[i].hp}/${this.playerTrainer.team[i].battleStat.maxHP}"
+        for (i in 0 until this.battle.playerTrainer.team.size){
+            val pokemonButtonText = "${this.battle.playerTrainer.team[i].name}\n"+
+                    "LV ${this.battle.playerTrainer.team[i].level}\n"+
+                    "${this.battle.playerTrainer.team[i].hp}/${this.battle.playerTrainer.team[i].battleStat.maxHP}"
             buttons[i].text = pokemonButtonText
 //            buttons[i].visibility = View.VISIBLE
-            buttons[i].setOnClickListener {
-                // switch first pokemon with ith pokemon
-                val temp = this.playerTrainer.team[i]
-                this.playerTrainer.team[i] = this.playerTrainer.team[0]
-                this.playerTrainer.team[0] = temp
-                // trigger UI update using interface (?)
+            if (i == 0)
+                buttons[i].setOnClickListener {
+                    Toast.makeText(context, "${this.battle.playerPokemon.name} is already in battle!", Toast.LENGTH_SHORT).show()
+                }
+            else{
+                buttons[i].setOnClickListener {
+                    // switch first pokemon with ith pokemon
+                    val switchTo = this.battle.playerTrainer.team[i]
+                    this.battle.playerTrainer.team[i] = this.battle.playerTrainer.team[0]
+                    this.battle.playerTrainer.team[0] = switchTo
+                    this.battle.playerPokemon = switchTo
+                    val listener = activity as Callbacks
+                    listener.updatePokemonUI(this.battle)
+                    replaceWithMovesFragment()
+                }
             }
+        }
+    }
+
+    private fun replaceWithMovesFragment(){
+        val battleActivity = activity as BattleActivity
+        val movesFragment = MovesFragment()
+        val bundle = Bundle()
+        bundle.putString("battle", convertBattleToJSON(this.battle))
+        movesFragment.arguments = bundle
+        battleActivity.supportFragmentManager.beginTransaction().apply {
+            replace(R.id.battle_menu_fragment, movesFragment)
+            commit()
         }
     }
 
