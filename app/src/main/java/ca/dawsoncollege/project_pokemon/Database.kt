@@ -31,7 +31,7 @@ interface UserDao {
     fun delete(playerTrainer: PlayerTrainer)
 }
 
-// type convert to convert pokemon arraylist to json and vice versa
+// type convert to convert pok  emon arraylist to json and vice versa
 class DataConverter {
     @TypeConverter
     fun pokeListToJson(pokeList: ArrayList<Pokemon>): String {

@@ -6,16 +6,19 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlin.random.Random
 
+object TrainerConstants {
+    const val STARTER_LEVEL = 5;
+    const val MAX_TEAM_CAPACITY= 6;
+}
+
 @Entity
 data class PlayerTrainer(@PrimaryKey val playerName: String) {
-    @ColumnInfo(name = "max_team_capacity") val MAX_TEAM_CAPACITY = 6
-    @ColumnInfo(name = "team") val team: ArrayList<Pokemon> = ArrayList(MAX_TEAM_CAPACITY)
+    @ColumnInfo(name = "team") val team: ArrayList<Pokemon> = ArrayList(TrainerConstants.MAX_TEAM_CAPACITY)
     @ColumnInfo(name = "pokemon_collection") private val pokemonCollection: ArrayList<Pokemon> = ArrayList()
-    @ColumnInfo(name = "starter_level") private val STARTER_LEVEL = 5
 
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
-        val starter = Pokemon(STARTER_LEVEL, species, name)
+        val starter = Pokemon(TrainerConstants.STARTER_LEVEL, species, name)
 
         this.team.add(starter)
     }
@@ -50,7 +53,7 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
         // capture is successful if rand num was less then capture prob
         if (captureProb >= rand) {
             // check if space on team
-            if (this.team.size < MAX_TEAM_CAPACITY) {
+            if (this.team.size < TrainerConstants.MAX_TEAM_CAPACITY) {
                 this.team.add(wildPokemon);
             }
             // add to collection
