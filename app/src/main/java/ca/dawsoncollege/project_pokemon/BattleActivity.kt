@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
 
-class BattleActivity : AppCompatActivity(), MovesCallbacks {
+class BattleActivity : AppCompatActivity(), Callbacks {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var battle: Battle
     private lateinit var playerTrainer: PlayerTrainer
@@ -105,7 +105,7 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
     private fun setSwitchPokemonFragment(){
         val switchPokemonFragment = SwitchPokemonFragment()
         val bundle = Bundle()
-        bundle.putString("player", convertPlayerTrainerToJSON(this.battle.playerTrainer))
+        bundle.putString("battle", convertBattleToJSON(this.battle))
         switchPokemonFragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, switchPokemonFragment)
@@ -125,16 +125,29 @@ class BattleActivity : AppCompatActivity(), MovesCallbacks {
     }
 
     @Override
-    override fun updateUI(battle: Battle) {
+    override fun updateHPUI(battle: Battle) {
         this.battle = battle
         this.playerTrainer = battle.playerTrainer
         updateHP(this.battle.playerPokemon, true)
         updateHP(this.battle.enemyPokemon, false)
     }
+
+    @Override
+    override fun updatePokemonUI(battle: Battle) {
+        val oldBattle = this.battle
+        this.battle = battle
+        if (this.battle.playerPokemon != oldBattle.playerPokemon){
+            setPlayerPokemonUI()
+        }
+        if (this.battle.enemyPokemon != oldBattle.enemyPokemon){
+            setEnemyPokemonUI()
+        }
+    }
 }
 
-interface MovesCallbacks {
-    fun updateUI(battle: Battle)
+interface Callbacks {
+    fun updateHPUI(battle: Battle)
+    fun updatePokemonUI(battle: Battle)
 }
 
 // extension functions
