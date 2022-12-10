@@ -39,8 +39,5 @@
     <string name="use_potion">used potion</string>
     <string name="pp_out">Out of PP!</string>
     <string name="fainted">is  fainted!</string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
-
+    <string name="played_move">played move</string>
 </resources>

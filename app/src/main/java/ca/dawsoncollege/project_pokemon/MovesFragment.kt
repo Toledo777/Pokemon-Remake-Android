@@ -86,8 +86,13 @@ class MovesFragment : Fragment() {
     // play a turn
     private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
         // check who attacks first
+        val listener = activity as Callbacks
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
             this.battle.playerMove(moveList[i])
+
+            // set text for move played
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.played_move) + " " + moveList[i].name) }
+
             Log.d("MOVES_FRAG", moveList[i].toString())
             moveList[i].PP -= 1
             updateMovePP(buttons[i], moveList[i])
@@ -96,6 +101,7 @@ class MovesFragment : Fragment() {
                 this.battle.playEnemyMove()
         } else {
             this.battle.playEnemyMove()
+
             // if player pokemon is not fainted
             if (this.battle.playerPokemon.hp != 0){
                 this.battle.playerMove(moveList[i])
@@ -104,7 +110,8 @@ class MovesFragment : Fragment() {
                 updateMovePP(buttons[i], moveList[i])
                 this.battle.checkPokemonFainted()
             } else {
-                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
             }
         }
         // update player data
