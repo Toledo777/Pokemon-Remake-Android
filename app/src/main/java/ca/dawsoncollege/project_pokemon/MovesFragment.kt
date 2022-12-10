@@ -88,18 +88,10 @@ class MovesFragment : Fragment() {
         // check who attacks first
         val listener = activity as Callbacks
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
-            // move success
-            if(this.battle.playerMove(moveList[i])) {
-                this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.played) + " " + moveList[i].name) }
-            }
-            // missed move
-            else {
-                this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move))}
-            }
 
-            Log.d("MOVES_FRAG", moveList[i].toString())
-            moveList[i].PP -= 1
-            updateMovePP(buttons[i], moveList[i])
+            // attempt move, set text, update pp and button
+           playPlayerMove(moveList[i], buttons[i])
+
             // if enemy pokemon is not fainted
             if (!this.battle.checkPokemonFainted())
                 this.battle.playEnemyMove()
@@ -117,10 +109,8 @@ class MovesFragment : Fragment() {
 
             // if player pokemon is not fainted
             if (this.battle.playerPokemon.hp != 0){
-                this.battle.playerMove(moveList[i])
-                Log.d("MOVES_FRAG", moveList[i].toString())
-                moveList[i].PP -= 1
-                updateMovePP(buttons[i], moveList[i])
+                // attempt move, set text, update pp and button
+                playPlayerMove(moveList[i], buttons[i])
                 this.battle.checkPokemonFainted()
             } else {
 //                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
@@ -129,5 +119,20 @@ class MovesFragment : Fragment() {
         }
         // update player data
         this.battle.updatePlayerPokemon()
+    }
+
+    // helper method, plays move and sets battle text for it
+    private suspend fun playPlayerMove(move: Move, button: Button) {
+        val listener = activity as Callbacks
+        if(this.battle.playerMove(move)) {
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.played) + " " + move.name) }
+        }
+        // missed move
+        else {
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move))}
+        }
+        Log.d("MOVES_FRAG", move.toString())
+        move.PP -= 1
+        updateMovePP(button, move)
     }
 }
