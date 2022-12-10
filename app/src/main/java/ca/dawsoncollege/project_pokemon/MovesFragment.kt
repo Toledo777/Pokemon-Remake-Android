@@ -102,7 +102,7 @@ class MovesFragment : Fragment() {
             }
         }
         this.battle.checkPokemonFainted()
-        this.battle.playerTrainer.team[0] = this.battle.playerPokemon
+        this.battle.updatePlayerPokemon()
     }
 
 //    companion object {
