@@ -64,7 +64,7 @@ class MovesFragment : Fragment() {
                 if (moveList[i].PP > 0){
                     if (this.battle.playerPokemon.hp != 0) {
                         playTurn(moveList, buttons, i)
-                        val listener = activity as mInterface
+                        val listener = activity as MovesCallbacks
                         listener.updateUI(this.battle)
                     } else {
                         Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()

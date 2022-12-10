@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
 
-class BattleActivity : AppCompatActivity(), mInterface {
+class BattleActivity : AppCompatActivity(), MovesCallbacks {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var battle: Battle
     private lateinit var playerTrainer: PlayerTrainer
@@ -37,9 +37,15 @@ class BattleActivity : AppCompatActivity(), mInterface {
                 withContext(Dispatchers.Main){
                     setPlayerPokemonUI()
                     setEnemyPokemonUI()
-                    setDefaultFragment()
+                    setMovesFragment()
                 }
             }
+        }
+        binding.movesBtn.setOnClickListener {
+            setMovesFragment()
+        }
+        binding.switchBtn.setOnClickListener {
+            setSwitchPokemonFragment()
         }
     }
 
@@ -80,7 +86,7 @@ class BattleActivity : AppCompatActivity(), mInterface {
         }
     }
 
-    private fun setDefaultFragment(){
+    private fun setMovesFragment(){
         val movesFragment = MovesFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
@@ -91,15 +97,27 @@ class BattleActivity : AppCompatActivity(), mInterface {
         }
     }
 
+    private fun setSwitchPokemonFragment(){
+        val switchPokemonFragment = SwitchPokemonFragment()
+        val bundle = Bundle()
+        bundle.putString("player", convertPlayerTrainerToJSON(this.battle.playerTrainer))
+        switchPokemonFragment.arguments = bundle
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.battle_menu_fragment, switchPokemonFragment)
+            commit()
+        }
+    }
+
     @Override
     override fun updateUI(battle: Battle) {
         this.battle = battle
+        this.playerTrainer = battle.playerTrainer
         updateHP(this.battle.playerPokemon, true)
         updateHP(this.battle.enemyPokemon, false)
     }
 }
 
-interface mInterface {
+interface MovesCallbacks {
     fun updateUI(battle: Battle)
 }
 
