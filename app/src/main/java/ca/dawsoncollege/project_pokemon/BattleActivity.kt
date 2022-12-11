@@ -39,8 +39,8 @@ class BattleActivity : AppCompatActivity(), Callbacks {
 
         // TODO: if trainer battle, init enemy trainer (doesn't need to be top level)
         lifecycleScope.launch(Dispatchers.IO) {
-            if (this@BattleActivity.userDao.checkSaveInDatabase()) {
-                playerTrainer = this@BattleActivity.userDao.fetchPlayerSave()
+            if (this@BattleActivity.userDao.fetchPlayerSave() != null) {
+                playerTrainer = this@BattleActivity.userDao.fetchPlayerSave()!!
                 this@BattleActivity.battle = WildBattle(playerTrainer)
                 withContext(Dispatchers.Main) {
                     setPlayerPokemonUI()

@@ -43,7 +43,7 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
             launch(Dispatchers.IO) {
 
                 _binding!!.recyclerView1.init(
-                    this@ChangeTeamFragment.userDao.fetchPlayerSave().team,
+                    this@ChangeTeamFragment.userDao.fetchPlayerSave()!!.team,
                     binding.emptyListTextView1,
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 )
@@ -51,7 +51,7 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
             launch(Dispatchers.IO) {
 
                 _binding!!.recyclerView2.init(
-                    this@ChangeTeamFragment.userDao.fetchPlayerSave().pokemonCollection,
+                    this@ChangeTeamFragment.userDao.fetchPlayerSave()!!.pokemonCollection,
                     binding.emptyListTextView2,
                     GridLayoutManager(context, 6)
                 )
@@ -76,7 +76,7 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
         emptyTextView.setOnDragListener(adapter.dragInstance)
         this.setOnDragListener(adapter.dragInstance)
         if (list.isEmpty()) {
-            emptyTextView.visibility = View.VISIBLE;
+            emptyTextView.visibility = View.VISIBLE
         }
     }
 

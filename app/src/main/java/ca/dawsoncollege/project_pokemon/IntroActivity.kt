@@ -75,7 +75,7 @@ class IntroActivity : AppCompatActivity() {
             if (pickStarter()) {
                 // add playerTrainer to SharedPreferences
                 runBlocking(Dispatchers.IO) {
-                    if (userDao.checkSaveInDatabase()) userDao.delete()
+                    if (userDao.fetchPlayerSave() != null) userDao.delete()
                     userDao.savePlayerTrainer(this@IntroActivity.playerTrainer)
                 }
                 Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()

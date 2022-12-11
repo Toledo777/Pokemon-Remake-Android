@@ -17,13 +17,9 @@ interface UserDao {
     @Insert
     fun savePlayerTrainer(player: PlayerTrainer)
 
-    // Check if a save is present in the database
-    @Query("SELECT EXISTS (SELECT * FROM PlayerTrainer)")
-    fun checkSaveInDatabase(): Boolean
-
     // fetch trainer
     @Query("SELECT * FROM PlayerTrainer")
-    fun fetchPlayerSave(): PlayerTrainer
+    fun fetchPlayerSave(): PlayerTrainer?
 
     // clear database
     @Query("DELETE FROM PlayerTrainer")
