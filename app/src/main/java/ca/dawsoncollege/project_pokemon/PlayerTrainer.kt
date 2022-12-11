@@ -19,7 +19,6 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
         val starter = Pokemon(TrainerConstants.STARTER_LEVEL, species, name)
-
         this.team.add(starter)
     }
     // heal all pokemon

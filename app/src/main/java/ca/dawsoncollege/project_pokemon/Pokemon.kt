@@ -18,7 +18,7 @@ class Pokemon(
     var oldLevel: Int = 0
     var data: PokemonData
     var battleStat: BattleStats
-    var experience: Int = 0
+    var experience: Int = level.toDouble().pow(3.0).toInt()
     var hp: Int = 0
     var types: List<String>
     val NUMBER_OF_MOVES = 4
