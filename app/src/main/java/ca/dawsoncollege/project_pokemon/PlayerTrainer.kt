@@ -35,15 +35,6 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
         }
     }
 
-    // TO-DO check if pokemon in box should be healed
-    // send pokemon from team to box
-    fun sendToBox(oldPokemon: Pokemon) {
-        // send pokemon from team to box
-        this.team.remove(oldPokemon)
-        // add team pokemon to box
-        pokemonCollection.add(oldPokemon)
-    }
-
     // boolean to get wild pokemon catch success or fail
     fun catchPokemon(playerPokemon: Pokemon, wildPokemon: Pokemon): Boolean {
         // calculate probability (in percentage?)
@@ -63,21 +54,6 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
             return true;
         }
         return false;
-    }
-
-    // switch pokemon on team with one in collection
-    // NOTE: The new pokemon is gotten using index for now, it can be changed later
-    // to get a pokemon object if more convenient
-    fun changeTeam(oldPokemon: Pokemon, newPokemonIndex: Int) {
-        // send pokemon from team to box
-        this.team.remove(oldPokemon)
-        // add team pokemon to box
-        pokemonCollection.add(oldPokemon)
-
-        // remove from box
-        val newPokemon = pokemonCollection.removeAt(newPokemonIndex)
-        // add to team
-        this.team.add(newPokemon)
     }
 
     // get highest level on players team

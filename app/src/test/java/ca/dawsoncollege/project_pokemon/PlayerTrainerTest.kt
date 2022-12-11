@@ -103,4 +103,6 @@ class PlayerTrainerTest {
 
         assertFalse(trainer.team.contains(wildPokemon))
     }
+
+    @Test
 }
