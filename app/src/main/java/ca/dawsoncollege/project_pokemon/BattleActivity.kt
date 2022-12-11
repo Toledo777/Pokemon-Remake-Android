@@ -204,6 +204,12 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     @Override
+    override fun reloadMovesFragment(battle: Battle) {
+        this.battle = battle
+        this.setMovesFragment()
+    }
+
+    @Override
     override fun onBackPressed() {
         // super.onBackPressed();
     }
@@ -215,6 +221,7 @@ interface Callbacks {
     fun updateHPUI(battle: Battle)
     fun updatePokemonUI(battle: Battle)
     fun updateBattleText(message: String)
+    fun reloadMovesFragment(battle: Battle)
 }
 
 // extension functions
