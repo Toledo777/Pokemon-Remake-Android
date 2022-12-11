@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken
 // db
 @Database(entities = [PlayerTrainer::class], version = 1)
 @TypeConverters(DataConverter::class)
-
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 }
@@ -29,13 +28,6 @@ interface UserDao {
     // clear database
     @Delete
     fun delete(playerTrainer: PlayerTrainer)
-
-    // Fetch methods for team and collection
-    @Query("SELECT team FROM PlayerTrainer")
-    fun fetchTeam(): ArrayList<Pokemon>
-
-    @Query("SELECT pokemon_collection FROM PlayerTrainer")
-    fun fetchCollection(): ArrayList<Pokemon>
 
     // Update methods for team and collection
     @Query("UPDATE PlayerTrainer SET team = :updatedTeam")
