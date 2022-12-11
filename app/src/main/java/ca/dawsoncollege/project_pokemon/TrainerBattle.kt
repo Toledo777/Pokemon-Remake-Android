@@ -26,10 +26,14 @@ class TrainerBattle(playerTrainer: PlayerTrainer, val enemyTrainer: EnemyTrainer
     }
 
     // switch out enemy's pokemon when it has reached 0 hp
-    fun switchOutEnemyPkm() {
-        // remove fainted pokemon from team
-        enemyTrainer.team.remove(enemyPokemon)
-        // set next pokemon as enemy
-        enemyPokemon = enemyTrainer.team[0];
+    fun switchOutEnemyPkm(): Boolean {
+        return if (enemyTrainer.team.isNotEmpty()){
+            // remove fainted pokemon from team
+            enemyTrainer.team.remove(enemyPokemon)
+            // set next pokemon as enemy
+            enemyPokemon = enemyTrainer.team[0];
+            true
+        } else
+            false
     }
 }
