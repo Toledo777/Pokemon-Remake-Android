@@ -34,10 +34,16 @@ class TrainerBattle(playerTrainer: PlayerTrainer, val enemyTrainer: EnemyTrainer
     }
 
     // switch out player's pokemon when it has reached 0 hp
-    fun switchOutPlayerPkm() {
+    // returns true if pokemon > 0 was found, false if not
+    fun switchOutPlayerPkm():Boolean {
         // remove fainted pokemon from team
-        playerTrainer.team.remove(playerPokemon)
-        // set next pokemon
-        playerPokemon = playerTrainer.team[0];
+        for (pokemon in playerTrainer.team) {
+            if (pokemon.hp > 0) {
+                playerPokemon = pokemon
+                return true
+            }
+        }
+        // no pokemon was found
+        return false
     }
 }
