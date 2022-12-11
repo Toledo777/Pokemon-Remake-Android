@@ -1,6 +1,7 @@
 package ca.dawsoncollege.project_pokemon
 
 import android.content.ClipData
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
@@ -22,8 +23,12 @@ interface CustomListener {
     fun setEmptyList(visibility: Int, recyclerView: Int, emptyTextView: Int)
 }
 
-class CustomAdapter(private var list: List<Pokemon>, private val listener: CustomListener?, private val userDao: UserDao)
-    : RecyclerView.Adapter<CustomAdapter.CustomViewHolder?>(), View.OnTouchListener {
+class CustomAdapter(
+    private var list: List<Pokemon>,
+    private val listener: CustomListener?,
+    private val userDao: UserDao,
+    private val context: Context
+) : RecyclerView.Adapter<CustomAdapter.CustomViewHolder?>(), View.OnTouchListener {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -53,7 +58,7 @@ class CustomAdapter(private var list: List<Pokemon>, private val listener: Custo
 
     val dragInstance: DragListener?
         get() = if (listener != null) {
-            DragListener(listener, userDao)
+            DragListener(listener, userDao, context)
         } else {
             Log.e(javaClass::class.simpleName, "Listener not initialized")
             null
@@ -67,7 +72,7 @@ class CustomAdapter(private var list: List<Pokemon>, private val listener: Custo
         }
         holder.frameLayout?.tag = position
         holder.frameLayout?.setOnTouchListener(this)
-        holder.frameLayout?.setOnDragListener(DragListener(listener!!, userDao))
+        holder.frameLayout?.setOnDragListener(DragListener(listener!!, userDao, context))
     }
 
     class CustomViewHolder(inflater: LayoutInflater, parent: ViewGroup) :

@@ -82,7 +82,7 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
         layoutManager: RecyclerView.LayoutManager
     ) {
         this.layoutManager = layoutManager
-        val adapter = CustomAdapter(list, this@ChangeTeamFragment, userDao)
+        val adapter = CustomAdapter(list, this@ChangeTeamFragment, userDao, context)
         this.adapter = adapter
         emptyTextView.setOnDragListener(adapter.dragInstance)
         this.setOnDragListener(adapter.dragInstance)
