@@ -22,7 +22,7 @@ interface CustomListener {
     fun setEmptyList(visibility: Int, recyclerView: Int, emptyTextView: Int)
 }
 
-class CustomAdapter(private var list: List<Pokemon>, private val listener: CustomListener?)
+class CustomAdapter(private var list: List<Pokemon>, private val listener: CustomListener?, private val userDao: UserDao)
     : RecyclerView.Adapter<CustomAdapter.CustomViewHolder?>(), View.OnTouchListener {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -53,7 +53,7 @@ class CustomAdapter(private var list: List<Pokemon>, private val listener: Custo
 
     val dragInstance: DragListener?
         get() = if (listener != null) {
-            DragListener(listener)
+            DragListener(listener, userDao)
         } else {
             Log.e(javaClass::class.simpleName, "Listener not initialized")
             null
@@ -67,7 +67,7 @@ class CustomAdapter(private var list: List<Pokemon>, private val listener: Custo
         }
         holder.frameLayout?.tag = position
         holder.frameLayout?.setOnTouchListener(this)
-        holder.frameLayout?.setOnDragListener(DragListener(listener!!))
+        holder.frameLayout?.setOnDragListener(DragListener(listener!!, userDao))
     }
 
     class CustomViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
