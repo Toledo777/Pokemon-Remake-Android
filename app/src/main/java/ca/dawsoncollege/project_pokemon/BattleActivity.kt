@@ -19,8 +19,9 @@ import java.net.URL
 class BattleActivity : AppCompatActivity(), Callbacks {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var battle: Battle
+    private lateinit var battleType: String
     private lateinit var playerTrainer: PlayerTrainer
-    private lateinit var battleType: String;
+    private lateinit var enemyTrainer: EnemyTrainer
     companion object {
         private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
     }
@@ -39,7 +40,12 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         if (playerTrainerJson != "empty") {
             playerTrainer = convertJSONToPlayerTrainer(playerTrainerJson!!)
             lifecycleScope.launch(Dispatchers.IO){
-                this@BattleActivity.battle = WildBattle(playerTrainer)
+                if (battleType == "wild")
+                    this@BattleActivity.battle = WildBattle(playerTrainer)
+                else{
+                    this@BattleActivity.enemyTrainer = EnemyTrainer()
+                    this@BattleActivity.battle = TrainerBattle(playerTrainer, this@BattleActivity.enemyTrainer)
+                }
                 withContext(Dispatchers.Main){
                     setPlayerPokemonUI()
                     setEnemyPokemonUI()
@@ -114,6 +120,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         val movesFragment = MovesFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
+        bundle.putString("type", battleType)
         movesFragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, movesFragment)
@@ -126,6 +133,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         val switchPokemonFragment = SwitchPokemonFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
+        bundle.putString("type", battleType)
         switchPokemonFragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, switchPokemonFragment)
@@ -138,6 +146,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         val itemsFragment = ItemsFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
+        bundle.putString("type", battleType)
         itemsFragment.arguments = bundle
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.battle_menu_fragment, itemsFragment)
@@ -198,3 +207,5 @@ interface Callbacks {
 fun convertBattleToJSON(battle: Battle): String = Gson().toJson(battle)
 // converts JSON string back into a Wild Battle object
 fun convertJSONToWildBattle(json: String) = Gson().fromJson(json, object: TypeToken<WildBattle>(){}.type) as WildBattle
+// converts JSON string back into a Trainer Battle object
+fun convertJSONToTrainerBattle(json: String) = Gson().fromJson(json, object: TypeToken<TrainerBattle>(){}.type) as TrainerBattle
