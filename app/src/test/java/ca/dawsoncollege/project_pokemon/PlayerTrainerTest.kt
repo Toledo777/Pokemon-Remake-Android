@@ -124,7 +124,6 @@ class PlayerTrainerTest {
         trainer.team.add(pokemon)
         trainer.team.add(pokemon2)
         val enemyLevel = trainer.getRandomEnemyLevel()
-
         assertEquals(testLevel, enemyLevel)
     }
 }
