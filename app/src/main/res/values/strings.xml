@@ -36,6 +36,7 @@
     <string name="throw_pokeball">Throwing pokeball.</string>
     <string name="capture_fail">Throw failed.</string>
     <string name="capture_success">has been caught!</string>
+    <string name="capture_disabled">You cannot catch another trainer\'s Pokemon.</string>
     <string name="use_potion">used potion</string>
     <string name="pp_out">Out of PP!</string>
     <string name="fainted">is fainted!</string>
