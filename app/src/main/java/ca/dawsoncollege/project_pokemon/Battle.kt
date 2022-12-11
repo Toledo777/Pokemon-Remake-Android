@@ -10,27 +10,54 @@ import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
-    var playerPokemon = playerTrainer.team[0]
+    var playerPokemon = setPlayerPokemon()
     private var playerPokemonIndex = 0;
 
     lateinit var enemyPokemon: Pokemon
 
     class SamePokemonException(message: String) : Exception(message)
+    class NoPokemonException(message: String) : Exception(message)
+
+    private fun setPlayerPokemon(): Pokemon{
+        println("set player pokemon method")
+        for (pokemon in playerTrainer.team){
+            if (pokemon.hp > 0) {
+                this.playerPokemonIndex = this.playerTrainer.team.indexOf(pokemon)
+                return pokemon
+            }
+        }
+        throw NoPokemonException("No Pokemon available to fight")
+    }
 
     // switch out players current pokemon
-    fun switchOutPlayerPkm(nextPokemon: Pokemon, i: Int) {
+    fun switchSelectPlayerPkm(nextPokemon: Pokemon, i: Int) {
         if (nextPokemon.hp > 0) {
             if (playerPokemonIndex != i){
                 playerPokemon = nextPokemon
                 playerPokemonIndex = i
             }
             else {
-                throw SamePokemonException("Error, Pokemon is already in battle")
+                throw SamePokemonException("${nextPokemon.name} is already in battle!")
             }
         }
         else {
-            throw IllegalArgumentException("Error, Cannot switch to a pokemon with 0 HP")
+            throw IllegalArgumentException("${nextPokemon.name} is fainted!")
         }
+    }
+
+    // switch out player's pokemon when it has reached 0 hp
+    // returns true if pokemon > 0 was found, false if not
+    fun switchOutPlayerPkm():Boolean {
+        // remove fainted pokemon from team
+        for (pokemon in playerTrainer.team) {
+            if (pokemon.hp > 0 && playerTrainer.team.indexOf(pokemon) != playerPokemonIndex) {
+                playerPokemon = pokemon
+                playerPokemonIndex = playerTrainer.team.indexOf(pokemon)
+                return true
+            }
+        }
+        // no pokemon was found
+        return false
     }
 
     fun updatePlayerPokemon(){
