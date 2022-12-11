@@ -19,7 +19,11 @@ class ItemsFragment : Fragment() {
 
         val data = arguments
         val battleJSON = data!!.getString("battle").toString()
-        this.battle = convertJSONToWildBattle(battleJSON)
+        val battleType = data.getString("type").toString()
+        if (battleType == "wild")
+            this.battle = convertJSONToWildBattle(battleJSON)
+        else
+            this.battle = convertJSONToTrainerBattle(battleJSON)
     }
 
     override fun onCreateView(
@@ -33,7 +37,7 @@ class ItemsFragment : Fragment() {
         view.findViewById<Button>(R.id.potion_button).setOnClickListener {
             this.battle.playerUsePotion()
             this.battle.updatePlayerPokemon()
-            listener.updateBattleText(this.battle.playerTrainer.playerName +" "+getString(R.string.use_potion))
+            listener.updateBattleText(this.battle.playerTrainer.playerName +" "+getString(R.string.use_potion) + "on " +this.battle.playerPokemon.name)
             listener.updateHPUI(this.battle)
             lifecycleScope.launch(Dispatchers.Main) {
                 performEnemyMove(this@ItemsFragment.battle, listener)
@@ -44,16 +48,14 @@ class ItemsFragment : Fragment() {
         view.findViewById<Button>(R.id.pokeball_button).setOnClickListener {
             if (this.battle is WildBattle){
                 listener.updateBattleText(getString(R.string.throw_pokeball))
-                val wild = this.battle as WildBattle
                 // if captured
-                if (wild.throwPokeball()){
+                if ((this.battle as WildBattle).throwPokeball()){
 //                Toast.makeText(context, "${this.battle.enemyPokemon.name} has been captured!", Toast.LENGTH_SHORT).show()
                     listener.updateBattleText(this.battle.enemyPokemon.name +" "+ getString(R.string.capture_success))
                     listener.updateTeam(this.battle)
                 }
-                else {
+                else
                     listener.updateBattleText(getString(R.string.capture_fail))
-                }
             } else
                 listener.updateBattleText(getString(R.string.capture_disabled))
         }

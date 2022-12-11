@@ -22,8 +22,11 @@ class MovesFragment : Fragment() {
 
         val data = arguments
         val battleJSON = data!!.getString("battle").toString()
-        // TODO: check if wild or trainer
-        this.battle = convertJSONToWildBattle(battleJSON)
+        val battleType = data.getString("type").toString()
+        if (battleType == "wild")
+            this.battle = convertJSONToWildBattle(battleJSON)
+        else
+            this.battle = convertJSONToTrainerBattle(battleJSON)
     }
 
     override fun onCreateView(

@@ -20,7 +20,11 @@ class SwitchPokemonFragment : Fragment() {
 
         val data = arguments
         val battleJSON = data!!.getString("battle").toString()
-        this.battle = convertJSONToWildBattle(battleJSON)
+        val battleType = data.getString("type").toString()
+        if (battleType == "wild")
+            this.battle = convertJSONToWildBattle(battleJSON)
+        else
+            this.battle = convertJSONToTrainerBattle(battleJSON)
     }
 
     override fun onCreateView(
