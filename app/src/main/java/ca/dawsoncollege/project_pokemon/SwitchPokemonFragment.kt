@@ -57,17 +57,17 @@ class SwitchPokemonFragment : Fragment() {
                 // switch current pokemon with ith pokemon
                 try{
                     val listener = activity as Callbacks
-                    this.battle.switchOutPlayerPkm(this.battle.playerTrainer.team[i], i)
+                    this.battle.switchSelectPlayerPkm(this.battle.playerTrainer.team[i], i)
                     lifecycleScope.launch(Dispatchers.Main){
                         this@SwitchPokemonFragment.battle = performEnemyMove(this@SwitchPokemonFragment.battle, listener)
                         listener.updatePokemonUI(this@SwitchPokemonFragment.battle)
                         replaceWithMovesFragment()
                     }
                 } catch (e: Battle.SamePokemonException){
-                    Toast.makeText(context, "${this.battle.playerTrainer.team[i].name} is already in battle!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
                 catch (e: IllegalArgumentException){
-                    Toast.makeText(context, "${this.battle.playerTrainer.team[i].name} is fainted!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
