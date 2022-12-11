@@ -22,6 +22,7 @@ class DragListener internal constructor(
     private val emptyTextView2 = R.id.empty_list_text_view_2
     private val recyclerView1 = R.id.recycler_view_1
     private val recyclerView2 = R.id.recycler_view_2
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onDrag(v: View, event: DragEvent): Boolean {
         when (event.action) {
@@ -46,7 +47,7 @@ class DragListener internal constructor(
                             val source = viewSource.parent as RecyclerView
                             val adapterSource = source.adapter as CustomAdapter?
                             val positionSource = viewSource.tag as Int
-                            val list: Pokemon? = adapterSource?.getList()?.get(positionSource)
+                            val pokemon: Pokemon? = adapterSource?.getList()?.get(positionSource)
                             val listSource = adapterSource?.getList()
 
                             if (!movePokemonFromSource(
@@ -56,27 +57,22 @@ class DragListener internal constructor(
                                     positionSource,
                                     adapterTarget!!,
                                     adapterSource
-                                )) return false
+                                )
+                            ) return false
 
-                            val customListTarget = adapterTarget.getList()
-                            if (positionTarget >= 0) {
-                                list?.let { customListTarget.add(positionTarget, it) }
-                            } else {
-                                list?.let { customListTarget.add(it) }
-                            }
-                            customListTarget.let { adapterTarget.updateList(it) }
-                            adapterTarget.notifyDataSetChanged()
+                            val pokemonListTarget = movePokemonToTarget(adapterTarget, pokemon!!)
+
                             runBlocking {
                                 updateDatabase(
                                     source.id,
                                     target.id,
                                     listSource,
-                                    customListTarget as ArrayList<Pokemon>
+                                    pokemonListTarget
                                 )
                             }
                             Log.d(
                                 "ListCheck",
-                                "Target: " + customListTarget.map { it.name }.toString()
+                                "Target: " + pokemonListTarget.map { it.name }.toString()
                             )
                             updateUI(source.id, adapterSource, viewId)
                         }
@@ -88,6 +84,23 @@ class DragListener internal constructor(
             (event.localState as View).visibility = View.VISIBLE
         }
         return true
+    }
+
+    // Add pokemon to the target recycler view
+    @SuppressLint("NotifyDataSetChanged")
+    private fun movePokemonToTarget(
+        targetAdapter: CustomAdapter,
+        pokemon: Pokemon
+    ): ArrayList<Pokemon> {
+        val pokemonListTarget = targetAdapter.getList()
+        if (positionTarget >= 0) {
+            pokemon.let { pokemonListTarget.add(positionTarget, it) }
+        } else {
+            pokemon.let { pokemonListTarget.add(it) }
+        }
+        pokemonListTarget.let { targetAdapter.updateList(it) }
+        targetAdapter.notifyDataSetChanged()
+        return pokemonListTarget as ArrayList<Pokemon>
     }
 
     // Move the pokemon from the source recycler view
