@@ -43,14 +43,16 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
             launch(Dispatchers.IO) {
 
                 // ADD TEST DATA (TO BE REMOVED)
-                this@ChangeTeamFragment.userDao.updateTeam(
-                    arrayListOf(
-                        Pokemon(5, "charmander"),
-                        Pokemon(5, "pikachu"),
-                        Pokemon(5, "rapidash"),
-                        Pokemon(5, "zapdos")
+                if (this@ChangeTeamFragment.userDao.fetchPlayerSave().team.isEmpty()) {
+                    this@ChangeTeamFragment.userDao.updateTeam(
+                        arrayListOf(
+                            Pokemon(5, "charmander"),
+                            Pokemon(5, "pikachu"),
+                            Pokemon(5, "rapidash"),
+                            Pokemon(5, "zapdos")
+                        )
                     )
-                )
+                }
                 _binding!!.recyclerView1.init(
                     this@ChangeTeamFragment.userDao.fetchPlayerSave().team,
                     binding.emptyListTextView1,
@@ -58,12 +60,6 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
                 )
             }
             launch(Dispatchers.IO) {
-                // ADD TEST DATA (TO BE REMOVED)
-                this@ChangeTeamFragment.userDao.updateCollection(
-                    arrayListOf(
-
-                    )
-                )
 
                 _binding!!.recyclerView2.init(
                     this@ChangeTeamFragment.userDao.fetchPlayerSave().pokemonCollection,
@@ -86,7 +82,7 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
         layoutManager: RecyclerView.LayoutManager
     ) {
         this.layoutManager = layoutManager
-        val adapter = CustomAdapter(list, this@ChangeTeamFragment)
+        val adapter = CustomAdapter(list, this@ChangeTeamFragment, userDao)
         this.adapter = adapter
         emptyTextView.setOnDragListener(adapter.dragInstance)
         this.setOnDragListener(adapter.dragInstance)
