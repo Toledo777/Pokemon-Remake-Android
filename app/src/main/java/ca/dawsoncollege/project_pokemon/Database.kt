@@ -26,8 +26,8 @@ interface UserDao {
     fun fetchPlayerSave(): PlayerTrainer
 
     // clear database
-    @Delete
-    fun delete(playerTrainer: PlayerTrainer)
+    @Query("DELETE FROM PlayerTrainer")
+    fun delete()
 
     // Update methods for team and collection
     @Query("UPDATE PlayerTrainer SET team = :updatedTeam")

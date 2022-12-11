@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -18,6 +19,8 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var battle: Battle
     private lateinit var playerTrainer: PlayerTrainer
+    private lateinit var userDao: UserDao
+
     companion object {
         private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
     }
@@ -27,14 +30,19 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         binding = ActivityBattleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "Trainer-Database"
+        ).build()
+
+        this.userDao = db.userDao()
+
         // TODO: if trainer battle, init enemy trainer (doesn't need to be top level)
-        val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
-        if (playerTrainerJson != "empty") {
-            playerTrainer = convertJSONToPlayerTrainer(playerTrainerJson!!)
-            lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (this@BattleActivity.userDao.checkSaveInDatabase()) {
+                playerTrainer = this@BattleActivity.userDao.fetchPlayerSave()
                 this@BattleActivity.battle = WildBattle(playerTrainer)
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     setPlayerPokemonUI()
                     setEnemyPokemonUI()
                     setMovesFragment()
@@ -57,37 +65,43 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     // set entire player pokemon UI
-    private fun setPlayerPokemonUI(){
+    private fun setPlayerPokemonUI() {
         binding.playerPokemonName.text = this.battle.playerPokemon.name.toString()
-        lifecycleScope.launch(Dispatchers.IO){
-            val backSprite = BitmapFactory.decodeStream(URL(this@BattleActivity.battle.playerPokemon.data.backSprite).openConnection().getInputStream())
+        lifecycleScope.launch(Dispatchers.IO) {
+            val backSprite = BitmapFactory.decodeStream(
+                URL(this@BattleActivity.battle.playerPokemon.data.backSprite).openConnection()
+                    .getInputStream()
+            )
             withContext(Dispatchers.Main) {
                 binding.playerPokemonSprite.setImageBitmap(backSprite)
             }
         }
-        val pokemonLevelText = "LV "+this.battle.playerPokemon.level.toString()
+        val pokemonLevelText = "LV " + this.battle.playerPokemon.level.toString()
         binding.playerPokemonLevel.text = pokemonLevelText
         updateHP(this.battle.playerPokemon, true)
     }
 
     // set entire enemy pokemon UI
-    private fun setEnemyPokemonUI(){
+    private fun setEnemyPokemonUI() {
         binding.enemyPokemonName.text = this.battle.enemyPokemon.name.toString()
-        lifecycleScope.launch(Dispatchers.IO){
-            val frontSprite = BitmapFactory.decodeStream(URL(this@BattleActivity.battle.enemyPokemon.data.frontSprite).openConnection().getInputStream())
+        lifecycleScope.launch(Dispatchers.IO) {
+            val frontSprite = BitmapFactory.decodeStream(
+                URL(this@BattleActivity.battle.enemyPokemon.data.frontSprite).openConnection()
+                    .getInputStream()
+            )
             withContext(Dispatchers.Main) {
                 binding.enemyPokemonSprite.setImageBitmap(frontSprite)
             }
         }
-        val pokemonLevelText = "LV "+this.battle.enemyPokemon.level.toString()
+        val pokemonLevelText = "LV " + this.battle.enemyPokemon.level.toString()
         binding.enemyPokemonLevel.text = pokemonLevelText
         updateHP(this.battle.enemyPokemon, false)
     }
 
     // update HP UI of given pokemon
-    private fun updateHP(pokemon: Pokemon, isPlayer: Boolean){
+    private fun updateHP(pokemon: Pokemon, isPlayer: Boolean) {
         val hp = pokemon.hp.toString() + "/" + pokemon.battleStat.maxHP.toString()
-        if (isPlayer){
+        if (isPlayer) {
             binding.playerPokemonHealth.text = hp
         } else {
             binding.enemyPokemonHealth.text = hp
@@ -95,7 +109,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     // start moves fragment
-    private fun setMovesFragment(){
+    private fun setMovesFragment() {
         val movesFragment = MovesFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
@@ -107,7 +121,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     // start switch pokemon fragment
-    private fun setSwitchPokemonFragment(){
+    private fun setSwitchPokemonFragment() {
         val switchPokemonFragment = SwitchPokemonFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
@@ -119,7 +133,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     // start items fragment
-    private fun setItemsFragment(){
+    private fun setItemsFragment() {
         val itemsFragment = ItemsFragment()
         val bundle = Bundle()
         bundle.putString("battle", convertBattleToJSON(this.battle))
@@ -150,10 +164,10 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     override fun updatePokemonUI(battle: Battle) {
         val oldBattle = this.battle
         this.battle = battle
-        if (this.battle.playerPokemon != oldBattle.playerPokemon){
+        if (this.battle.playerPokemon != oldBattle.playerPokemon) {
             setPlayerPokemonUI()
         }
-        if (this.battle.enemyPokemon != oldBattle.enemyPokemon){
+        if (this.battle.enemyPokemon != oldBattle.enemyPokemon) {
             setEnemyPokemonUI()
         }
     }
@@ -169,5 +183,7 @@ interface Callbacks {
 // extension functions
 // converts Battle object into a JSON string
 fun convertBattleToJSON(battle: Battle): String = Gson().toJson(battle)
+
 // converts JSON string back into a Wild Battle object
-fun convertJSONToWildBattle(json: String) = Gson().fromJson(json, object: TypeToken<WildBattle>(){}.type) as WildBattle
+fun convertJSONToWildBattle(json: String) =
+    Gson().fromJson(json, object : TypeToken<WildBattle>() {}.type) as WildBattle

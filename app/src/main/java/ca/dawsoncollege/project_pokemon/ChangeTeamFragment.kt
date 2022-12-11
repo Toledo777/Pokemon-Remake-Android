@@ -42,17 +42,6 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
             }
             launch(Dispatchers.IO) {
 
-                // ADD TEST DATA (TO BE REMOVED)
-                if (this@ChangeTeamFragment.userDao.fetchPlayerSave().team.isEmpty()) {
-                    this@ChangeTeamFragment.userDao.updateTeam(
-                        arrayListOf(
-                            Pokemon(5, "charmander"),
-                            Pokemon(5, "pikachu"),
-                            Pokemon(5, "rapidash"),
-                            Pokemon(5, "zapdos")
-                        )
-                    )
-                }
                 _binding!!.recyclerView1.init(
                     this@ChangeTeamFragment.userDao.fetchPlayerSave().team,
                     binding.emptyListTextView1,

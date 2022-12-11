@@ -7,16 +7,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.room.Room
 import ca.dawsoncollege.project_pokemon.databinding.IntroSequenceBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 class IntroActivity : AppCompatActivity() {
     private lateinit var binding: IntroSequenceBinding
     private lateinit var playerTrainer: PlayerTrainer
+    private lateinit var userDao: UserDao
     private var starterPokemon = ""
-    private val starters: Map<String, String> = mapOf("grassStarter" to "Bulbasaur",
-        "fireStarter" to "Charmander", "waterStarter" to "Squirtle")
+    private val starters: Map<String, String> = mapOf(
+        "grassStarter" to "Bulbasaur",
+        "fireStarter" to "Charmander", "waterStarter" to "Squirtle"
+    )
+
     companion object {
         private const val LOG_TAG = "INTRO_ACTIVITY_DEV_LOG"
     }
@@ -26,8 +34,14 @@ class IntroActivity : AppCompatActivity() {
         binding = IntroSequenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.startBtn.setOnClickListener {
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "Trainer-Database"
+        ).build()
 
+        this.userDao = db.userDao()
+
+        binding.startBtn.setOnClickListener {
             createPlayerTrainer()
         }
 
@@ -51,18 +65,19 @@ class IntroActivity : AppCompatActivity() {
     }
 
     // checks if name is given and if so, creates playerTrainer
-    private fun createPlayerTrainer(){
+    private fun createPlayerTrainer() {
         // if no player name is given
-        if (binding.trainerNameInput.text.toString().isBlank()){
-            Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT).show()
+        if (binding.trainerNameInput.text.toString().isBlank()) {
+            Toast.makeText(applicationContext, R.string.missing_trainer_name, Toast.LENGTH_SHORT)
+                .show()
         } else {
             this.playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
-            if(pickStarter()){
+            if (pickStarter()) {
                 // add playerTrainer to SharedPreferences
-                val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-                val editor = sharedPreference.edit()
-                editor.putString("playerTrainer", convertPlayerTrainerToJSON(this.playerTrainer))
-                editor.apply()
+                runBlocking(Dispatchers.IO) {
+                    if (userDao.checkSaveInDatabase()) userDao.delete()
+                    userDao.savePlayerTrainer(this@IntroActivity.playerTrainer)
+                }
                 Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()
 
                 startMainMenuActivity()
@@ -76,15 +91,20 @@ class IntroActivity : AppCompatActivity() {
     }
 
     // checks if starter pokemon is picked and if so, assigns it to playerTrainer
-    private fun pickStarter(): Boolean{
+    private fun pickStarter(): Boolean {
         // if no starter pokemon is selected
-        return if (binding.starterRadioGroup.checkedRadioButtonId == -1){
-            Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT).show()
+        return if (binding.starterRadioGroup.checkedRadioButtonId == -1) {
+            Toast.makeText(applicationContext, R.string.missing_starter_pokemon, Toast.LENGTH_SHORT)
+                .show()
             false
         } else {
-            Toast.makeText(applicationContext, "$starterPokemon is your starter!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                applicationContext,
+                "$starterPokemon is your starter!",
+                Toast.LENGTH_SHORT
+            ).show()
             // if no nickname is given
-            if(binding.askNickname.text.toString().isBlank()){
+            if (binding.askNickname.text.toString().isBlank()) {
 //                Toast.makeText(applicationContext, "no nickname", Toast.LENGTH_SHORT).show()
                 this.playerTrainer.setStarter(starterPokemon, null)
             } else {
@@ -95,11 +115,11 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
-    private fun startMainMenuActivity(){
+    private fun startMainMenuActivity() {
         try {
             val intent = Intent(this, MainMenuActivity::class.java)
             startActivity(intent)
-        } catch (exc: ActivityNotFoundException){
+        } catch (exc: ActivityNotFoundException) {
             Log.e(LOG_TAG, "Could not open MainMenuActivity", exc)
         }
     }
@@ -108,5 +128,7 @@ class IntroActivity : AppCompatActivity() {
 // extension functions
 // converts PlayerTrainer object into a JSON string
 fun convertPlayerTrainerToJSON(playerTrainer: PlayerTrainer): String = Gson().toJson(playerTrainer)
+
 // converts JSON string back into a PlayerTrainer object
-fun convertJSONToPlayerTrainer(json: String) = Gson().fromJson(json, object: TypeToken<PlayerTrainer>(){}.type) as PlayerTrainer
+fun convertJSONToPlayerTrainer(json: String) =
+    Gson().fromJson(json, object : TypeToken<PlayerTrainer>() {}.type) as PlayerTrainer
