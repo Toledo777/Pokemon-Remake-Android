@@ -172,14 +172,9 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     // callback for fragments to update battle data and entire battle UI in this activity
     @Override
     override fun updatePokemonUI(battle: Battle) {
-        val oldBattle = this.battle
         this.battle = battle
-        if (this.battle.playerPokemon != oldBattle.playerPokemon){
-            setPlayerPokemonUI()
-        }
-        if (this.battle.enemyPokemon != oldBattle.enemyPokemon){
-            setEnemyPokemonUI()
-        }
+        setPlayerPokemonUI()
+        setEnemyPokemonUI()
     }
 
     // callback for fragments to update battle text view

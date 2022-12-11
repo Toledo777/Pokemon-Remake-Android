@@ -94,9 +94,11 @@ class MovesFragment : Fragment() {
         val listener = activity as Callbacks
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
             if (!this.battle.checkPokemonFainted()){
+                val oldEnemy = this.battle.enemyPokemon
                 // attempt move, set text, update pp and button
                 performPlayerMove(moveList, buttons, i, listener)
-                this.battle = performEnemyMove(this.battle, listener)
+                if (oldEnemy != this.battle.enemyPokemon)
+                    this.battle = performEnemyMove(this.battle, listener)
             } else { //TODO: might not need this after end the battle properly
                 this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
             }
@@ -117,11 +119,21 @@ class MovesFragment : Fragment() {
             }
             val oldLevel = this.battle.playerPokemon.level
             if (this.battle.checkPokemonFainted()){
-            // TODO: end battle
                 // Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
                 this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
-                if (this.battle.playerPokemon.level > oldLevel)
+                if (this.battle.playerPokemon.level > oldLevel){
+                    this.battle.updatePlayerPokemon()
+                    listener.updatePokemonUI(this.battle)
                     this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
+                }
+                if (this.battle is WildBattle){
+                    // TODO: end battle
+                } else
+                    if ((this.battle as TrainerBattle).switchOutEnemyPkm()){
+                        listener.updatePokemonUI(this.battle)
+                    } else
+                        println("end")
+                        // TODO: end battle
             }
         } else {
 //            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
