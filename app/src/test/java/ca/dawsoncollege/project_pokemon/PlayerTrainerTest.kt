@@ -105,4 +105,26 @@ class PlayerTrainerTest {
     }
 
     @Test
+    fun testRandomEnemyLevel1() {
+        val testLevel = 1
+        val pokemon = Pokemon(testLevel)
+        val trainer = PlayerTrainer("jeff");
+        trainer.team.add(pokemon)
+        val enemyLevel = trainer.getRandomEnemyLevel()
+
+        assertEquals(testLevel, enemyLevel)
+    }
+
+    @Test
+    fun testRandomEnemyLevel88() {
+        val testLevel = 88
+        val pokemon = Pokemon(testLevel)
+        val pokemon2 = Pokemon(testLevel)
+        val trainer = PlayerTrainer("jeff");
+        trainer.team.add(pokemon)
+        trainer.team.add(pokemon2)
+        val enemyLevel = trainer.getRandomEnemyLevel()
+
+        assertEquals(testLevel, enemyLevel)
+    }
 }

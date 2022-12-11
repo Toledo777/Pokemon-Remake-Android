@@ -106,10 +106,6 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         }
     }
 
-    // leave battle
-    fun playerRun() {
-        TODO("Not sure if necessary")
-    }
 
     // check if move succeeds
     private fun moveSuccessCheck(accuracy: Int): Boolean {
