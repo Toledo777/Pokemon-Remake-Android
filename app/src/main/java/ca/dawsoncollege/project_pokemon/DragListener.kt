@@ -50,6 +50,7 @@ class DragListener internal constructor(
                             val pokemon: Pokemon? = adapterSource?.getList()?.get(positionSource)
                             val listSource = adapterSource?.getList()
 
+                            // Remove pokemon from source view
                             if (!movePokemonFromSource(
                                     listSource as ArrayList<Pokemon>,
                                     source.id,
@@ -60,8 +61,10 @@ class DragListener internal constructor(
                                 )
                             ) return false
 
+                            // Move pokemon to the target view
                             val pokemonListTarget = movePokemonToTarget(adapterTarget, pokemon!!)
 
+                            // Save changes in the database
                             runBlocking {
                                 updateDatabase(
                                     source.id,
@@ -70,10 +73,6 @@ class DragListener internal constructor(
                                     pokemonListTarget
                                 )
                             }
-                            Log.d(
-                                "ListCheck",
-                                "Target: " + pokemonListTarget.map { it.name }.toString()
-                            )
                             updateUI(source.id, adapterSource, viewId)
                         }
                     }
@@ -100,6 +99,10 @@ class DragListener internal constructor(
         }
         pokemonListTarget.let { targetAdapter.updateList(it) }
         targetAdapter.notifyDataSetChanged()
+        Log.d(
+            "ListCheck",
+            "Target: " + pokemonListTarget.map { it.name }.toString()
+        )
         return pokemonListTarget as ArrayList<Pokemon>
     }
 
