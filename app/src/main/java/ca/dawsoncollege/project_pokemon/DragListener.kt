@@ -84,18 +84,7 @@ class DragListener internal constructor(
                                 "ListCheck",
                                 "Target: " + customListTarget!!.map { it.name }.toString()
                             )
-                            if (source.id == recyclerView2 && adapterSource?.itemCount ?: 0 < 1) {
-                                listener.setEmptyList(View.VISIBLE, recyclerView2, emptyTextView2)
-                            }
-                            if (viewId == emptyTextView2) {
-                                listener.setEmptyList(View.GONE, recyclerView2, emptyTextView2)
-                            }
-                            if (source.id == recyclerView1 && adapterSource?.itemCount ?: 0 < 1) {
-                                listener.setEmptyList(View.VISIBLE, recyclerView1, emptyTextView1)
-                            }
-                            if (viewId == emptyTextView1) {
-                                listener.setEmptyList(View.GONE, recyclerView1, emptyTextView1)
-                            }
+                            updateUI(source.id, adapterSource, viewId);
                         }
                     }
                 }
@@ -107,6 +96,7 @@ class DragListener internal constructor(
         return true
     }
 
+    // Update pokemon team and collection in the database
     private suspend fun updateDatabase(
         sourceId: Int,
         targetId: Int,
@@ -122,6 +112,21 @@ class DragListener internal constructor(
                 recyclerView1 -> userDao.updateTeam(targetList)
                 recyclerView2 -> userDao.updateCollection(targetList)
             }
+        }
+    }
+
+    private fun updateUI(sourceId: Int, sourceAdapter: CustomAdapter, viewId: Int) {
+        if (sourceId == recyclerView2 && (sourceAdapter.itemCount ?: 0) < 1) {
+            listener.setEmptyList(View.VISIBLE, recyclerView2, emptyTextView2)
+        }
+        if (viewId == emptyTextView2) {
+            listener.setEmptyList(View.GONE, recyclerView2, emptyTextView2)
+        }
+        if (sourceId == recyclerView1 && (sourceAdapter.itemCount ?: 0) < 1) {
+            listener.setEmptyList(View.VISIBLE, recyclerView1, emptyTextView1)
+        }
+        if (viewId == emptyTextView1) {
+            listener.setEmptyList(View.GONE, recyclerView1, emptyTextView1)
         }
     }
 }
