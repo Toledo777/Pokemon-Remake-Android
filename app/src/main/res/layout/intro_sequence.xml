@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IntroActivity"
-    android:background="@drawable/intro_poke">
+    android:background="@drawable/intro_poke"
+    tools:context=".IntroActivity">
 
     <RadioGroup
         android:id="@+id/starterRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingHorizontal="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,30 +20,33 @@
 
         <RadioButton
             android:id="@+id/grass_starter_img"
-            android:button="@drawable/ic_launcher_foreground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_weight="1"
-            android:contentDescription="@string/grass_starter_pokemon"
-            android:background="@null" />
+            android:background="@drawable/bulbasaur_sprite"
+            android:button="@null"
+            android:contentDescription="@string/grass_starter_pokemon" />
 
         <RadioButton
             android:id="@+id/fire_starter_img"
-            android:button="@drawable/ic_launcher_foreground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_weight="1"
-            android:contentDescription="@string/water_starter_pokemon"
-            android:background="@null" />
+            android:background="@drawable/charmander_sprite"
+            android:button="@null"
+            android:contentDescription="@string/water_starter_pokemon" />
 
         <RadioButton
             android:id="@+id/water_starter_img"
-            android:button="@drawable/ic_launcher_foreground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_weight="1"
-            android:contentDescription="@string/fire_starter_pokemon"
-            android:background="@null" />
+            android:background="@drawable/squirtle_sprite"
+            android:button="@null"
+            android:contentDescription="@string/fire_starter_pokemon" />
     </RadioGroup>
 
     <TextView
@@ -73,9 +77,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/trainer_name"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:hint="@string/trainer_name"
         app:layout_constraintBottom_toTopOf="@+id/starterRadioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
