@@ -41,4 +41,5 @@
     <string name="fainted">is fainted!</string>
     <string name="used">used</string>
     <string name="miss_move">missed their move!</string>
+    <string name="level_up">leveled up!</string>
 </resources>

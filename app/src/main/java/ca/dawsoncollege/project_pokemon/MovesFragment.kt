@@ -92,36 +92,36 @@ class MovesFragment : Fragment() {
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
             if (!this.battle.checkPokemonFainted()){
                 // attempt move, set text, update pp and button
-                playPlayerMove(moveList[i], buttons[i])
+                performPlayerMove(moveList, buttons, i, listener)
                 this.battle = performEnemyMove(this.battle, listener)
-            } else {
+            } else { //TODO: might not need this after end the battle properly
                 this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
             }
         } else {
             this.battle = performEnemyMove(this.battle, listener)
 
             // if player pokemon is not fainted
-            if (this.battle.playerPokemon.hp != 0){
-                performPlayerMove(moveList, buttons, i)
-            } else {
-//                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
-                this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
-            }
+            performPlayerMove(moveList, buttons, i, listener)
         }
         // update player data
         this.battle.updatePlayerPokemon()
     }
 
-    private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
+    private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int, listener: Callbacks){
         // if player pokemon is not fainted
         if (this.battle.playerPokemon.hp != 0){
             if (!this.battle.checkPokemonFainted()){
                 playPlayerMove(moveList[i], buttons[i])
             }
+            val oldLevel = this.battle.playerPokemon.level
             if (this.battle.checkPokemonFainted()) // TODO: end battle
-                Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                if (this.battle.playerPokemon.level > oldLevel)
+                    this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
+//                Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
         } else {
-            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
         }
     }
 
