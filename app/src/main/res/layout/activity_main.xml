@@ -7,12 +7,11 @@
     android:background="@drawable/pokemon_bg"
     tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/pokemon_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pokemon"
-        android:textSize="50sp"
+        android:src="@drawable/poke_logo"
+        android:layout_height="300dp"
+        android:layout_width="300dp"
         app:layout_constraintBottom_toTopOf="@id/new_game_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
