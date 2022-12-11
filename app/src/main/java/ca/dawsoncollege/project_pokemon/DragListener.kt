@@ -4,26 +4,26 @@ import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
-class DragListener internal constructor(private val listener: CustomListener, private val userDao: UserDao) :
+class DragListener internal constructor(
+    private val listener: CustomListener,
+    private val userDao: UserDao
+) :
     View.OnDragListener {
     private var isDropped = false
+    private var positionTarget = -1
+    private val frameLayoutItem = R.id.frame_layout_item
+    private val emptyTextView1 = R.id.empty_list_text_view_1
+    private val emptyTextView2 = R.id.empty_list_text_view_2
+    private val recyclerView1 = R.id.recycler_view_1
+    private val recyclerView2 = R.id.recycler_view_2
     override fun onDrag(v: View, event: DragEvent): Boolean {
         when (event.action) {
             DragEvent.ACTION_DROP -> {
                 isDropped = true
-                var positionTarget = -1
                 val viewSource = event.localState as View?
                 val viewId = v.id
-                val frameLayoutItem = R.id.frame_layout_item
-                val emptyTextView1 = R.id.empty_list_text_view_1
-                val emptyTextView2 = R.id.empty_list_text_view_2
-                val recyclerView1 = R.id.recycler_view_1
-                val recyclerView2 = R.id.recycler_view_2
                 when (viewId) {
                     frameLayoutItem, emptyTextView1, emptyTextView2, recyclerView1, recyclerView2 -> {
                         val target: RecyclerView
@@ -72,17 +72,18 @@ class DragListener internal constructor(private val listener: CustomListener, pr
                             }
                             customListTarget?.let { adapterTarget.updateList(it) }
                             adapterTarget?.notifyDataSetChanged()
-                            runBlocking(Dispatchers.IO) {
-                                when (source.id) {
-                                    recyclerView1 -> userDao.updateTeam(listSource as ArrayList<Pokemon>)
-                                    recyclerView2 -> userDao.updateCollection(listSource as ArrayList<Pokemon>)
-                                }
-                                when (target.id) {
-                                    recyclerView1 -> userDao.updateTeam(customListTarget as ArrayList<Pokemon>)
-                                    recyclerView2 -> userDao.updateCollection(customListTarget as ArrayList<Pokemon>)
-                                }
+                            runBlocking {
+                                updateDatabase(
+                                    source.id,
+                                    target.id,
+                                    listSource as ArrayList<Pokemon>,
+                                    customListTarget as ArrayList<Pokemon>
+                                )
                             }
-                            Log.d("ListCheck", "Target: " + customListTarget!!.map { it.name }.toString())
+                            Log.d(
+                                "ListCheck",
+                                "Target: " + customListTarget!!.map { it.name }.toString()
+                            )
                             if (source.id == recyclerView2 && adapterSource?.itemCount ?: 0 < 1) {
                                 listener.setEmptyList(View.VISIBLE, recyclerView2, emptyTextView2)
                             }
@@ -104,5 +105,23 @@ class DragListener internal constructor(private val listener: CustomListener, pr
             (event.localState as View).visibility = View.VISIBLE
         }
         return true
+    }
+
+    private suspend fun updateDatabase(
+        sourceId: Int,
+        targetId: Int,
+        sourceList: ArrayList<Pokemon>,
+        targetList: ArrayList<Pokemon>
+    ) {
+        withContext(Dispatchers.IO) {
+            when (sourceId) {
+                recyclerView1 -> userDao.updateTeam(sourceList)
+                recyclerView2 -> userDao.updateCollection(sourceList)
+            }
+            when (targetId) {
+                recyclerView1 -> userDao.updateTeam(targetList)
+                recyclerView2 -> userDao.updateCollection(targetList)
+            }
+        }
     }
 }
