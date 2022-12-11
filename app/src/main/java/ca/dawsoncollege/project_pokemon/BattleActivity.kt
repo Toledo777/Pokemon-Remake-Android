@@ -1,5 +1,6 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -14,10 +15,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
 
+
 class BattleActivity : AppCompatActivity(), Callbacks {
     private lateinit var binding: ActivityBattleBinding
     private lateinit var battle: Battle
     private lateinit var playerTrainer: PlayerTrainer
+    private lateinit var battleType: String;
     companion object {
         private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
     }
@@ -26,6 +29,9 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         super.onCreate(savedInstanceState)
         binding = ActivityBattleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val bundle: Bundle? = intent.extras
+        battleType = bundle!!.getString("type").toString()
 
         // TODO: if trainer battle, init enemy trainer (doesn't need to be top level)
         val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
@@ -52,7 +58,16 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         }
         binding.runBtn.setOnClickListener {
             // TODO: save/send PlayerTrainer data back
-            finish()
+            if (battleType == "wild"){
+                this.battle.updatePlayerPokemon()
+                this.battle = this.battle.playerRun()
+                this.playerTrainer = this.battle.playerTrainer
+                val editor = sharedPreference.edit()
+                editor.putString("playerTrainer", convertPlayerTrainerToJSON(this.playerTrainer))
+                editor.apply()
+                finish()
+            } else
+                updateBattleText("You can't run from a trainer battle.")
         }
     }
 
@@ -162,7 +177,11 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     @Override
     override fun updateBattleText(message: String) {
         binding.battleText.text = message;
-        TODO("Not yet implemented")
+    }
+
+    @Override
+    override fun onBackPressed() {
+        // super.onBackPressed();
     }
 }
 

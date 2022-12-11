@@ -63,8 +63,6 @@ class IntroActivity : AppCompatActivity() {
                 val editor = sharedPreference.edit()
                 editor.putString("playerTrainer", convertPlayerTrainerToJSON(this.playerTrainer))
                 editor.apply()
-                Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()
-
                 startMainMenuActivity()
             }
 //            val json = sharedPreference.getString("playerTrainer", "")

@@ -90,25 +90,34 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // chose random move to play for enemy, returns success status
-    suspend fun playEnemyMove(): Boolean{
+    suspend fun playEnemyMove(): String?{
         val moveList = this.enemyPokemon.moveList
         val moveIndex = Random.nextInt(0, 3);
 
         // hostile move
         if (moveList[moveIndex].target == "OPPONENT") {
             // attempt attack, returns success status
-            return attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
+            val success = attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
+            return if (success)
+                moveList[moveIndex].name
+            else
+                null
+
         }
         // friendly move
         else {
             // enemy pokemon tries heals itself
-            return friendlyMove(moveList[moveIndex], enemyPokemon)
+            val success = friendlyMove(moveList[moveIndex], enemyPokemon)
+            return if (success)
+                moveList[moveIndex].name
+            else
+                null
         }
     }
 
     // leave battle
-    fun playerRun() {
-        TODO("Not sure if necessary")
+    fun playerRun(): Battle {
+        return this
     }
 
     // check if move succeeds

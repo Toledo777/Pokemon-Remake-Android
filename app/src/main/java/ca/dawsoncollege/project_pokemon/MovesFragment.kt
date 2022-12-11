@@ -1,5 +1,6 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -46,6 +47,8 @@ class MovesFragment : Fragment() {
         for (i in 0 until this.battle.playerPokemon.NUMBER_OF_MOVES){
             val moveButtonText = "${moveList[i].name.replace('-', ' ')}\n" +
                     "${moveList[i].PP}/${moveList[i].maxPP}\n${moveList[i].type}"
+
+            val listener = activity as Callbacks
             // set text
             buttons[i].text = moveButtonText
             // set listener
@@ -56,17 +59,20 @@ class MovesFragment : Fragment() {
                     if (this.battle.playerPokemon.hp != 0) {
 
                         // specific dispatcher is specified in the functions involved
-                        lifecycleScope.launch{
+                        lifecycleScope.launch(Dispatchers.Main){
                             playTurn(moveList, buttons, i)
+                            Log.d("EXTENSION", "enemy: "+battle.enemyPokemon.hp.toString())
+                            Log.d("EXTENSION", "player: "+battle.playerPokemon.hp.toString())
+                            // callback to update HP UI in BattleActivity
+                            listener.updateHPUI(this@MovesFragment.battle)
                         }
-                        // callback to update HP UI in BattleActivity
-                        val listener = activity as Callbacks
-                        listener.updateHPUI(this.battle)
                     } else {
-                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+                        this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
                     }
                 } else {
-                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
+                    listener.updateBattleText(getString(R.string.pp_out))
                 }
             }
         }
@@ -79,32 +85,79 @@ class MovesFragment : Fragment() {
         button.text = moveButtonText
     }
 
-    // TODO: to optimize?
     // play a turn
     private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
         // check who attacks first
+        val listener = activity as Callbacks
         if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
-            this.battle.playerMove(moveList[i])
-            Log.d("MOVES_FRAG", moveList[i].toString())
-            moveList[i].PP -= 1
-            updateMovePP(buttons[i], moveList[i])
-            // if enemy pokemon is not fainted
-            if (!this.battle.checkPokemonFainted())
-                this.battle.playEnemyMove()
-        } else {
-            this.battle.playEnemyMove()
-            // if player pokemon is not fainted
-            if (this.battle.playerPokemon.hp != 0){
-                this.battle.playerMove(moveList[i])
-                Log.d("MOVES_FRAG", moveList[i].toString())
-                moveList[i].PP -= 1
-                updateMovePP(buttons[i], moveList[i])
-                this.battle.checkPokemonFainted()
-            } else {
-                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+            if (!this.battle.checkPokemonFainted()){
+                // attempt move, set text, update pp and button
+                performPlayerMove(moveList, buttons, i, listener)
+                this.battle = performEnemyMove(this.battle, listener)
+            } else { //TODO: might not need this after end the battle properly
+                this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
             }
+        } else {
+            this.battle = performEnemyMove(this.battle, listener)
+            // if player pokemon is not fainted
+            performPlayerMove(moveList, buttons, i, listener)
         }
         // update player data
         this.battle.updatePlayerPokemon()
     }
+
+    private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int, listener: Callbacks){
+        // if player pokemon is not fainted
+        if (this.battle.playerPokemon.hp != 0){
+            if (!this.battle.checkPokemonFainted()){
+                playPlayerMove(moveList[i], buttons[i])
+            }
+            val oldLevel = this.battle.playerPokemon.level
+            if (this.battle.checkPokemonFainted()){
+            // TODO: end battle
+                // Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
+                if (this.battle.playerPokemon.level > oldLevel)
+                    this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
+            }
+        } else {
+//            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
+        }
+    }
+
+    // helper method, plays move and sets battle text for it
+    private suspend fun playPlayerMove(move: Move, button: Button) {
+        val listener = activity as Callbacks
+        if(this.battle.playerMove(move)) {
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.used) + " " + move.name) }
+        }
+        // missed move
+        else {
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move))}
+        }
+        Log.d("MOVES_FRAG", move.toString())
+        move.PP -= 1
+        updateMovePP(button, move)
+    }
+}
+
+// extension function
+suspend fun performEnemyMove(battle: Battle, listener: Callbacks): Battle{
+    // if enemy pokemon is not fainted
+    if (!battle.checkPokemonFainted()){
+        // move success
+        val moveName = battle.playEnemyMove()
+        // move succed
+        if (moveName != null) {
+            battle.enemyPokemon.name?.let { listener.updateBattleText(it + " " + Resources.getSystem().getString(R.string.used) + " " + moveName) }
+        }
+        // move missed
+        else {
+            battle.enemyPokemon.name?.let { listener.updateBattleText(it + " " + Resources.getSystem().getString(R.string.miss_move)) }
+        }
+        if (battle.playerPokemon.hp == 0)
+            battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + Resources.getSystem().getString(R.string.fainted)) }
+    }
+    return battle
 }
