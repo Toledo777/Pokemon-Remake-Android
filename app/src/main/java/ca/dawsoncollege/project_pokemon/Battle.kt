@@ -116,8 +116,8 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // leave battle
-    fun playerRun() {
-        TODO("Not sure if necessary")
+    fun playerRun(): Battle {
+        return this
     }
 
     // check if move succeeds
