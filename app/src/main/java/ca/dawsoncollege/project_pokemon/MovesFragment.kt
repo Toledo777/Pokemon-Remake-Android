@@ -97,7 +97,7 @@ class MovesFragment : Fragment() {
                 val oldEnemy = this.battle.enemyPokemon
                 // attempt move, set text, update pp and button
                 performPlayerMove(moveList, buttons, i, listener)
-                if (oldEnemy != this.battle.enemyPokemon)
+                if (oldEnemy == this.battle.enemyPokemon)
                     this.battle = performEnemyMove(this.battle, listener)
             } else { //TODO: might not need this after end the battle properly
                 this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
@@ -138,6 +138,12 @@ class MovesFragment : Fragment() {
         } else {
 //            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
                 this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
+                if(this.battle.switchOutPlayerPkm()){
+                    listener.updatePokemonUI(this.battle)
+                    listener.reloadMovesFragment(this.battle)
+                }
+                else
+                    println("end")
         }
     }
 
@@ -165,14 +171,21 @@ suspend fun performEnemyMove(battle: Battle, listener: Callbacks): Battle{
         val moveName = battle.playEnemyMove()
         // move succed
         if (moveName != null) {
-            battle.enemyPokemon.name?.let { listener.updateBattleText(it + " " + Resources.getSystem().getString(R.string.used) + " " + moveName) }
+            battle.enemyPokemon.name?.let { listener.updateBattleText("$it used ${moveName}!")}//+ Resources.getSystem().getString(R.string.used) + " " + moveName) }
         }
         // move missed
         else {
-            battle.enemyPokemon.name?.let { listener.updateBattleText(it + " " + Resources.getSystem().getString(R.string.miss_move)) }
+            battle.enemyPokemon.name?.let { listener.updateBattleText("$it missed their move!")}// + Resources.getSystem().getString(R.string.miss_move)) }
         }
-        if (battle.playerPokemon.hp == 0)
-            battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + Resources.getSystem().getString(R.string.fainted)) }
+        if (battle.playerPokemon.hp == 0){
+            battle.playerPokemon.name?.let { name -> listener.updateBattleText("$name is fainted!")}//+ Resources.getSystem().getString(R.string.fainted)) }
+            if (battle.switchOutPlayerPkm()){
+                listener.updatePokemonUI(battle)
+                listener.reloadMovesFragment(battle)
+            } else {
+                println("end")
+            }
+        }
     }
     return battle
 }
