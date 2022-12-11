@@ -4,8 +4,12 @@ import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class DragListener internal constructor(private val listener: CustomListener) :
+class DragListener internal constructor(private val listener: CustomListener, private val userDao: UserDao) :
     View.OnDragListener {
     private var isDropped = false
     override fun onDrag(v: View, event: DragEvent): Boolean {
@@ -68,6 +72,16 @@ class DragListener internal constructor(private val listener: CustomListener) :
                             }
                             customListTarget?.let { adapterTarget.updateList(it) }
                             adapterTarget?.notifyDataSetChanged()
+                            runBlocking(Dispatchers.IO) {
+                                when (source.id) {
+                                    recyclerView1 -> userDao.updateTeam(listSource as ArrayList<Pokemon>)
+                                    recyclerView2 -> userDao.updateCollection(listSource as ArrayList<Pokemon>)
+                                }
+                                when (target.id) {
+                                    recyclerView1 -> userDao.updateTeam(customListTarget as ArrayList<Pokemon>)
+                                    recyclerView2 -> userDao.updateCollection(customListTarget as ArrayList<Pokemon>)
+                                }
+                            }
                             Log.d("ListCheck", "Target: " + customListTarget!!.map { it.name }.toString())
                             if (source.id == recyclerView2 && adapterSource?.itemCount ?: 0 < 1) {
                                 listener.setEmptyList(View.VISIBLE, recyclerView2, emptyTextView2)
