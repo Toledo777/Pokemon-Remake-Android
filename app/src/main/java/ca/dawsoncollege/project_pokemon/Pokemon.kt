@@ -193,11 +193,11 @@ class Pokemon(
     fun learnMove(newMove: Move, oldMove: Move? = null) {
         if (oldMove == null)
             moveList.add(newMove)
-        else
+        else {
             moveList.remove(oldMove)
             moveList.add(newMove)
+        }
     }
-
 }
 
 data class MoveOutline(val move: String, val level: Int)
