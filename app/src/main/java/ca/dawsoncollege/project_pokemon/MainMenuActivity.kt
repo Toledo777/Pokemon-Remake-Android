@@ -10,6 +10,7 @@ import ca.dawsoncollege.project_pokemon.databinding.MainMenuBinding
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
+
     companion object {
         private const val LOG_TAG = "MAIN_MENU_ACT_DEV_LOG"
     }
@@ -39,23 +40,24 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.main_menu_fragment, pokecenterFragment)
+            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.frameLayout3, pokecenterFragment)
                 // allows back button to go to previous fragment
 //                addToBackStack(null)
 //                commit()
 //            }
                 Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
             }
-            binding.changeTeamBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.main_menu_fragment, changeTeamFragment)
-//                addToBackStack(null)
-//                commit()
-//            }
-                Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+        }
+        binding.changeTeamBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.main_menu_fragment, ChangeTeamFragment())
+                addToBackStack(null)
+                commit()
             }
-            binding.trainerBattleBtn.setOnClickListener {
+        }
+        binding.trainerBattleBtn.setOnClickListener {
             try {
                 val intent = Intent(this, BattleActivity::class.java)
                 intent.putExtra("type", "trainer")
