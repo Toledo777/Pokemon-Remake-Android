@@ -159,11 +159,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     abstract fun checkPokemonFainted(): Boolean
 
     // calls addExp with exp gained after defeating enemy pokemon
-    fun gainExperience() {
-        val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
-        // adds exp and levels up if possible
-        this.playerPokemon.addExp(expGained)
-    }
+    abstract fun gainExperience()
 
     private suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
         val response = RetrofitInstance.api.getDamageRelations(type)

@@ -29,6 +29,12 @@ class WildBattle(playerTrainer: PlayerTrainer): Battle(playerTrainer) {
         return false
     }
 
+    override fun gainExperience() {
+        val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
+        // adds exp and levels up if possible
+        this.playerPokemon.addExp(expGained)
+    }
+
     // throw pokeball to attempt catch
     fun throwPokeball(): Boolean {
         val success = playerTrainer.catchPokemon(playerPokemon, enemyPokemon)
