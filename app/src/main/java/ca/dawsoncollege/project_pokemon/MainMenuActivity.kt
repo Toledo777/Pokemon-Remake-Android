@@ -56,22 +56,19 @@ class MainMenuActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
             }
             binding.trainerBattleBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.main_menu_fragment, tBattleFragment)
-//                addToBackStack(null)
-//                commit()
-//            }
+            try {
+                val intent = Intent(this, BattleActivity::class.java)
+                intent.putExtra("type", "trainer")
+                startActivity(intent)
+            } catch (exc: ActivityNotFoundException){
+                Log.e(LOG_TAG, "Could not open BattleActivity", exc)
+            }
             Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
         }
         binding.wildBattleBtn.setOnClickListener {
-            /*supportFragmentManager.beginTransaction().apply {
-                replace(R.id.main_menu_fragment, wBattleFragment)
-                addToBackStack(null)
-                commit()
-            }*/
-            // TODO: send code or data representing wild battle and not trainer
             try {
                 val intent = Intent(this, BattleActivity::class.java)
+                intent.putExtra("type", "wild")
                 startActivity(intent)
             } catch (exc: ActivityNotFoundException){
                 Log.e(LOG_TAG, "Could not open BattleActivity", exc)
