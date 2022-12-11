@@ -1,14 +1,18 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 
 class DragListener internal constructor(
     private val listener: CustomListener,
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val context: Context
 ) :
     View.OnDragListener {
     private var isDropped = false
@@ -18,16 +22,15 @@ class DragListener internal constructor(
     private val emptyTextView2 = R.id.empty_list_text_view_2
     private val recyclerView1 = R.id.recycler_view_1
     private val recyclerView2 = R.id.recycler_view_2
+    @SuppressLint("NotifyDataSetChanged")
     override fun onDrag(v: View, event: DragEvent): Boolean {
         when (event.action) {
             DragEvent.ACTION_DROP -> {
                 isDropped = true
                 val viewSource = event.localState as View?
-                val viewId = v.id
-                when (viewId) {
+                when (val viewId = v.id) {
                     frameLayoutItem, emptyTextView1, emptyTextView2, recyclerView1, recyclerView2 -> {
                         val target: RecyclerView
-                        val adapterTarget: CustomAdapter?
                         when (viewId) {
                             emptyTextView1, recyclerView1 -> target =
                                 v.rootView.findViewById<View>(recyclerView1) as RecyclerView
@@ -38,53 +41,44 @@ class DragListener internal constructor(
                                 positionTarget = v.tag as Int
                             }
                         }
-                        adapterTarget = target.adapter as CustomAdapter?
+                        val adapterTarget: CustomAdapter? = target.adapter as CustomAdapter?
                         if (viewSource != null) {
                             val source = viewSource.parent as RecyclerView
                             val adapterSource = source.adapter as CustomAdapter?
                             val positionSource = viewSource.tag as Int
                             val list: Pokemon? = adapterSource?.getList()?.get(positionSource)
-                            val listSource = adapterSource?.getList()?.apply {
-                                if (source.id == recyclerView2 && target.id == recyclerView1 && adapterTarget!!.itemCount == 6) {
-                                    Log.d(
-                                        "ListCheck",
-                                        "Cannot have more than 6 items in recyclerView1"
-                                    )
-                                    return false
-                                } else if (source.id == recyclerView1 && this.size == 1) {
-                                    Log.d(
-                                        "ListCheck",
-                                        "recyclerView1 cannot be empty"
-                                    )
-                                    return false
-                                } else {
-                                    removeAt(positionSource)
-                                }
-                            }
-                            listSource?.let { adapterSource.updateList(it) }
-                            adapterSource?.notifyDataSetChanged()
-                            Log.d("ListCheck", "Source: " + listSource!!.map { it.name }.toString())
-                            val customListTarget = adapterTarget?.getList()
+                            val listSource = adapterSource?.getList()
+
+                            if (!movePokemonFromSource(
+                                    listSource as ArrayList<Pokemon>,
+                                    source.id,
+                                    target.id,
+                                    positionSource,
+                                    adapterTarget!!,
+                                    adapterSource
+                                )) return false
+
+                            val customListTarget = adapterTarget.getList()
                             if (positionTarget >= 0) {
-                                list?.let { customListTarget?.add(positionTarget, it) }
+                                list?.let { customListTarget.add(positionTarget, it) }
                             } else {
-                                list?.let { customListTarget?.add(it) }
+                                list?.let { customListTarget.add(it) }
                             }
-                            customListTarget?.let { adapterTarget.updateList(it) }
-                            adapterTarget?.notifyDataSetChanged()
+                            customListTarget.let { adapterTarget.updateList(it) }
+                            adapterTarget.notifyDataSetChanged()
                             runBlocking {
                                 updateDatabase(
                                     source.id,
                                     target.id,
-                                    listSource as ArrayList<Pokemon>,
+                                    listSource,
                                     customListTarget as ArrayList<Pokemon>
                                 )
                             }
                             Log.d(
                                 "ListCheck",
-                                "Target: " + customListTarget!!.map { it.name }.toString()
+                                "Target: " + customListTarget.map { it.name }.toString()
                             )
-                            updateUI(source.id, adapterSource, viewId);
+                            updateUI(source.id, adapterSource, viewId)
                         }
                     }
                 }
@@ -93,6 +87,39 @@ class DragListener internal constructor(
         if (!isDropped && event.localState != null) {
             (event.localState as View).visibility = View.VISIBLE
         }
+        return true
+    }
+
+    // Move the pokemon from the source recycler view
+    @SuppressLint("NotifyDataSetChanged")
+    private fun movePokemonFromSource(
+        sourceList: ArrayList<Pokemon>,
+        sourceId: Int,
+        targetId: Int,
+        sourcePosition: Int,
+        targetAdapter: CustomAdapter,
+        sourceAdapter: CustomAdapter
+    ): Boolean {
+        if (sourceId == recyclerView2 && targetId == recyclerView1 && targetAdapter.itemCount == 6) {
+            Toast.makeText(
+                context,
+                "You can only have 6 Pokemons in your team",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        } else if (sourceId == recyclerView1 && sourceList.size == 1) {
+            Toast.makeText(
+                context,
+                "Your Pokemon team cannot be empty",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        } else {
+            sourceList.removeAt(sourcePosition)
+        }
+        sourceList.let { sourceAdapter.updateList(it) }
+        sourceAdapter.notifyDataSetChanged()
+        Log.d("ListCheck", "Source: " + sourceList.map { it.name }.toString())
         return true
     }
 
@@ -116,13 +143,13 @@ class DragListener internal constructor(
     }
 
     private fun updateUI(sourceId: Int, sourceAdapter: CustomAdapter, viewId: Int) {
-        if (sourceId == recyclerView2 && (sourceAdapter.itemCount ?: 0) < 1) {
+        if (sourceId == recyclerView2 && sourceAdapter.itemCount < 1) {
             listener.setEmptyList(View.VISIBLE, recyclerView2, emptyTextView2)
         }
         if (viewId == emptyTextView2) {
             listener.setEmptyList(View.GONE, recyclerView2, emptyTextView2)
         }
-        if (sourceId == recyclerView1 && (sourceAdapter.itemCount ?: 0) < 1) {
+        if (sourceId == recyclerView1 && sourceAdapter.itemCount < 1) {
             listener.setEmptyList(View.VISIBLE, recyclerView1, emptyTextView1)
         }
         if (viewId == emptyTextView1) {
