@@ -9,10 +9,10 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,19 +70,22 @@ class CustomAdapter(
                 holder.img?.setImageBitmap(BitmapFactory.decodeStream(URL(list[position].data.frontSprite).openStream()))
             }
         }
-        holder.frameLayout?.tag = position
-        holder.frameLayout?.setOnTouchListener(this)
-        holder.frameLayout?.setOnDragListener(DragListener(listener!!, userDao, context))
+        holder.name!!.text = list[position].name
+        holder.constraintLayout?.tag = position
+        holder.constraintLayout?.setOnTouchListener(this)
+        holder.constraintLayout?.setOnDragListener(DragListener(listener!!, userDao, context))
     }
 
     class CustomViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
         var img: ImageView? = null
-        var frameLayout: FrameLayout? = null
+        var name: TextView? = null
+        var constraintLayout: ConstraintLayout? = null
 
         init {
             img = itemView.findViewById(R.id.front_img)
-            frameLayout = itemView.findViewById(R.id.frame_layout_item)
+            name = itemView.findViewById(R.id.pokemonName)
+            constraintLayout = itemView.findViewById(R.id.frame_layout_item)
         }
     }
 }
