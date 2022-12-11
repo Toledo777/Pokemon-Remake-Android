@@ -36,4 +36,5 @@
     <string name="run">Run</string>
     <string name="pokemon_sprite">Pokemon sprite</string>
     <string name="continue_text">Continue</string>
+    <string name="pokemon_name">Name</string>
 </resources>
