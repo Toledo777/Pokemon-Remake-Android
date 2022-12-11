@@ -32,6 +32,4 @@ class BattleTest {
         assertTrue(battle.playerPokemon.hp == battle.playerPokemon.battleStat.maxHP || battle.playerPokemon.hp == setHp + 20)
     }
 
-    // test playerMove
-
 }
