@@ -198,6 +198,11 @@ class Pokemon(
             moveList.add(newMove)
         }
     }
+
+    fun pokecenterHeal() {
+        this.moveList.forEach { it.PP = it.maxPP }
+        this.hp = this.battleStat.maxHP
+    }
 }
 
 data class MoveOutline(val move: String, val level: Int)

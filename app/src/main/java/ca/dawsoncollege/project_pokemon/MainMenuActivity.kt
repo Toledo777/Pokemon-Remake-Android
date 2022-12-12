@@ -49,14 +49,6 @@ class MainMenuActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // TODO: replace commented code when fragments are ready
-        // initialize needed fragments
-        //val defaultFragment = MainMenuActivity() // should be a fragment here instead
-        //val pokecenterFragment = PokecenterFragment()
-//        val tBattleFragment = TrainerBattleFragment()
-//        val wBattleFragment = BattleActivity()
-
     }
 
     override fun onStart() {
@@ -79,22 +71,23 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.frameLayout3, pokecenterFragment)
-                // allows back button to go to previous fragment
-//                addToBackStack(null)
-//                commit()
-//            }
-                Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                val team = this@MainMenuActivity.userDao.fetchPlayerSave()!!.team
+                team.forEach {
+                    it.pokecenterHeal()
+                }
+                this@MainMenuActivity.userDao.updateTeam(team)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Your Pokémon are fully healed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    goToChangeTeam()
+                }
             }
         }
-        binding.changeTeamBtn.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.main_menu_fragment, ChangeTeamFragment())
-                addToBackStack(null)
-                commit()
-            }
-        }
+        binding.changeTeamBtn.setOnClickListener { goToChangeTeam() }
         binding.trainerBattleBtn.setOnClickListener {
             try {
                 lifecycleScope.launch(Dispatchers.IO) {
@@ -154,8 +147,17 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    private fun goToChangeTeam() {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.main_menu_fragment, ChangeTeamFragment())
+            addToBackStack(null)
+            commit()
+        }
+    }
+
     @Override
     override fun onBackPressed() {
         // super.onBackPressed();
     }
 }
+
