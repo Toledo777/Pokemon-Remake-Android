@@ -1,6 +1,8 @@
 package ca.dawsoncollege.project_pokemon
 
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.junit.Test
 import org.junit.Assert.*
 import kotlin.math.pow
@@ -34,9 +36,22 @@ class PokemonTest {
         val pokemon = Pokemon(10)
         // test that exp is set according  to level
         assertTrue(pokemon.experience == 10.0.pow(3).toInt())
-        // add xp for pokemon to reach level 11
-        pokemon.addExp(331)
+        // add enough xp for pokemon to reach level 11
+        pokemon.addExp(400)
         assertEquals(11, pokemon.level)
+
+    }
+
+    // test proposeMove method
+    @Test
+    fun testProposeMove() {
+        val pokemon = Pokemon(10)
+        pokemon.addExp(1000)
+        // test that move is proposed
+        GlobalScope.launch {
+            // test that move list is filled
+            assertTrue(pokemon.proposeMove().isNotEmpty())
+        }
 
     }
 }

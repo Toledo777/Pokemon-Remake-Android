@@ -163,7 +163,7 @@ class Pokemon(
         this.experience += exp
         // set level before xp gain
         this.oldLevel = this.level
-        this.level = floor(this.experience.toDouble().pow(1 / 3)).toInt()
+        this.level = floor(this.experience.toDouble().pow(1 / 3.0)).toInt()
         // recalculate stats only if level changed
         if (this.level > this.oldLevel)
             this.battleStat = getBattleStats()

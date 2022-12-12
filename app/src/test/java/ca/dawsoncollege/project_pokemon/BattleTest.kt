@@ -18,9 +18,11 @@ class BattleTest {
     fun testSwitchOutPokemon() {
         val battle = TrainerBattle(playerTrainer, enemyTrainer)
         val nextPokemon = Pokemon(44)
-        battle.switchOutPlayerPkm(nextPokemon, 1)
+        playerTrainer.team.add(nextPokemon)
+        battle.switchOutPlayerPkm()
         assertEquals(nextPokemon, battle.playerPokemon)
     }
+
     // test potion
     @Test
     fun testPlayerUsePotion() {
