@@ -45,12 +45,6 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         val bundle: Bundle? = intent.extras
         battleType = bundle!!.getString("type").toString()
 
-//        val sharedPreference = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-//        val playerTrainerJson = sharedPreference.getString("playerTrainer", "empty")
-//        if (playerTrainerJson != "empty") {
-//            playerTrainer = convertJSONToPlayerTrainer(playerTrainerJson!!)
-//            lifecycleScope.launch(Dispatchers.IO){
-//
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "Trainer-Database"
@@ -321,7 +315,10 @@ class BattleActivity : AppCompatActivity(), Callbacks {
 
     private fun winBattle(battle: Battle) {
         this.battle = battle
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.beginTransaction().apply {
+            remove(supportFragmentManager.fragments[0])
+            commit()
+        }
         Toast.makeText(applicationContext, "You won a $battleType battle!", Toast.LENGTH_LONG).show()
         this.battle.updatePlayerPokemon()
         this.playerTrainer = this.battle.playerTrainer
@@ -339,7 +336,10 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     @Override
     override fun loseBattle(battle: Battle) {
         this.battle = battle
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.beginTransaction().apply {
+            remove(supportFragmentManager.fragments[0])
+            commit()
+        }
         Toast.makeText(applicationContext, "You lost a $battleType battle...", Toast.LENGTH_LONG).show()
         this.battle.updatePlayerPokemon()
         this.playerTrainer = this.battle.playerTrainer
@@ -357,7 +357,10 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     @Override
     override fun capturedPokemon(battle: Battle) {
         this.battle = battle
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.beginTransaction().apply {
+            remove(supportFragmentManager.fragments[0])
+            commit()
+        }
         Toast.makeText(applicationContext, "You captured a Pokemon!", Toast.LENGTH_LONG).show()
         this.playerTrainer = this.battle.playerTrainer
         lifecycleScope.launch(Dispatchers.IO) {
