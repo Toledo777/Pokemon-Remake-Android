@@ -145,6 +145,11 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
+
+        binding.exitBtn.setOnClickListener {
+            val intent = Intent(this@MainMenuActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun goToChangeTeam() {
