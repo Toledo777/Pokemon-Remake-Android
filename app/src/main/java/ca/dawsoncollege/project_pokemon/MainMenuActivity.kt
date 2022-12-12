@@ -99,9 +99,9 @@ class MainMenuActivity : AppCompatActivity() {
                             val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
                             intent.putExtra("type", "trainer")
                             startActivity(intent)
-                            Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "You started a trainer battle!", Toast.LENGTH_SHORT).show()
                         } else
-                            Toast.makeText(applicationContext, "Your team is fainted! Go to the PokeCenter...", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Your team is fainted. Go to the PokeCenter or change teams.", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (exc: ActivityNotFoundException){
@@ -121,9 +121,9 @@ class MainMenuActivity : AppCompatActivity() {
                             val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
                             intent.putExtra("type", "wild")
                             startActivity(intent)
-                            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "You started a wild battle!", Toast.LENGTH_SHORT).show()
                         } else
-                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Your team is fainted. Go to the PokeCenter or change teams.", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (exc: ActivityNotFoundException){

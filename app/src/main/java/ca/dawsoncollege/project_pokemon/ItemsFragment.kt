@@ -47,12 +47,11 @@ class ItemsFragment : Fragment() {
         // set listener for pokeball button
         view.findViewById<Button>(R.id.pokeball_button).setOnClickListener {
             if (this.battle is WildBattle){
-                listener.updateBattleText(getString(R.string.throw_pokeball))
                 // if captured
                 if ((this.battle as WildBattle).throwPokeball()){
-//                Toast.makeText(context, "${this.battle.enemyPokemon.name} has been captured!", Toast.LENGTH_SHORT).show()
                     listener.updateBattleText(this.battle.enemyPokemon.name +" "+ getString(R.string.capture_success))
                     listener.updateTeam(this.battle)
+                    listener.capturedPokemon(this.battle)
                 }
                 else
                     listener.updateBattleText(getString(R.string.capture_fail))
