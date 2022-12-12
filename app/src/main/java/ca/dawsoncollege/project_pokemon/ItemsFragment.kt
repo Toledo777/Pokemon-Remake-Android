@@ -37,7 +37,7 @@ class ItemsFragment : Fragment() {
         view.findViewById<Button>(R.id.potion_button).setOnClickListener {
             this.battle.playerUsePotion()
             this.battle.updatePlayerPokemon()
-            listener.updateBattleText(this.battle.playerTrainer.playerName +" "+getString(R.string.use_potion) + "on " +this.battle.playerPokemon.name)
+            listener.updateBattleText(this.battle.playerTrainer.playerName +" "+getString(R.string.use_potion) + " on " +this.battle.playerPokemon.name)
             listener.updateHPUI(this.battle)
             lifecycleScope.launch(Dispatchers.Main) {
                 performEnemyMove(this@ItemsFragment.battle, listener)
