@@ -90,7 +90,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
                 }
                 finish()
             } else
-                updateBattleText("You can't run from a trainer battle.")
+                Toast.makeText(applicationContext, R.string.trainer_battle_run, Toast.LENGTH_SHORT).show()
         }
         showButtons()
     }
@@ -424,7 +424,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
             commit()
         }
         hideButtons()
-        Toast.makeText(applicationContext, "You captured a Pokemon!", Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, R.string.capture_toast, Toast.LENGTH_LONG).show()
         this.playerTrainer = this.battle.playerTrainer
         lifecycleScope.launch(Dispatchers.IO) {
             if (userDao.fetchPlayerSave() != null) userDao.delete()
