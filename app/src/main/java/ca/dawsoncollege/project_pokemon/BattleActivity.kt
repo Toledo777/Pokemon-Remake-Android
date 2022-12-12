@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -90,6 +91,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
             } else
                 updateBattleText("You can't run from a trainer battle.")
         }
+        showButtons()
     }
 
     // set entire player pokemon UI
@@ -313,12 +315,27 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         // super.onBackPressed();
     }
 
+    fun hideButtons(){
+        binding.movesBtn.visibility = View.INVISIBLE
+        binding.switchBtn.visibility = View.INVISIBLE
+        binding.itemsBtn.visibility = View.INVISIBLE
+        binding.runBtn.visibility = View.INVISIBLE
+    }
+
+    fun showButtons(){
+        binding.movesBtn.visibility = View.VISIBLE
+        binding.switchBtn.visibility = View.VISIBLE
+        binding.itemsBtn.visibility = View.VISIBLE
+        binding.runBtn.visibility = View.VISIBLE
+    }
+
     private fun winBattle(battle: Battle) {
         this.battle = battle
         supportFragmentManager.beginTransaction().apply {
             remove(supportFragmentManager.fragments[0])
             commit()
         }
+        hideButtons()
         Toast.makeText(applicationContext, "You won a $battleType battle!", Toast.LENGTH_LONG).show()
         this.battle.updatePlayerPokemon()
         this.playerTrainer = this.battle.playerTrainer
@@ -340,6 +357,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
             remove(supportFragmentManager.fragments[0])
             commit()
         }
+        hideButtons()
         Toast.makeText(applicationContext, "You lost a $battleType battle...", Toast.LENGTH_LONG).show()
         this.battle.updatePlayerPokemon()
         this.playerTrainer = this.battle.playerTrainer
@@ -361,6 +379,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
             remove(supportFragmentManager.fragments[0])
             commit()
         }
+        hideButtons()
         Toast.makeText(applicationContext, "You captured a Pokemon!", Toast.LENGTH_LONG).show()
         this.playerTrainer = this.battle.playerTrainer
         lifecycleScope.launch(Dispatchers.IO) {
