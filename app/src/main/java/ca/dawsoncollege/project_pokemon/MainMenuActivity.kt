@@ -97,13 +97,20 @@ class MainMenuActivity : AppCompatActivity() {
         }
         binding.trainerBattleBtn.setOnClickListener {
             try {
-                if(this.playerTrainer.checkTeamFainted()){
-                    val intent = Intent(this, BattleActivity::class.java)
-                    intent.putExtra("type", "trainer")
-                    startActivity(intent)
-                    Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
-                } else
-                    Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                        playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+                    }
+                    withContext(Dispatchers.Main){
+                        if(this@MainMenuActivity.playerTrainer.checkTeamFainted()){
+                            val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
+                            intent.putExtra("type", "trainer")
+                            startActivity(intent)
+                            Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
+                        } else
+                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } catch (exc: ActivityNotFoundException){
                 Log.e(LOG_TAG, "Could not open BattleActivity", exc)
             } catch (e: Exception){
@@ -112,13 +119,20 @@ class MainMenuActivity : AppCompatActivity() {
         }
         binding.wildBattleBtn.setOnClickListener {
             try {
-                if (this.playerTrainer.checkTeamFainted()){
-                    val intent = Intent(this, BattleActivity::class.java)
-                    intent.putExtra("type", "wild")
-                    startActivity(intent)
-                    Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
-                } else
-                    Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                        playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+                    }
+                    withContext(Dispatchers.Main){
+                        if (this@MainMenuActivity.playerTrainer.checkTeamFainted()){
+                            val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
+                            intent.putExtra("type", "wild")
+                            startActivity(intent)
+                            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
+                        } else
+                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } catch (exc: ActivityNotFoundException){
                 Log.e(LOG_TAG, "Could not open BattleActivity", exc)
             } catch (e: Exception){
