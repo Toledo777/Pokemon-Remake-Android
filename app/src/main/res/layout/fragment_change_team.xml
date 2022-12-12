@@ -23,6 +23,7 @@
         android:id="@+id/recycler_view_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/team"
         android:fadeScrollbars="false"
         android:paddingBottom="20dp"
         android:scrollbars="horizontal"
@@ -39,6 +40,7 @@
         android:id="@+id/recycler_view_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/collection"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/collectionLabel" />
 
