@@ -11,6 +11,7 @@ import androidx.room.Room
 import ca.dawsoncollege.project_pokemon.databinding.MainMenuBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MainMenuActivity : AppCompatActivity() {
@@ -88,7 +89,6 @@ class MainMenuActivity : AppCompatActivity() {
             }
         }
         binding.changeTeamBtn.setOnClickListener {
-            Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.main_menu_fragment, ChangeTeamFragment())
                 addToBackStack(null)
@@ -124,6 +124,16 @@ class MainMenuActivity : AppCompatActivity() {
             } catch (e: Exception){
                 Log.e(LOG_TAG, e.message.toString(), e)
             }
+        }
+        binding.saveBtn.setOnClickListener {
+            runBlocking(Dispatchers.IO) {
+                if (userDao.fetchPlayerSave() != null) userDao.delete()
+                userDao.savePlayerTrainer(this@MainMenuActivity.playerTrainer)
+            }
+            finish()
+            overridePendingTransition(0, 0)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }
     }
 }
