@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="team">#4DC62828</color>
     <color name="collection">#800277BD</color>
+    <color name="battle_text">#80FFFFFF</color>
+    <color name="battle_menu">#0277BD</color>
 </resources>
