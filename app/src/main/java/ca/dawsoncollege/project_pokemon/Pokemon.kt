@@ -18,7 +18,7 @@ class Pokemon(
     var oldLevel: Int = 0
     var data: PokemonData
     var battleStat: BattleStats
-    var experience: Int = 0
+    var experience: Int = level.toDouble().pow(3.0).toInt()
     var hp: Int = 0
     var types: List<String>
     val NUMBER_OF_MOVES = 4
@@ -163,7 +163,7 @@ class Pokemon(
         this.experience += exp
         // set level before xp gain
         this.oldLevel = this.level
-        this.level = floor(this.experience.toDouble().pow(1 / 3)).toInt()
+        this.level = floor(this.experience.toDouble().pow(1.0 / 3)).toInt()
         // recalculate stats only if level changed
         if (this.level > this.oldLevel)
             this.battleStat = getBattleStats()
@@ -193,16 +193,16 @@ class Pokemon(
     fun learnMove(newMove: Move, oldMove: Move? = null) {
         if (oldMove == null)
             moveList.add(newMove)
-        else
+        else {
             moveList.remove(oldMove)
             moveList.add(newMove)
+        }
     }
 
     fun pokecenterHeal() {
         this.moveList.forEach { it.PP = it.maxPP }
         this.hp = this.battleStat.maxHP
     }
-
 }
 
 data class MoveOutline(val move: String, val level: Int)

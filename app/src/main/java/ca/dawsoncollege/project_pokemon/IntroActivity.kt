@@ -73,13 +73,12 @@ class IntroActivity : AppCompatActivity() {
         } else {
             this.playerTrainer = PlayerTrainer(binding.trainerNameInput.text.toString())
             if (pickStarter()) {
-                // add playerTrainer to SharedPreferences
+                // add playerTrainer to local database
                 runBlocking(Dispatchers.IO) {
                     if (userDao.fetchPlayerSave() != null) userDao.delete()
                     userDao.savePlayerTrainer(this@IntroActivity.playerTrainer)
                 }
                 Toast.makeText(applicationContext, "added player", Toast.LENGTH_SHORT).show()
-
                 startMainMenuActivity()
             }
 //            val json = sharedPreference.getString("playerTrainer", "")

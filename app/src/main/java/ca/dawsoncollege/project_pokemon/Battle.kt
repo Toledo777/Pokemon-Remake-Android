@@ -10,27 +10,53 @@ import kotlin.random.Random
 
 abstract class Battle(val playerTrainer: PlayerTrainer) {
     // current pokemons in battle
-    var playerPokemon = playerTrainer.team[0]
+    var playerPokemon = setPlayerPokemon()
     private var playerPokemonIndex = 0;
 
     lateinit var enemyPokemon: Pokemon
 
     class SamePokemonException(message: String) : Exception(message)
+    class NoPokemonException(message: String) : Exception(message)
+
+    private fun setPlayerPokemon(): Pokemon{
+        for (pokemon in playerTrainer.team){
+            if (pokemon.hp > 0) {
+                this.playerPokemonIndex = this.playerTrainer.team.indexOf(pokemon)
+                return pokemon
+            }
+        }
+        throw NoPokemonException("No Pokemon available to fight")
+    }
 
     // switch out players current pokemon
-    fun switchOutPlayerPkm(nextPokemon: Pokemon, i: Int) {
+    fun switchSelectPlayerPkm(nextPokemon: Pokemon, i: Int) {
         if (nextPokemon.hp > 0) {
             if (playerPokemonIndex != i){
                 playerPokemon = nextPokemon
                 playerPokemonIndex = i
             }
             else {
-                throw SamePokemonException("Error, Pokemon is already in battle")
+                throw SamePokemonException("${nextPokemon.name} is already in battle!")
             }
         }
         else {
-            throw IllegalArgumentException("Error, Cannot switch to a pokemon with 0 HP")
+            throw IllegalArgumentException("${nextPokemon.name} is fainted!")
         }
+    }
+
+    // switch out player's pokemon when it has reached 0 hp
+    // returns true if pokemon > 0 was found, false if not
+    fun switchOutPlayerPkm():Boolean {
+        // remove fainted pokemon from team
+        for (pokemon in playerTrainer.team) {
+            if (pokemon.hp > 0 && playerTrainer.team.indexOf(pokemon) != playerPokemonIndex) {
+                playerPokemon = pokemon
+                playerPokemonIndex = playerTrainer.team.indexOf(pokemon)
+                return true
+            }
+        }
+        // no pokemon was found
+        return false
     }
 
     fun updatePlayerPokemon(){
@@ -90,29 +116,41 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     }
 
     // chose random move to play for enemy, returns success status
-    suspend fun playEnemyMove(): Boolean{
+    suspend fun playEnemyMove(): String?{
         val moveList = this.enemyPokemon.moveList
         val moveIndex = Random.nextInt(0, 3);
 
         // hostile move
         if (moveList[moveIndex].target == "OPPONENT") {
             // attempt attack, returns success status
-            return attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
+            val success = attackMove(moveList[moveIndex], enemyPokemon, playerPokemon)
+            return if (success)
+                moveList[moveIndex].name
+            else
+                null
+
         }
         // friendly move
         else {
             // enemy pokemon tries heals itself
-            return friendlyMove(moveList[moveIndex], enemyPokemon)
+            val success = friendlyMove(moveList[moveIndex], enemyPokemon)
+            return if (success)
+                moveList[moveIndex].name
+            else
+                null
         }
     }
 
     // leave battle
-    fun playerRun() {
-        TODO("Not sure if necessary")
+    fun playerRun(): Battle {
+        return this
     }
 
     // check if move succeeds
     private fun moveSuccessCheck(accuracy: Int): Boolean {
+        // 0 accuracy means 100% hit chance in the api
+        if (accuracy == 0)
+            return true
         val randNum = Random.nextInt(0, 100)
         // check move success using probabilities
         if (accuracy >= randNum) {
@@ -150,11 +188,7 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     abstract fun checkPokemonFainted(): Boolean
 
     // calls addExp with exp gained after defeating enemy pokemon
-    fun gainExperience() {
-        val expGained = (0.3 * this.enemyPokemon.data.baseExperienceReward * this.enemyPokemon.level).toInt()
-        // adds exp and levels up if possible
-        this.playerPokemon.addExp(expGained)
-    }
+    abstract fun gainExperience()
 
     private suspend fun getTypeDamageRelations(type: String): SimplifiedDamageRelations {
         val response = RetrofitInstance.api.getDamageRelations(type)

@@ -1,5 +1,6 @@
 package ca.dawsoncollege.project_pokemon
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,8 +22,11 @@ class MovesFragment : Fragment() {
 
         val data = arguments
         val battleJSON = data!!.getString("battle").toString()
-        // TODO: check if wild or trainer
-        this.battle = convertJSONToWildBattle(battleJSON)
+        val battleType = data.getString("type").toString()
+        if (battleType == "wild")
+            this.battle = convertJSONToWildBattle(battleJSON)
+        else
+            this.battle = convertJSONToTrainerBattle(battleJSON)
     }
 
     override fun onCreateView(
@@ -46,6 +50,8 @@ class MovesFragment : Fragment() {
         for (i in 0 until this.battle.playerPokemon.NUMBER_OF_MOVES){
             val moveButtonText = "${moveList[i].name.replace('-', ' ')}\n" +
                     "${moveList[i].PP}/${moveList[i].maxPP}\n${moveList[i].type}"
+
+            val listener = activity as Callbacks
             // set text
             buttons[i].text = moveButtonText
             // set listener
@@ -54,57 +60,15 @@ class MovesFragment : Fragment() {
                 if (moveList[i].PP > 0){
                     // if player pokemon is not fainted
                     if (this.battle.playerPokemon.hp != 0) {
-
-                        // specific dispatcher is specified in the functions involved
-                        lifecycleScope.launch{
-                            playTurn(moveList, buttons, i)
-                        }
-                        // callback to update HP UI in BattleActivity
-                        val listener = activity as Callbacks
-                        listener.updateHPUI(this.battle)
+                        listener.triggerPlayTurn(this.battle, moveList, buttons, i)
                     } else {
-                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context, "${this.battle.playerPokemon.name} is fainted!", Toast.LENGTH_SHORT).show()
+                        this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
                     }
                 } else {
-                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.pp_out, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-    }
-
-    // update button text
-    private fun updateMovePP(button: Button, move: Move) {
-        val moveButtonText = "${move.name.replace('-', ' ')}\n" +
-                "${move.PP}/${move.maxPP}\n${move.type}"
-        button.text = moveButtonText
-    }
-
-    // TODO: to optimize?
-    // play a turn
-    private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
-        // check who attacks first
-        if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
-            this.battle.playerMove(moveList[i])
-            Log.d("MOVES_FRAG", moveList[i].toString())
-            moveList[i].PP -= 1
-            updateMovePP(buttons[i], moveList[i])
-            // if enemy pokemon is not fainted
-            if (!this.battle.checkPokemonFainted())
-                this.battle.playEnemyMove()
-        } else {
-            this.battle.playEnemyMove()
-            // if player pokemon is not fainted
-            if (this.battle.playerPokemon.hp != 0){
-                this.battle.playerMove(moveList[i])
-                Log.d("MOVES_FRAG", moveList[i].toString())
-                moveList[i].PP -= 1
-                updateMovePP(buttons[i], moveList[i])
-                this.battle.checkPokemonFainted()
-            } else {
-                Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
-            }
-        }
-        // update player data
-        this.battle.updatePlayerPokemon()
     }
 }

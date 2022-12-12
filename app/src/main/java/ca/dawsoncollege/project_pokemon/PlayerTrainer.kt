@@ -124,4 +124,13 @@ data class PlayerTrainer(val playerName: String) {
             minLevel
         }
     }
+
+    fun checkTeamFainted(): Boolean{
+        for (pokemon in this.team){
+            if (pokemon.hp > 0) {
+                return true
+            }
+        }
+        return false
+    }
 }
