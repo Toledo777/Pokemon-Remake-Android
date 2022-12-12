@@ -28,7 +28,7 @@ class LearnMoveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_moves, container, false).rootView
+        val view = inflater.inflate(R.layout.fragment_learn_move, container, false).rootView
         val buttons = arrayListOf<Button>(
             view.findViewById(R.id.learn_1),
             view.findViewById(R.id.learn_2),

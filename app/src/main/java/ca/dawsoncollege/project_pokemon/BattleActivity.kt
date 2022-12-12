@@ -268,9 +268,9 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         println("here")
         hideButtons()
         println("hid buttons")
-//        for (move in newMoves){
-//            println("in loop new moves")
-//            updateBattleText("${this.battle.playerPokemon.name} wants to learn ${move.name.replace('-', ' ')}")
+        for (move in newMoves){
+            println("in loop new moves")
+            updateBattleText("${this.battle.playerPokemon.name} wants to learn ${move.name.replace('-', ' ')}")
             val learnMoveFragment = LearnMoveFragment()
             val bundle = Bundle()
             bundle.putString("battle", convertBattleToJSON(this.battle))
@@ -280,22 +280,22 @@ class BattleActivity : AppCompatActivity(), Callbacks {
                 replace(R.id.battle_menu_fragment, learnMoveFragment)
                 commit()
             }
-//            while (!madeChoice){
-//                println("in loop")
-//                // wait for callback
-//                if(this.userPick < 5){
-//                    madeChoice = true
-//                    this.battle.playerPokemon.learnMove(move,
-//                        this.battle.playerPokemon.moveList[this.userPick])
-//                } else if (this.userPick == 9){
-//                    madeChoice = true
-//                }
-//            }
+            while (!madeChoice){
+                println("in loop")
+                // wait for callback
+                if(this.userPick < 5){
+                    madeChoice = true
+                    this.battle.playerPokemon.learnMove(move,
+                        this.battle.playerPokemon.moveList[this.userPick])
+                } else if (this.userPick == 9){
+                    madeChoice = true
+                }
+            }
             this.battle.updatePlayerPokemon()
             this.userPick = 10
             madeChoice = false
-//        }
-//        setMovesFragment()
+        }
+        setMovesFragment()
         showButtons()
     }
 
