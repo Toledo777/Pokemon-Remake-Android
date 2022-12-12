@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import ca.dawsoncollege.project_pokemon.databinding.ActivityBattleBinding
@@ -17,6 +19,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.net.URL
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 
 class BattleActivity : AppCompatActivity(), Callbacks {
@@ -272,14 +277,14 @@ class BattleActivity : AppCompatActivity(), Callbacks {
                     listener.updatePokemonUI(this.battle)
                     this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
                 }
-                if (this.battle is WildBattle){
-                    // TODO: end battle
-                } else
+                if (battleType == "wild"){
+                    winBattle(this.battle)
+                } else {
                     if ((this.battle as TrainerBattle).switchOutEnemyPkm()){
                         listener.updatePokemonUI(this.battle)
                     } else
-                        println("end")
-                // TODO: end battle
+                        winBattle(this.battle)
+                }
             }
         } else {
 //            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
@@ -289,7 +294,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
                 listener.reloadMovesFragment(this.battle)
             }
             else
-                println("end")
+                listener.loseBattle(this.battle)
         }
     }
 
@@ -297,13 +302,14 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     private suspend fun playPlayerMove(move: Move, button: Button) {
         val listener = this as Callbacks
         if(this.battle.playerMove(move)) {
-            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.used) + " " + move.name) }
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " +
+                    getString(R.string.used) + " " + move.name.replace('-', ' ')) }
         }
         // missed move
         else {
             this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move))}
         }
-        Log.d("MOVES_FRAG", move.toString())
+//        Log.d("MOVES_FRAG", move.toString())
         move.PP -= 1
         updateMovePP(button, move)
     }
@@ -311,6 +317,58 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     @Override
     override fun onBackPressed() {
         // super.onBackPressed();
+    }
+
+    private fun winBattle(battle: Battle) {
+        this.battle = battle
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        Toast.makeText(applicationContext, "You won a $battleType battle!", Toast.LENGTH_LONG).show()
+        this.battle.updatePlayerPokemon()
+        this.playerTrainer = this.battle.playerTrainer
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (userDao.fetchPlayerSave() != null) userDao.delete()
+            userDao.savePlayerTrainer(this@BattleActivity.playerTrainer)
+            withContext(Dispatchers.Main){
+                Timer().schedule(2000) {
+                    finish()
+                }
+            }
+        }
+    }
+
+    @Override
+    override fun loseBattle(battle: Battle) {
+        this.battle = battle
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        Toast.makeText(applicationContext, "You lost a $battleType battle...", Toast.LENGTH_LONG).show()
+        this.battle.updatePlayerPokemon()
+        this.playerTrainer = this.battle.playerTrainer
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (userDao.fetchPlayerSave() != null) userDao.delete()
+            userDao.savePlayerTrainer(this@BattleActivity.playerTrainer)
+            withContext(Dispatchers.Main){
+                Timer().schedule(2000) {
+                    finish()
+                }
+            }
+        }
+    }
+
+    @Override
+    override fun capturedPokemon(battle: Battle) {
+        this.battle = battle
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        Toast.makeText(applicationContext, "You captured a Pokemon!", Toast.LENGTH_LONG).show()
+        this.playerTrainer = this.battle.playerTrainer
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (userDao.fetchPlayerSave() != null) userDao.delete()
+            userDao.savePlayerTrainer(this@BattleActivity.playerTrainer)
+            withContext(Dispatchers.Main){
+                Timer().schedule(3000) {
+                    finish()
+                }
+            }
+        }
     }
 }
 
@@ -322,6 +380,9 @@ interface Callbacks {
     fun updateBattleText(message: String)
     fun reloadMovesFragment(battle: Battle)
     fun triggerPlayTurn(battle: Battle, moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int)
+//    fun winBattle(battle: Battle)
+    fun loseBattle(battle: Battle)
+    fun capturedPokemon(battle: Battle)
 }
 
 // extension functions
@@ -339,9 +400,9 @@ suspend fun performEnemyMove(battle: Battle, listener: Callbacks): Battle{
     if (!battle.checkPokemonFainted()){
         // move success
         val moveName = battle.playEnemyMove()
-        // move succed
+        // move succeed
         if (moveName != null) {
-            battle.enemyPokemon.name?.let { listener.updateBattleText("$it used ${moveName}!")}//+ Resources.getSystem().getString(R.string.used) + " " + moveName) }
+            battle.enemyPokemon.name?.let { listener.updateBattleText("$it used ${moveName.replace('-', ' ')}!")}//+ Resources.getSystem().getString(R.string.used) + " " + moveName) }
         }
         // move missed
         else {
@@ -353,7 +414,7 @@ suspend fun performEnemyMove(battle: Battle, listener: Callbacks): Battle{
                 listener.updatePokemonUI(battle)
                 listener.reloadMovesFragment(battle)
             } else {
-                println("end")
+                listener.loseBattle(battle)
             }
         }
     }
