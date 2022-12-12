@@ -51,24 +51,6 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
-                playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
-            }
-            withContext(Dispatchers.Main) {
-                val changeTeamFragment = ChangeTeamFragment()
-                // fragment to appear by default
-                supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.main_menu_fragment, changeTeamFragment)
-                    commit()
-                }
-            }
-        }
-    }
-
     private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -111,6 +93,12 @@ class MainMenuActivity : AppCompatActivity() {
             }
         }
         binding.wildBattleBtn.setOnClickListener {
+            /*supportFragmentManager.beginTransaction().apply {
+                replace(R.id.main_menu_fragment, wBattleFragment)
+                addToBackStack(null)
+                commit()
+            }*/
+            // TODO: send code or data representing wild battle and not trainer
             try {
                 lifecycleScope.launch(Dispatchers.IO) {
                     if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
@@ -131,6 +119,7 @@ class MainMenuActivity : AppCompatActivity() {
             } catch (e: Exception){
                 Log.e(LOG_TAG, e.message.toString(), e)
             }
+            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
         }
         binding.saveBtn.setOnClickListener {
             runBlocking(Dispatchers.IO) {

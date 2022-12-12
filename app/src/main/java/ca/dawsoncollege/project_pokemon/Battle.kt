@@ -161,7 +161,6 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
         return false;
     }
 
-    // TODO add type multiplier in milestone 2
     // helper method to calculate physical damage of an attack
     private suspend fun calculateDamage(move: Move, attacker: Pokemon, defender: Pokemon): Int{
         var damage: Double = ((2*attacker.level / 5) + 2) / 50.0

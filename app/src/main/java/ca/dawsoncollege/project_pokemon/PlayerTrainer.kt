@@ -25,7 +25,6 @@ data class PlayerTrainer(val playerName: String) {
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
         val starter = Pokemon(TrainerConstants.STARTER_LEVEL, species, name)
-
         this.team.add(starter)
     }
     // heal all pokemon
@@ -39,15 +38,6 @@ data class PlayerTrainer(val playerName: String) {
                 move.PP = move.maxPP
             }
         }
-    }
-
-    // TO-DO check if pokemon in box should be healed
-    // send pokemon from team to box
-    fun sendToBox(oldPokemon: Pokemon) {
-        // send pokemon from team to box
-        this.team.remove(oldPokemon)
-        // add team pokemon to box
-        pokemonCollection.add(oldPokemon)
     }
 
     // boolean to get wild pokemon catch success or fail
@@ -69,21 +59,6 @@ data class PlayerTrainer(val playerName: String) {
             return true;
         }
         return false;
-    }
-
-    // switch pokemon on team with one in collection
-    // NOTE: The new pokemon is gotten using index for now, it can be changed later
-    // to get a pokemon object if more convenient
-    fun changeTeam(oldPokemon: Pokemon, newPokemonIndex: Int) {
-        // send pokemon from team to box
-        this.team.remove(oldPokemon)
-        // add team pokemon to box
-        pokemonCollection.add(oldPokemon)
-
-        // remove from box
-        val newPokemon = pokemonCollection.removeAt(newPokemonIndex)
-        // add to team
-        this.team.add(newPokemon)
     }
 
     // get highest level on players team
