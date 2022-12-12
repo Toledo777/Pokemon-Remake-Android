@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
@@ -210,6 +211,100 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     }
 
     @Override
+    override fun triggerPlayTurn(battle: Battle, moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int) {
+        this.battle = battle
+        // specific dispatcher is specified in the functions involved
+        lifecycleScope.launch(Dispatchers.Main){
+            playTurn(moveList, buttons, i)
+            Log.d("EXTENSION", "enemy: "+battle.enemyPokemon.hp.toString())
+            Log.d("EXTENSION", "player: "+battle.playerPokemon.hp.toString())
+            // callback to update HP UI in BattleActivity
+            updateHPUI(battle)
+        }
+    }
+
+    // update button text
+    private fun updateMovePP(button: Button, move: Move) {
+        val moveButtonText = "${move.name.replace('-', ' ')}\n" +
+                "${move.PP}/${move.maxPP}\n${move.type}"
+        button.text = moveButtonText
+    }
+
+    // play a turn
+    private suspend fun playTurn(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int){
+        // check who attacks first
+        val listener = this as Callbacks
+        if (this.battle.playerPokemon.battleStat.speed >= this.battle.enemyPokemon.battleStat.speed){
+            if (!this.battle.checkPokemonFainted()){
+                val oldEnemy = this.battle.enemyPokemon
+                // attempt move, set text, update pp and button
+                performPlayerMove(moveList, buttons, i, listener)
+                if (oldEnemy == this.battle.enemyPokemon)
+                    this.battle = performEnemyMove(this.battle, listener)
+            } else { //TODO: might not need this after end the battle properly
+                this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
+            }
+        } else {
+            this.battle = performEnemyMove(this.battle, listener)
+            // if player pokemon is not fainted
+            performPlayerMove(moveList, buttons, i, listener)
+        }
+        // update player data
+        this.battle.updatePlayerPokemon()
+    }
+
+    private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int, listener: Callbacks){
+        // if player pokemon is not fainted
+        if (this.battle.playerPokemon.hp != 0){
+            if (!this.battle.checkPokemonFainted()){
+                playPlayerMove(moveList[i], buttons[i])
+            }
+            val oldLevel = this.battle.playerPokemon.level
+            if (this.battle.checkPokemonFainted()){
+                // Toast.makeText(context, "${this.battle.enemyPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+                this.battle.enemyPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
+                if (this.battle.playerPokemon.level > oldLevel){
+                    this.battle.updatePlayerPokemon()
+                    listener.updatePokemonUI(this.battle)
+                    this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
+                }
+                if (this.battle is WildBattle){
+                    // TODO: end battle
+                } else
+                    if ((this.battle as TrainerBattle).switchOutEnemyPkm()){
+                        listener.updatePokemonUI(this.battle)
+                    } else
+                        println("end")
+                // TODO: end battle
+            }
+        } else {
+//            Toast.makeText(context, "${this.battle.playerPokemon.name} fainted!", Toast.LENGTH_SHORT).show()
+            this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
+            if(this.battle.switchOutPlayerPkm()){
+                listener.updatePokemonUI(this.battle)
+                listener.reloadMovesFragment(this.battle)
+            }
+            else
+                println("end")
+        }
+    }
+
+    // helper method, plays move and sets battle text for it
+    private suspend fun playPlayerMove(move: Move, button: Button) {
+        val listener = this as Callbacks
+        if(this.battle.playerMove(move)) {
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.used) + " " + move.name) }
+        }
+        // missed move
+        else {
+            this.battle.playerPokemon.name?.let { listener.updateBattleText(it + " " + getString(R.string.miss_move))}
+        }
+        Log.d("MOVES_FRAG", move.toString())
+        move.PP -= 1
+        updateMovePP(button, move)
+    }
+
+    @Override
     override fun onBackPressed() {
         // super.onBackPressed();
     }
@@ -222,6 +317,7 @@ interface Callbacks {
     fun updatePokemonUI(battle: Battle)
     fun updateBattleText(message: String)
     fun reloadMovesFragment(battle: Battle)
+    fun triggerPlayTurn(battle: Battle, moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int)
 }
 
 // extension functions
@@ -233,3 +329,29 @@ fun convertJSONToWildBattle(json: String) =
 // converts JSON string back into a Trainer Battle object
 fun convertJSONToTrainerBattle(json: String) =
     Gson().fromJson(json, object: TypeToken<TrainerBattle>(){}.type) as TrainerBattle
+
+suspend fun performEnemyMove(battle: Battle, listener: Callbacks): Battle{
+    // if enemy pokemon is not fainted
+    if (!battle.checkPokemonFainted()){
+        // move success
+        val moveName = battle.playEnemyMove()
+        // move succed
+        if (moveName != null) {
+            battle.enemyPokemon.name?.let { listener.updateBattleText("$it used ${moveName}!")}//+ Resources.getSystem().getString(R.string.used) + " " + moveName) }
+        }
+        // move missed
+        else {
+            battle.enemyPokemon.name?.let { listener.updateBattleText("$it missed their move!")}// + Resources.getSystem().getString(R.string.miss_move)) }
+        }
+        if (battle.playerPokemon.hp == 0){
+            battle.playerPokemon.name?.let { name -> listener.updateBattleText("$name is fainted!")}//+ Resources.getSystem().getString(R.string.fainted)) }
+            if (battle.switchOutPlayerPkm()){
+                listener.updatePokemonUI(battle)
+                listener.reloadMovesFragment(battle)
+            } else {
+                println("end")
+            }
+        }
+    }
+    return battle
+}
