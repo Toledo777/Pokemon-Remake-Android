@@ -313,9 +313,9 @@ class BattleActivity : AppCompatActivity(), Callbacks {
                     this.battle.updatePlayerPokemon()
                     listener.updatePokemonUI(this.battle)
                     this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
-                    println("before prompt")
-                    proposeMovePrompt()
-                    println("after prompt")
+//                    println("before prompt")
+//                    proposeMovePrompt()
+//                    println("after prompt")
                 }
                 if (battleType == "wild"){
                     winBattle(this.battle)
