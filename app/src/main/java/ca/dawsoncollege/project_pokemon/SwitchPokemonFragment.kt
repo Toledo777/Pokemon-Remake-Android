@@ -58,6 +58,7 @@ class SwitchPokemonFragment : Fragment() {
                 try{
                     val listener = activity as Callbacks
                     this.battle.switchSelectPlayerPkm(this.battle.playerTrainer.team[i], i)
+                    listener.updateBattleText("You switched to ${this.battle.playerPokemon.name}!")
                     lifecycleScope.launch(Dispatchers.Main){
                         this@SwitchPokemonFragment.battle = performEnemyMove(this@SwitchPokemonFragment.battle, listener)
                         listener.updatePokemonUI(this@SwitchPokemonFragment.battle)
