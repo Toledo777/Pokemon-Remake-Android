@@ -199,7 +199,6 @@ class Pokemon(
         }
 
     }
-
 }
 
 data class MoveOutline(val move: String, val level: Int)

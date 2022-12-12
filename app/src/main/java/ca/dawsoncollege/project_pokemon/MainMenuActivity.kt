@@ -6,10 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import ca.dawsoncollege.project_pokemon.databinding.MainMenuBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
+    private lateinit var playerTrainer: PlayerTrainer
+    private lateinit var userDao: UserDao
+
     companion object {
         private const val LOG_TAG = "MAIN_MENU_ACT_DEV_LOG"
     }
@@ -19,64 +28,126 @@ class MainMenuActivity : AppCompatActivity() {
         binding = MainMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: replace commented code when fragments are ready
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "Trainer-Database"
+        ).build()
 
+        this.userDao = db.userDao()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+            }
+            withContext(Dispatchers.Main){
+                setButtonListeners()
+                val changeTeamFragment = ChangeTeamFragment()
+                // fragment to appear by default
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.main_menu_fragment, changeTeamFragment)
+                    commit()
+                }
+            }
+        }
+
+        // TODO: replace commented code when fragments are ready
         // initialize needed fragments
         //val defaultFragment = MainMenuActivity() // should be a fragment here instead
         //val pokecenterFragment = PokecenterFragment()
-//        val changeTeamFragment = ChangeTeamFragment()
 //        val tBattleFragment = TrainerBattleFragment()
 //        val wBattleFragment = BattleActivity()
 
-        // fragment to appear by default
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.main_menu_fragment, defaultFragment)
-//            commit()
-//        }
+    }
 
-        setButtonListeners()
+    override fun onStart() {
+        super.onStart()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+            }
+            withContext(Dispatchers.Main) {
+                val changeTeamFragment = ChangeTeamFragment()
+                // fragment to appear by default
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.main_menu_fragment, changeTeamFragment)
+                    commit()
+                }
+            }
+        }
     }
 
     private fun setButtonListeners() {
         binding.pokecenterBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.main_menu_fragment, pokecenterFragment)
+            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.frameLayout3, pokecenterFragment)
                 // allows back button to go to previous fragment
 //                addToBackStack(null)
 //                commit()
 //            }
                 Toast.makeText(applicationContext, "pokecenter", Toast.LENGTH_SHORT).show()
             }
-            binding.changeTeamBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.main_menu_fragment, changeTeamFragment)
-//                addToBackStack(null)
-//                commit()
-//            }
-                Toast.makeText(applicationContext, "change team", Toast.LENGTH_SHORT).show()
-            }
-            binding.trainerBattleBtn.setOnClickListener {
-//            supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.main_menu_fragment, tBattleFragment)
-//                addToBackStack(null)
-//                commit()
-//            }
-            Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
         }
-        binding.wildBattleBtn.setOnClickListener {
-            /*supportFragmentManager.beginTransaction().apply {
-                replace(R.id.main_menu_fragment, wBattleFragment)
+        binding.changeTeamBtn.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.main_menu_fragment, ChangeTeamFragment())
                 addToBackStack(null)
                 commit()
-            }*/
-            // TODO: send code or data representing wild battle and not trainer
+            }
+        }
+        binding.trainerBattleBtn.setOnClickListener {
             try {
-                val intent = Intent(this, BattleActivity::class.java)
-                startActivity(intent)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                        playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+                    }
+                    withContext(Dispatchers.Main){
+                        if(this@MainMenuActivity.playerTrainer.checkTeamFainted()){
+                            val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
+                            intent.putExtra("type", "trainer")
+                            startActivity(intent)
+                            Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
+                        } else
+                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } catch (exc: ActivityNotFoundException){
                 Log.e(LOG_TAG, "Could not open BattleActivity", exc)
+            } catch (e: Exception){
+                Log.e(LOG_TAG, e.message.toString())
             }
-            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
+        }
+        binding.wildBattleBtn.setOnClickListener {
+            try {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                        playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+                    }
+                    withContext(Dispatchers.Main){
+                        if (this@MainMenuActivity.playerTrainer.checkTeamFainted()){
+                            val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
+                            intent.putExtra("type", "wild")
+                            startActivity(intent)
+                            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
+                        } else
+                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (exc: ActivityNotFoundException){
+                Log.e(LOG_TAG, "Could not open BattleActivity", exc)
+            } catch (e: Exception){
+                Log.e(LOG_TAG, e.message.toString(), e)
+            }
+        }
+        binding.saveBtn.setOnClickListener {
+            runBlocking(Dispatchers.IO) {
+                if (userDao.fetchPlayerSave() != null) userDao.delete()
+                userDao.savePlayerTrainer(this@MainMenuActivity.playerTrainer)
+            }
+            finish()
+            overridePendingTransition(0, 0)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }
     }
 }

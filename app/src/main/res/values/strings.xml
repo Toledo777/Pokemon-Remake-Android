@@ -32,4 +32,17 @@
     <string name="potion">Potion</string>
     <string name="pokeball">Pokeball</string>
     <string name="run">Run</string>
+    <string name="throw_pokeball">Throwing pokeball.</string>
+    <string name="capture_fail">Throw failed.</string>
+    <string name="capture_success">has been caught!</string>
+    <string name="capture_disabled">You cannot catch another trainer\'s Pokemon.</string>
+    <string name="use_potion">used potion</string>
+    <string name="pp_out">Out of PP!</string>
+    <string name="fainted">is fainted!</string>
+    <string name="used">used</string>
+    <string name="miss_move">missed their move!</string>
+    <string name="level_up">leveled up!</string>
+    <string name="pokemon_sprite">Pokemon sprite</string>
+    <string name="continue_text">Continue</string>
+    <string name="pokemon_name">Name</string>
 </resources>

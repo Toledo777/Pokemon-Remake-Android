@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import kotlin.random.Random
 
 object TrainerConstants {
@@ -12,9 +13,14 @@ object TrainerConstants {
 }
 
 @Entity
-data class PlayerTrainer(@PrimaryKey val playerName: String) {
-    @ColumnInfo(name = "team") var team: ArrayList<Pokemon> = ArrayList(TrainerConstants.MAX_TEAM_CAPACITY)
-    @ColumnInfo(name = "pokemon_collection") var pokemonCollection: ArrayList<Pokemon> = ArrayList()
+data class PlayerTrainer(val playerName: String) {
+    @PrimaryKey(autoGenerate = true)
+    var trainerId: Int = 0
+    @ColumnInfo(name = "team")
+    var team: ArrayList<Pokemon> = ArrayList(TrainerConstants.MAX_TEAM_CAPACITY)
+
+    @ColumnInfo(name = "pokemon_collection")
+    var pokemonCollection: ArrayList<Pokemon> = ArrayList()
 
     // sets players starter pokemon
     fun setStarter(species: String, name: String? = null) {
@@ -92,5 +98,14 @@ data class PlayerTrainer(@PrimaryKey val playerName: String) {
         } else {
             minLevel
         }
+    }
+
+    fun checkTeamFainted(): Boolean{
+        for (pokemon in this.team){
+            if (pokemon.hp > 0) {
+                return true
+            }
+        }
+        return false
     }
 }

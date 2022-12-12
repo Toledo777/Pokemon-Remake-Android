@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/empty_list_text_view_1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E4E4E4"
+        android:gravity="center"
+        android:text="Team is Empty!"
+        android:textSize="17sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/teamLabel"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
+        android:paddingBottom="20dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/teamLabel" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/collectionLabel" />
+
+    <TextView
+        android:id="@+id/empty_list_text_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#E4E4E4"
+        android:gravity="center"
+        android:text="Collection is Empty!"
+        android:textSize="17sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_2"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/teamLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/empty_list_text_view_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/collectionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Collection"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@id/recycler_view_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
