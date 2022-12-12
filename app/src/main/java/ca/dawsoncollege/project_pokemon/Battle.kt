@@ -149,6 +149,9 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
 
     // check if move succeeds
     private fun moveSuccessCheck(accuracy: Int): Boolean {
+        // 0 accuracy means 100% hit chance in the api
+        if (accuracy == 0)
+            return true
         val randNum = Random.nextInt(0, 100)
         // check move success using probabilities
         if (accuracy >= randNum) {
