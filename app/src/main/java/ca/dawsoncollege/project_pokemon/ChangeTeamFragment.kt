@@ -37,9 +37,6 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
 
         _binding = FragmentChangeTeamBinding.inflate(inflater, container, false)
         runBlocking {
-            withContext(Dispatchers.IO) {
-                this@ChangeTeamFragment.userDao.savePlayerTrainer(PlayerTrainer("Paul"))
-            }
             launch(Dispatchers.IO) {
 
                 _binding!!.recyclerView1.init(
@@ -53,7 +50,7 @@ class ChangeTeamFragment : Fragment(R.layout.fragment_change_team), CustomListen
                 _binding!!.recyclerView2.init(
                     this@ChangeTeamFragment.userDao.fetchPlayerSave()!!.pokemonCollection,
                     binding.emptyListTextView2,
-                    GridLayoutManager(context, 6)
+                    GridLayoutManager(context, 4)
                 )
             }
         }

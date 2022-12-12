@@ -43,4 +43,6 @@
     <string name="miss_move">missed their move!</string>
     <string name="level_up">leveled up!</string>
     <string name="pokemon_sprite">Pokemon sprite</string>
+    <string name="continue_text">Continue</string>
+    <string name="pokemon_name">Name</string>
 </resources>
