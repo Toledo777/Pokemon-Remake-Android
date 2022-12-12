@@ -35,6 +35,7 @@
     <string name="throw_pokeball">Throwing pokeball.</string>
     <string name="capture_fail">Throw failed.</string>
     <string name="capture_success">has been caught!</string>
+    <string name="capture_toast">You captured a Pokemon!</string>
     <string name="capture_disabled">You cannot catch another trainer\'s Pokemon.</string>
     <string name="use_potion">used potion</string>
     <string name="pp_out">Out of PP!</string>
@@ -45,5 +46,7 @@
     <string name="pokemon_sprite">Pokemon sprite</string>
     <string name="continue_text">Continue</string>
     <string name="pokemon_name">Name</string>
+    <string name="cancel">Cancel</string>
     <string name="exit">Exit</string>
+    <string name="trainer_battle_run">You can\'t run from a trainer battle.</string>
 </resources>

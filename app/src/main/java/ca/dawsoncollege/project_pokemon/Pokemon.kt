@@ -173,10 +173,10 @@ class Pokemon(
     // moves should be shown to trainer
     suspend fun proposeMove(): List<Move> {
         val pokeData = this.species?.let { getApiPokemon(it) }
-        val possibleMoves = pokeData?.let { getAllPossibleMoves(it) }
+        var possibleMoves = pokeData?.let { getAllPossibleMoves(it) }
 
         // filter to only contain newly accessible moves
-        possibleMoves?.filter { it.level <= this.level && it.level > this.oldLevel }
+        possibleMoves = possibleMoves?.filter { it.level <= this.level && it.level > this.oldLevel }
         val proposedMoves = ArrayList<Move>()
 
         // convert MoveOutline to Move and add to learnableMoves
