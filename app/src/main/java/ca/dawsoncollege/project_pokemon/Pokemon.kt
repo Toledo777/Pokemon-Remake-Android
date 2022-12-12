@@ -163,7 +163,7 @@ class Pokemon(
         this.experience += exp
         // set level before xp gain
         this.oldLevel = this.level
-        this.level = floor(this.experience.toDouble().pow(1 / 3)).toInt()
+        this.level = floor(this.experience.toDouble().pow(1.0 / 3)).toInt()
         // recalculate stats only if level changed
         if (this.level > this.oldLevel)
             this.battleStat = getBattleStats()
@@ -202,7 +202,10 @@ class Pokemon(
         this.moveList.forEach { it.PP = it.maxPP }
         this.hp = this.battleStat.maxHP
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a80cfe0aad2a4913b7fecd23e08ae76d81bed6c1
 }
 
 data class MoveOutline(val move: String, val level: Int)

@@ -49,23 +49,6 @@ class MainMenuActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // TODO: replace commented code when fragments are ready
-
-        // initialize needed fragments
-        //val defaultFragment = MainMenuActivity() // should be a fragment here instead
-        //val pokecenterFragment = PokecenterFragment()
-//        val changeTeamFragment = ChangeTeamFragment()
-//        val tBattleFragment = TrainerBattleFragment()
-//        val wBattleFragment = BattleActivity()
-
-        // fragment to appear by default
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.main_menu_fragment, defaultFragment)
-//            commit()
-//        }
-
-        setButtonListeners()
     }
 
     private fun setButtonListeners() {
@@ -98,9 +81,9 @@ class MainMenuActivity : AppCompatActivity() {
                             val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
                             intent.putExtra("type", "trainer")
                             startActivity(intent)
-                            Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "You started a trainer battle!", Toast.LENGTH_SHORT).show()
                         } else
-                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Your team is fainted. Go to the PokeCenter or change teams.", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (exc: ActivityNotFoundException){
@@ -126,9 +109,9 @@ class MainMenuActivity : AppCompatActivity() {
                             val intent = Intent(this@MainMenuActivity, BattleActivity::class.java)
                             intent.putExtra("type", "wild")
                             startActivity(intent)
-                            Toast.makeText(applicationContext, "wild battle", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "You started a wild battle!", Toast.LENGTH_SHORT).show()
                         } else
-                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Your team is fainted. Go to the PokeCenter or change teams.", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (exc: ActivityNotFoundException){
@@ -140,6 +123,9 @@ class MainMenuActivity : AppCompatActivity() {
         }
         binding.saveBtn.setOnClickListener {
             runBlocking(Dispatchers.IO) {
+                if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                    playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+                }
                 if (userDao.fetchPlayerSave() != null) userDao.delete()
                 userDao.savePlayerTrainer(this@MainMenuActivity.playerTrainer)
             }
@@ -157,4 +143,10 @@ class MainMenuActivity : AppCompatActivity() {
             commit()
         }
     }
+
+    @Override
+    override fun onBackPressed() {
+        // super.onBackPressed();
+    }
 }
+

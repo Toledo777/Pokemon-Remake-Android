@@ -19,7 +19,6 @@ abstract class Battle(val playerTrainer: PlayerTrainer) {
     class NoPokemonException(message: String) : Exception(message)
 
     private fun setPlayerPokemon(): Pokemon{
-        println("set player pokemon method")
         for (pokemon in playerTrainer.team){
             if (pokemon.hp > 0) {
                 this.playerPokemonIndex = this.playerTrainer.team.indexOf(pokemon)
