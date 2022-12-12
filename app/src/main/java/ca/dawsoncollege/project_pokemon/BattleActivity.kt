@@ -26,6 +26,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     private lateinit var playerTrainer: PlayerTrainer
     private lateinit var enemyTrainer: EnemyTrainer
     private lateinit var userDao: UserDao
+    private val battleTextList = arrayListOf("", "", "")
 
     companion object {
         private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
@@ -201,7 +202,10 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     // callback for fragments to update battle text view
     @Override
     override fun updateBattleText(message: String) {
-        binding.battleText.text = message;
+        battleTextList.removeLast()
+        battleTextList.add(0, message)
+        val text = battleTextList[2]+"\n"+battleTextList[1]+"\n"+battleTextList[0]
+        binding.battleText.text = text;
     }
 
     @Override
