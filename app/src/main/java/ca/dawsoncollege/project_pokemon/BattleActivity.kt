@@ -33,6 +33,7 @@ class BattleActivity : AppCompatActivity(), Callbacks {
     private lateinit var enemyTrainer: EnemyTrainer
     private lateinit var userDao: UserDao
     private val battleTextList = arrayListOf("", "", "")
+    private var userPick = 10
 
     companion object {
         private const val LOG_TAG = "BATTLE_ACTIVITY_DEV_LOG"
@@ -258,6 +259,46 @@ class BattleActivity : AppCompatActivity(), Callbacks {
         this.battle.updatePlayerPokemon()
     }
 
+    private suspend fun proposeMovePrompt(){
+        println("proposing")
+        var madeChoice = false
+        val newMoves = this.battle.playerPokemon.proposeMove()
+        for (mov in newMoves)
+            println(mov.name)
+        println("here")
+        hideButtons()
+        println("hid buttons")
+//        for (move in newMoves){
+//            println("in loop new moves")
+//            updateBattleText("${this.battle.playerPokemon.name} wants to learn ${move.name.replace('-', ' ')}")
+            val learnMoveFragment = LearnMoveFragment()
+            val bundle = Bundle()
+            bundle.putString("battle", convertBattleToJSON(this.battle))
+            bundle.putString("type", battleType)
+            learnMoveFragment.arguments = bundle
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.battle_menu_fragment, learnMoveFragment)
+                commit()
+            }
+//            while (!madeChoice){
+//                println("in loop")
+//                // wait for callback
+//                if(this.userPick < 5){
+//                    madeChoice = true
+//                    this.battle.playerPokemon.learnMove(move,
+//                        this.battle.playerPokemon.moveList[this.userPick])
+//                } else if (this.userPick == 9){
+//                    madeChoice = true
+//                }
+//            }
+            this.battle.updatePlayerPokemon()
+            this.userPick = 10
+            madeChoice = false
+//        }
+//        setMovesFragment()
+        showButtons()
+    }
+
     private suspend fun performPlayerMove(moveList: ArrayList<Move>, buttons: ArrayList<Button>, i: Int, listener: Callbacks){
         // if player pokemon is not fainted
         if (this.battle.playerPokemon.hp != 0){
@@ -272,6 +313,9 @@ class BattleActivity : AppCompatActivity(), Callbacks {
                     this.battle.updatePlayerPokemon()
                     listener.updatePokemonUI(this.battle)
                     this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.level_up)) }
+                    println("before prompt")
+                    proposeMovePrompt()
+                    println("after prompt")
                 }
                 if (battleType == "wild"){
                     winBattle(this.battle)
@@ -392,6 +436,11 @@ class BattleActivity : AppCompatActivity(), Callbacks {
             }
         }
     }
+
+    @Override
+    override fun learnMove(moveIndex: Int) {
+        this.userPick = moveIndex
+    }
 }
 
 // interface containing callbacks
@@ -405,6 +454,7 @@ interface Callbacks {
 //    fun winBattle(battle: Battle)
     fun loseBattle(battle: Battle)
     fun capturedPokemon(battle: Battle)
+    fun learnMove(moveIndex: Int)
 }
 
 // extension functions
