@@ -202,10 +202,6 @@ class Pokemon(
         this.moveList.forEach { it.PP = it.maxPP }
         this.hp = this.battleStat.maxHP
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> a80cfe0aad2a4913b7fecd23e08ae76d81bed6c1
 }
 
 data class MoveOutline(val move: String, val level: Int)
