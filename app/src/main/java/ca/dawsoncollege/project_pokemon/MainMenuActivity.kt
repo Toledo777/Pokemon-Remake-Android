@@ -108,7 +108,7 @@ class MainMenuActivity : AppCompatActivity() {
                             startActivity(intent)
                             Toast.makeText(applicationContext, "trainer battle", Toast.LENGTH_SHORT).show()
                         } else
-                            Toast.makeText(applicationContext, "no pokemon available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Your team is fainted! Go to the PokeCenter...", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (exc: ActivityNotFoundException){
@@ -141,6 +141,9 @@ class MainMenuActivity : AppCompatActivity() {
         }
         binding.saveBtn.setOnClickListener {
             runBlocking(Dispatchers.IO) {
+                if (this@MainMenuActivity.userDao.fetchPlayerSave() != null) {
+                    playerTrainer = this@MainMenuActivity.userDao.fetchPlayerSave()!!
+                }
                 if (userDao.fetchPlayerSave() != null) userDao.delete()
                 userDao.savePlayerTrainer(this@MainMenuActivity.playerTrainer)
             }
@@ -149,5 +152,10 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
+    }
+
+    @Override
+    override fun onBackPressed() {
+        // super.onBackPressed();
     }
 }

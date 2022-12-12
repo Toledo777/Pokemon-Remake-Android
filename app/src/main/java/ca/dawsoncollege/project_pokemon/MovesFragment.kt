@@ -66,8 +66,7 @@ class MovesFragment : Fragment() {
                         this.battle.playerPokemon.name?.let { name -> listener.updateBattleText(name + " " + getString(R.string.fainted)) }
                     }
                 } else {
-//                    Toast.makeText(context, "Out of PP!", Toast.LENGTH_SHORT).show()
-                    listener.updateBattleText(getString(R.string.pp_out))
+                    Toast.makeText(context, R.string.pp_out, Toast.LENGTH_SHORT).show()
                 }
             }
         }
