@@ -115,6 +115,7 @@ class PlayerTrainerTest {
         assertEquals(testLevel, enemyLevel)
     }
 
+    // test randomEnemyLevel function
     @Test
     fun testRandomEnemyLevel88() {
         val testLevel = 88

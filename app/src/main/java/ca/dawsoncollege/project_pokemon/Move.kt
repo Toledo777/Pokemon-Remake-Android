@@ -1,5 +1,5 @@
 package ca.dawsoncollege.project_pokemon
-
+// create an variable of Move type
 class Move(
     val name: String,
     var accuracy: Int,

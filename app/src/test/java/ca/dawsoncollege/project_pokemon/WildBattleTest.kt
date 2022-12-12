@@ -26,7 +26,7 @@ class WildBattleTest {
         // check
         assertTrue(battle.checkPokemonFainted())
     }
-    // test throwPokeball function of WildBattle class
+    // test throwPokeball function
     @Test
     fun testThrowPokeball() {
         val playerTrainer = PlayerTrainer("Ash")

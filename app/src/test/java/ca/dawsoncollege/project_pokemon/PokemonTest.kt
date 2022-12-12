@@ -52,6 +52,26 @@ class PokemonTest {
             // test that move list is filled
             assertTrue(pokemon.proposeMove().isNotEmpty())
         }
+    }
 
+    // test for learnMove method
+    @Test
+    fun testLearnMove() {
+        val pokemon = Pokemon(10)
+        // test that move is learned
+        val move1 = Move("Tackle", 35, 100, 35, 0, 0, "test", "test", "Test", "test")
+        val move2 = Move("Tackle", 35, 100, 35, 0, 0, "test", "test", "Test", "test")
+        val move3 = Move("Tackle", 35, 100, 35, 0, 0, "test", "test", "Test", "test")
+        val move4 = Move("Tackle", 35, 100, 35, 0, 0, "test", "test", "Test", "test")
+        val move5 = Move("Tackle", 35, 100, 35, 0, 0, "test", "test", "Test", "test")
+        pokemon.learnMove(move1)
+        // check that move is in move list
+        assertTrue(pokemon.moveList.contains(move1))
+        pokemon.learnMove(move2)
+        pokemon.learnMove(move3)
+        pokemon.learnMove(move4)
+        pokemon.learnMove(move5, move2)
+        // check that old move is properly removed
+        assertFalse(pokemon.moveList.contains(move2))
     }
 }
